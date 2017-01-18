@@ -1,12 +1,8 @@
 package com.zerdareader;
 
-<<<<<<< HEAD
-import lombok.*;
-=======
-import lombok.Getter;
+
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
->>>>>>> persistence-test
 
 import javax.persistence.*;
 
@@ -15,15 +11,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "feed_items")
-<<<<<<< HEAD
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-=======
-@Getter
-@Setter
 @NoArgsConstructor
->>>>>>> persistence-test
 public class FeedItem {
 
     @Id

@@ -55,5 +55,4 @@ public class FeedService {
         output.setEntries(entries);
         feedRepo.save(output);
     }
-
 }
