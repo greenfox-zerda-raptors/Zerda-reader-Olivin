@@ -21,9 +21,9 @@ public class FeedService {
     SyndFeed tempFeed;
     Feed output;
 
-
     @Autowired
-    public FeedService(FeedRepository feedRepo, FeedReader feedReader) {
+    public FeedService(FeedRepository feedRepo, FeedReader feedReader, FeedItemRepository feedItemRepo) {
+        this.feedItemRepo = feedItemRepo;
         this.feedRepo = feedRepo;
         this.feedReader = feedReader;
         tempFeed = feedReader.getFeed();
