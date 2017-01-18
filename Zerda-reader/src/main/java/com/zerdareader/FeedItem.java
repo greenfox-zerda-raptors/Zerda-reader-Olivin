@@ -1,7 +1,6 @@
 package com.zerdareader;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,8 +9,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "feed_items")
-@Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class FeedItem {
 
     @Id
@@ -24,4 +24,11 @@ public class FeedItem {
     @ManyToOne
     @JoinColumn(name = "feed_id")
     private Feed feed;
+
+    public FeedItem(String title, String description, String link, String author) {
+        this.title = title;
+        this.description = description;
+        this.link = link;
+        this.author = author;
+    }
 }
