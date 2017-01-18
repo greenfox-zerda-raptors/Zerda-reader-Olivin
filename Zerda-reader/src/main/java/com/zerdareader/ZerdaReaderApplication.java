@@ -8,16 +8,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ZerdaReaderApplication implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ZerdaReaderApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ZerdaReaderApplication.class, args);
+    }
 
-	@Autowired
-	FeedService feedService;
+    @Autowired
+    FeedService feedService;
 
-	@Override
-	public void run(String... args) throws Exception {
-		feedService.createNewFeedItem();
-	}
+    @Override
+    public void run(String... args) throws Exception {
+        feedService.createNewFeedItem();
+    }
 
 }

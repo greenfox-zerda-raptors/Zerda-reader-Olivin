@@ -26,6 +26,6 @@ public class Feed {
     private String language;
     private String copyright;
     private String pubDate;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "feed")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feed")
     private List<FeedItem> entries = new ArrayList<FeedItem>();
 }
