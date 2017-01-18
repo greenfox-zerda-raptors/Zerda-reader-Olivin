@@ -1,9 +1,15 @@
+/*
 package com.zerdareader;
 
-
+/*
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndFeedImpl;
+import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.SyndFeedOutput;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FeedAggregator {
 
@@ -20,13 +26,12 @@ public class FeedAggregator {
         feed.setDescription("First test to check if we can create a new RSS feed out of saved feed items in db");
         feed.setAuthor("Zolo, Zsofi");
         feed.setLink("hmm no idea");
-
+/*
         List entries = new ArrayList();
         feed.setEntries(entries);
 
         for (int i = 1; i < args.length; i++) {
             URL inputUrl = new URL(args[i]);
-
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed inFeed = input.build(new XmlReader(inputUrl));
 
@@ -46,7 +51,8 @@ public class FeedAggregator {
     }
 }
 
-        if(!ok){
+ */
+/* //      if(!ok){
                 System.out.println();
                 System.out.println("FeedAggregator aggregates different feeds into a single one.");
                 System.out.println("The first parameter must be the feed type for the aggregated feed.");
@@ -56,6 +62,7 @@ public class FeedAggregator {
                 System.out.println();
                 }
                 }
+*//*
 
 //    public static void main(String[] args) {
 //        boolean ok = false;
@@ -105,3 +112,4 @@ public class FeedAggregator {
 //    }
 
                 }
+*/

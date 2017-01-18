@@ -7,10 +7,10 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -21,7 +21,6 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public class FeedReader {
 
@@ -30,8 +29,8 @@ public class FeedReader {
     SyndFeed feed;
     List<SyndEntry> entries;
 
-    public FeedReader(URL rssUrl) throws IOException, FeedException {
-        url = rssUrl;
+    public FeedReader() throws MalformedURLException, IOException, FeedException {
+        url = new URL("http://444.hu/feed");
         input = new SyndFeedInput();
         feed = input.build(new XmlReader(url));
         entries = feed.getEntries();
