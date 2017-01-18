@@ -1,6 +1,12 @@
 package com.zerdareader;
 
+<<<<<<< HEAD
 import lombok.*;
+=======
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+>>>>>>> persistence-test
 
 import javax.persistence.*;
 
@@ -9,15 +15,22 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "feed_items")
+<<<<<<< HEAD
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+=======
+@Getter
+@Setter
+@NoArgsConstructor
+>>>>>>> persistence-test
 public class FeedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String link;
     private String author;
