@@ -36,4 +36,7 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+    // https://mvnrepository.com/artifact/com.rometools/rome
+    compile group: 'com.rometools', name: 'rome', version: '1.7.1'
+
 }
