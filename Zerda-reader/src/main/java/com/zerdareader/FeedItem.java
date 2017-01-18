@@ -1,7 +1,5 @@
 package com.zerdareader;
 
-import com.rometools.rome.feed.synd.SyndEntryImpl;
-
 import javax.persistence.*;
 
 /**
@@ -9,9 +7,17 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "feed_items")
-public class FeedItem extends SyndEntryImpl {
+public class FeedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    private String title;
+    private String description;
+    private String link;
+    private String author;
+    private String guid;
+    @ManyToOne
+    @JoinColumn(name = "feed_id")
+    private Feed feed;
 }
