@@ -28,7 +28,7 @@ public class FeedService {
         output = new Feed();
     }
 
-    public Feed createNewFeed (){
+    public Feed createNewFeed() {
         output.setTitle(tempFeed.getTitle());
         output.setLink(tempFeed.getLink());
         output.setDescription(tempFeed.getDescription());
@@ -38,18 +38,22 @@ public class FeedService {
         return output;
     }
 
-    public void createNewFeedItem(){
+    public void createNewFeedItem() {
         List<SyndEntry> tempEntries = tempFeed.getEntries();
-        for (SyndEntry te : tempEntries ) {
-               FeedItem feedItem = new FeedItem();
-               feedItem.setTitle(te.getTitle());
-               feedItem.setDescription(te.getDescription().getValue());
-               feedItem.setLink(te.getLink());
-               feedItem.setAuthor(te.getAuthor());
-               feedItem.setFeed(createNewFeed());
-               feedRepo.save(feedItem);
-      }
+        for (SyndEntry te : tempEntries) {
+            FeedItem feedItem = new FeedItem();
+            feedItem.setTitle(te.getTitle());
+            feedItem.setDescription(te.getDescription().getValue());
+            feedItem.setLink(te.getLink());
+            feedItem.setAuthor(te.getAuthor());
+            feedItem.setFeed(createNewFeed());
+            feedRepo.save(feedItem);
+        }
 
     }
 
+    public FeedItem getFeedItem(Long id) {
+        FeedItem feedItem = feedRepo.findOne(id);
+        return feedItem;
+    }
 }
