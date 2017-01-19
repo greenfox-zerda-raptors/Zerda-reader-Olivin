@@ -84,4 +84,9 @@ public class FeedService {
     protected List<String> getAllrssLinks() {
         return feedRepo.getAllUrls();
     }
+
+    public Feed getFeedBasedOnTempSFStorage(TempSyndFeedStorage tempSyndFeedStorage){
+        return  feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath());
+    }
+
 }
