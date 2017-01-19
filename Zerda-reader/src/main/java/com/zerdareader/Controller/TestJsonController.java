@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Created by zoloe on 2017. 01. 18..
  */
+
 @RestController
 public class TestJsonController {
     private final AtomicLong counter = new AtomicLong();
