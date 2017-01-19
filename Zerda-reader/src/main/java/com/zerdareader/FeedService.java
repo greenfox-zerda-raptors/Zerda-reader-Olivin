@@ -1,7 +1,6 @@
 package com.zerdareader;
 
 import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,32 +16,26 @@ public class FeedService {
 
     FeedRepository feedRepo;
     FeedItemRepository feedItemRepo;
-    FeedReader feedReader;
-    SyndFeed tempFeed;
-    Feed output;
 
     @Autowired
-    public FeedService(FeedRepository feedRepo, FeedReader feedReader, FeedItemRepository feedItemRepo) {
-        this.feedItemRepo = feedItemRepo;
+    public FeedService(FeedRepository feedRepo, FeedItemRepository feedItemRepo, FeedReader feedReader) {
         this.feedRepo = feedRepo;
-        this.feedReader = feedReader;
-        tempFeed = feedReader.getFeed();
-        output = new Feed();
-        createNewFeed();
+        this.feedItemRepo = feedItemRepo;
     }
 
-    public Feed createNewFeed() {
-        output.setTitle(tempFeed.getTitle());
-        output.setLink(tempFeed.getLink());
-        output.setDescription(tempFeed.getDescription());
-        output.setLanguage(tempFeed.getLanguage());
-        output.setCopyright(tempFeed.getCopyright());
-        feedRepo.save(output);
+    private Feed createNewFeed(TempSyndFeedStorage storage) {
+        Feed output = new Feed();
+        output.setTitle(storage.getSyndFeed().getTitle());
+        output.setLink(storage.getSyndFeed().getLink());
+        output.setDescription(storage.getSyndFeed().getDescription());
+        output.setLanguage(storage.getSyndFeed().getLanguage());
+        output.setCopyright(storage.getSyndFeed().getCopyright());
         return output;
     }
 
-    public void createNewFeedItem() {
-        List<SyndEntry> tempEntries = tempFeed.getEntries();
+    public void createNewFeedItem(TempSyndFeedStorage storage) {
+        Feed feed = createNewFeed(storage);
+        List<SyndEntry> tempEntries = storage.getSyndFeed().getEntries();
         List<FeedItem> entries = new ArrayList<>();
         for (SyndEntry te : tempEntries) {
             FeedItem feedItem = new FeedItem();
@@ -50,11 +43,12 @@ public class FeedService {
             feedItem.setDescription(te.getDescription().getValue());
             feedItem.setLink(te.getLink());
             feedItem.setAuthor(te.getAuthor());
-            feedItem.setFeed(output);
+            feedItem.setFeed(feed);
             entries.add(feedItem);
         }
-        output.setEntries(entries);
-        feedRepo.save(output);
+        feed.setEntries(entries);
+        feedRepo.save(feed);
+        storage = null;
     }
 
     public FeedItem getFeedItem(Long id) {
