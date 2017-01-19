@@ -2,9 +2,11 @@ package com.zerdareader;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,20 +27,21 @@ public class FeedUpdater {
         feedsToUpdate = new ArrayList<>();
     }
 
-    public void addNewFeed(String rssPath) {
+    public void addNewFeed(String rssPath) throws IOException, FeedException {
         TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
         if (!feedService.isExist(storage)) {
-            feedService.createNewFeedItem(storage);
+            feedService.createNewFeedItem(feedReader.getSyndFeedStorageFromRssUrl(storage));
         }
     }
 
-    public void updateAllFeeds() {
+    public void updateAllFeeds() throws IOException, FeedException {
         List<String> rssLinks = feedService.getAllrssLinks();
         for (String rssLink : rssLinks) {
-            feedsToUpdate.add(new TempSyndFeedStorage(rssLink));
+            feedsToUpdate.add(feedReader.getSyndFeedStorageFromRssUrl(new TempSyndFeedStorage(rssLink)));
+
         }
         for (TempSyndFeedStorage feed : feedsToUpdate) {
-                updateFeed(feed, feedService.getFeedBasedOnTempSFStorage(feed));
+            updateFeed(feed, feedService.getFeedBasedOnTempSFStorage(feed));
         }
     }
 

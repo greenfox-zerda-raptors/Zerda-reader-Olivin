@@ -5,7 +5,6 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.io.IOException;
 @Component
 @AllArgsConstructor
 @Getter
-@NoArgsConstructor
 public class FeedReader {
 
     public TempSyndFeedStorage getSyndFeedStorageFromRssUrl(TempSyndFeedStorage tempSyndFeedStorage) throws IOException, FeedException {

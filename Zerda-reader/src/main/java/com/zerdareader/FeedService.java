@@ -71,8 +71,7 @@ public class FeedService {
     }
 
     public boolean isExist(TempSyndFeedStorage tempSyndFeedStorage) {
-        if (feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath()) != null){
-        }return true;
+        return feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath()) != null;
     }
 
 
@@ -85,8 +84,8 @@ public class FeedService {
         return feedRepo.getAllUrls();
     }
 
-    public Feed getFeedBasedOnTempSFStorage(TempSyndFeedStorage tempSyndFeedStorage){
-        return  feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath());
+    public Feed getFeedBasedOnTempSFStorage(TempSyndFeedStorage tempSyndFeedStorage) {
+        return feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath());
     }
 
 }
