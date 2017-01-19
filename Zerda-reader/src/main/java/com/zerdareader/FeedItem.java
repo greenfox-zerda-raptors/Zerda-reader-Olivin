@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Created by Rita on 2017-01-18.
@@ -23,6 +24,7 @@ public class FeedItem {
     private String description;
     private String link;
     private String author;
+    private LocalDateTime pubDate;
     @ManyToOne
     @JoinColumn(name = "feed_id")
     private Feed feed;

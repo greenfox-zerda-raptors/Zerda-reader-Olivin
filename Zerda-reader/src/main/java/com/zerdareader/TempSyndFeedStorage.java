@@ -1,8 +1,7 @@
 package com.zerdareader;
 
 import com.rometools.rome.feed.synd.SyndFeed;
-import lombok.Getter;
-
+import lombok.Data;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -10,7 +9,7 @@ import java.net.URL;
  * Created by Rita on 2017-01-19.
  */
 
-@Getter
+@Data
 public class TempSyndFeedStorage {
     private SyndFeed syndFeed;
     private String rssPath;
