@@ -12,5 +12,4 @@ public class ZerdaReaderApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
 }

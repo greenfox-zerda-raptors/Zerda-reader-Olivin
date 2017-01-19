@@ -20,7 +20,4 @@ public class FeedUpdater {
         
     }
 
-    public boolean isExist(TempSyndFeedStorage) {
-
-    }
 }

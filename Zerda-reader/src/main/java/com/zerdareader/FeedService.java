@@ -1,6 +1,7 @@
 package com.zerdareader;
 
 import com.rometools.rome.feed.synd.SyndEntry;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.List;
  */
 
 @Component
+@Getter
 public class FeedService {
 
     FeedRepository feedRepo;
@@ -30,6 +32,7 @@ public class FeedService {
         output.setDescription(storage.getSyndFeed().getDescription());
         output.setLanguage(storage.getSyndFeed().getLanguage());
         output.setCopyright(storage.getSyndFeed().getCopyright());
+        output.setRssPath(storage.getRssPath());
         return output;
     }
 
@@ -55,4 +58,12 @@ public class FeedService {
         FeedItem feedItem = feedItemRepo.findOne(id);
         return feedItem;
     }
+
+    public boolean isExist(TempSyndFeedStorage tempSyndFeedStorage) {
+        if (feedRepo.findOneByrssPath(tempSyndFeedStorage.getRssPath()) != null){
+        }return true;
+    }
+
+
+
 }
