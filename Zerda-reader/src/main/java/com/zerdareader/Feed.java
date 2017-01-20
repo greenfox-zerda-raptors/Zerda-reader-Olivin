@@ -1,6 +1,5 @@
 package com.zerdareader;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,7 @@ public class Feed {
     private String language;
     private String copyright;
     private LocalDateTime pubDate;
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "feed")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feed")
     @JsonManagedReference
     private List<FeedItem> entries = new ArrayList<FeedItem>();
 

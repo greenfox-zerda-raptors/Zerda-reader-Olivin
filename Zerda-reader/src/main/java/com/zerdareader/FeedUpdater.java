@@ -37,12 +37,11 @@ public class FeedUpdater {
         }
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 120000)
     public void updateAllFeeds() throws IOException, FeedException {
         List<String> rssLinks = feedService.getAllrssLinks();
         for (String rssLink : rssLinks) {
             feedsToUpdate.add(feedReader.getSyndFeedStorageFromRssUrl(new TempSyndFeedStorage(rssLink)));
-
         }
         for (TempSyndFeedStorage feed : feedsToUpdate) {
             updateFeed(feed, feedService.getFeedBasedOnTempSFStorage(feed));
@@ -51,13 +50,14 @@ public class FeedUpdater {
 
     public void updateFeed(TempSyndFeedStorage tempSyndFeedStorage, Feed feed) {
         SyndFeed syndFeed = tempSyndFeedStorage.getSyndFeed();
-        if (!feedService.setPubDateByDate(syndFeed.getPublishedDate()).equals(feed.getPubDate())) {
+        if (!feedService.setPubDateByDate(syndFeed.getPublishedDate()).isEqual(feed.getPubDate())) {
             for (SyndEntry se : syndFeed.getEntries()) {
                 if (feedService.setPubDateByDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
                     feedService.createNewFeedItem(tempSyndFeedStorage);
                 }
             }
             feed.setPubDate(feedService.setPubDateByDate(syndFeed.getPublishedDate()));
+            feedService.updateFeed(feed);
         }
     }
 }

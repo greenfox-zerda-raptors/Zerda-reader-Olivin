@@ -13,9 +13,6 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     }
 
     @Autowired
-    private FeedItemRepository repo;
-
-    @Autowired
     FeedUpdater updater;
 
     @Override
