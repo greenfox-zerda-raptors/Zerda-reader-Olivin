@@ -61,4 +61,7 @@ public class FeedService {
         FeedItem feedItem = feedItemRepo.findOne(id);
         return feedItem;
     }
+    public Feed getFeed(Long id){
+        return feedRepo.findOne(id);
+    }
 }

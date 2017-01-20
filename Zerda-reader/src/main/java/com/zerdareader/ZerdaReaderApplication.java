@@ -20,7 +20,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        repo.save(new FeedItem("author", "description", "link", "title"));
+//        repo.save(new FeedItem("author", "description", "link", "title"));
         feedService.createNewFeedItem();
     }
 }
