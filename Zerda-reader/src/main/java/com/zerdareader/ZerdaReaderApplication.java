@@ -23,6 +23,6 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         repo.save(new FeedItem("author", "description", "link", "title"));
         updater.addNewFeed("http://index.hu/24ora/rss/");
         updater.addNewFeed("http://444.hu/feed");
-        updater.addNewFeed("http://444.hu/feed");
+        updater.updateAllFeeds();
     }
 }
