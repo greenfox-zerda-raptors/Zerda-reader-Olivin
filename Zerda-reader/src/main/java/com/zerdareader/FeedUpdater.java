@@ -53,7 +53,7 @@ public class FeedUpdater {
         SyndFeed syndFeed = tempSyndFeedStorage.getSyndFeed();
         if (!feedService.setPubDateByDate(syndFeed.getPublishedDate()).equals(feed.getPubDate())) {
             for (SyndEntry se : syndFeed.getEntries()) {
-                if (!feedService.setPubDateByDate(se.getPublishedDate()).equals(feed.getPubDate())) {
+                if (feedService.setPubDateByDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
                     feedService.createNewFeedItem(tempSyndFeedStorage);
                 }
             }
