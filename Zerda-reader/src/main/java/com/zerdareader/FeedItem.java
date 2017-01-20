@@ -1,6 +1,8 @@
 package com.zerdareader;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +29,8 @@ public class FeedItem {
     private LocalDateTime pubDate;
     @ManyToOne
     @JoinColumn(name = "feed_id")
+    @JsonBackReference
+//    @JsonIgnore
     private Feed feed;
 
     public FeedItem(String title, String description, String link, String author) {

@@ -88,4 +88,7 @@ public class FeedService {
         return feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath());
     }
 
+    public Feed getFeed(Long id){
+        return feedRepo.findOne(id);
+    }
 }
