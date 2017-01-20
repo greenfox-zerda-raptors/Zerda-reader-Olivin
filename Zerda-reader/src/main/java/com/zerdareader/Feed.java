@@ -29,8 +29,7 @@ public class Feed {
     private String description;
     private String language;
     private String copyright;
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feed")
-    private String pubDate;
+    private LocalDateTime pubDate;
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "feed")
     @JsonManagedReference
     private List<FeedItem> entries = new ArrayList<FeedItem>();

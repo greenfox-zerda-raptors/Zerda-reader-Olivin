@@ -24,7 +24,7 @@ public class FeedService {
     FeedItemRepository feedItemRepo;
 
     @Autowired
-    public FeedService(FeedRepository feedRepo, FeedItemRepository feedItemRepo, FeedReader feedReader) {
+    public FeedService(FeedRepository feedRepo, FeedItemRepository feedItemRepo) {
         this.feedRepo = feedRepo;
         this.feedItemRepo = feedItemRepo;
     }
