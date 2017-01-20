@@ -29,7 +29,6 @@ public class Feed {
     private String description;
     private String language;
     private String copyright;
-    private LocalDateTime pubDate;
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feed")
     private String pubDate;
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "feed")
