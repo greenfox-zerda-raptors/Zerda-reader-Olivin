@@ -23,24 +23,30 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     FeedService feedService;
     @Autowired
     TestUserRepository testUserRepository;
+    @Autowired
+    FeedRepository repository;
 
 
     @Override
     public void run(String... strings) throws Exception {
-        TestUser testUser = new TestUser(1);
-        testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
-        testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
-        Feed feed = feedService.getFeed(1L);
-        feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-        Feed feed2 = feedService.getFeed(2L);
-        feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-        feedService.updateFeed(feed);
-        feedService.updateFeed(feed2);
-
-        testUserRepository.save(testUser);
         updater.addNewFeed("http://index.hu/24ora/rss/");
         updater.addNewFeed("http://444.hu/feed");
         updater.addNewFeed("http://444.hu/feed");
         updater.updateAllFeeds();
+
+        TestUser testUser = new TestUser(1);
+        testUserRepository.save(testUser);
+        testUser=testUserRepository.findOne(1L);
+        testUser.getSubscribedFeeds().add(repository.findOne(1L));
+        testUser.getSubscribedFeeds().add(repository.findOne(2L));
+        Feed feed = repository.findOne(1L);
+        feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+        Feed feed2 = repository.findOne(2L);
+        feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+        repository.save(feed);
+        repository.save(feed2);
+
+        testUserRepository.save(testUser);
+
     }
 }
