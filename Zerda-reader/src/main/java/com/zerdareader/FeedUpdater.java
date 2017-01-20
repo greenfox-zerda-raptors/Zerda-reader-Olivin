@@ -46,6 +46,7 @@ public class FeedUpdater {
         for (TempSyndFeedStorage feed : feedsToUpdate) {
             updateFeed(feed, feedService.getFeedBasedOnTempSFStorage(feed));
         }
+        feedsToUpdate.clear();
     }
 
     public void updateFeed(TempSyndFeedStorage tempSyndFeedStorage, Feed feed) {
