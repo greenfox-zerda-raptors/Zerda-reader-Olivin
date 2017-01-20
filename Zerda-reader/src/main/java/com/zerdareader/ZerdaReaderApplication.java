@@ -22,8 +22,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         updater.addNewFeed("http://index.hu/24ora/rss/");
         updater.addNewFeed("http://444.hu/feed");
+        updater.addNewFeed("http://444.hu/feed");
         updater.updateAllFeeds();
-//        repo.save(new FeedItem("author", "description", "link", "title"));
-        feedService.createNewFeedItem();
     }
 }

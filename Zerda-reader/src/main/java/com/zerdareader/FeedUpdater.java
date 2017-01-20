@@ -4,6 +4,8 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.util.List;
  * Created by Rita on 2017-01-19.
  */
 @Component
+@EnableScheduling
 public class FeedUpdater {
 
     FeedReader feedReader;
@@ -34,6 +37,7 @@ public class FeedUpdater {
         }
     }
 
+    @Scheduled(fixedRate = 5000)
     public void updateAllFeeds() throws IOException, FeedException {
         List<String> rssLinks = feedService.getAllrssLinks();
         for (String rssLink : rssLinks) {
