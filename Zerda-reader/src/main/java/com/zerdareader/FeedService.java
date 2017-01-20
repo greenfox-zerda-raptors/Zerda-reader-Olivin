@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,32 +36,28 @@ public class FeedService {
         output.setDescription(storage.getSyndFeed().getDescription());
         output.setLanguage(storage.getSyndFeed().getLanguage());
         output.setCopyright(storage.getSyndFeed().getCopyright());
-        output.setPubDate(setPubDateByDate(storage.getSyndFeed().getPublishedDate()));
+        output.setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
         return output;
     }
 
-    public void createNewFeedItem(TempSyndFeedStorage storage) {
-        Feed feed;
-        if (!isExist(storage)) {
-            feed = createNewFeed(storage);
-        } else {
-            feed = feedRepo.findOneByRssPath(storage.getRssPath());
-        }
-
+    public void addAllEntries(TempSyndFeedStorage storage) {
+        Feed feed = createNewFeed(storage);
         List<SyndEntry> tempEntries = storage.getSyndFeed().getEntries();
-        List<FeedItem> entries = new ArrayList<>();
         for (SyndEntry te : tempEntries) {
-            FeedItem feedItem = new FeedItem();
-            feedItem.setTitle(te.getTitle());
-            feedItem.setDescription(te.getDescription().getValue());
-            feedItem.setLink(te.getLink());
-            feedItem.setAuthor(te.getAuthor());
-            feedItem.setFeed(feed);
-            feedItem.setPubDate(setPubDateByDate(te.getPublishedDate()));
-            entries.add(feedItem);
-            feed.addNewEntries(feedItem);
+            addNewEntry(te, feed);
         }
         feedRepo.save(feed);
+    }
+
+    public void addNewEntry(SyndEntry entry, Feed feed) {
+        FeedItem feedItem = new FeedItem();
+        feedItem.setTitle(entry.getTitle());
+        feedItem.setDescription(entry.getDescription().getValue());
+        feedItem.setLink(entry.getLink());
+        feedItem.setAuthor(entry.getAuthor());
+        feedItem.setFeed(feed);
+        feedItem.setPubDate(convertDate(entry.getPublishedDate()));
+        feed.addNewEntries(feedItem);
     }
 
     public FeedItem getFeedItem(Long id) {
@@ -75,7 +70,7 @@ public class FeedService {
     }
 
 
-    protected LocalDateTime setPubDateByDate(Date javaUtilDate) {
+    protected LocalDateTime convertDate(Date javaUtilDate) {
         Instant instant = Instant.ofEpochMilli(javaUtilDate.getTime());
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     }
@@ -90,6 +85,10 @@ public class FeedService {
 
     public Feed getFeed(Long id) {
         return feedRepo.findOne(id);
+    }
+
+    public Feed getFeed(TempSyndFeedStorage storage) {
+        return feedRepo.findOneByRssPath(storage.getRssPath());
     }
 
     public void updateFeed(Feed feed) {

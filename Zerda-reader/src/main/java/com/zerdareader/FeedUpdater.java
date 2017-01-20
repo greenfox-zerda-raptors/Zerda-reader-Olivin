@@ -33,7 +33,7 @@ public class FeedUpdater {
     public void addNewFeed(String rssPath) throws IOException, FeedException {
         TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
         if (!feedService.isExist(storage)) {
-            feedService.createNewFeedItem(feedReader.getSyndFeedStorageFromRssUrl(storage));
+            feedService.addAllEntries(feedReader.getSyndFeedStorageFromRssUrl(storage));
         }
     }
 
@@ -50,13 +50,13 @@ public class FeedUpdater {
 
     public void updateFeed(TempSyndFeedStorage tempSyndFeedStorage, Feed feed) {
         SyndFeed syndFeed = tempSyndFeedStorage.getSyndFeed();
-        if (!feedService.setPubDateByDate(syndFeed.getPublishedDate()).isEqual(feed.getPubDate())) {
+        if (!feedService.convertDate(syndFeed.getPublishedDate()).isEqual(feed.getPubDate())) {
             for (SyndEntry se : syndFeed.getEntries()) {
-                if (feedService.setPubDateByDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
-                    feedService.createNewFeedItem(tempSyndFeedStorage);
+                if (feedService.convertDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
+                    feedService.addNewEntry(se, feed);
                 }
             }
-            feed.setPubDate(feedService.setPubDateByDate(syndFeed.getPublishedDate()));
+            feed.setPubDate(feedService.convertDate(syndFeed.getPublishedDate()));
             feedService.updateFeed(feed);
         }
     }
