@@ -3,10 +3,9 @@ package com.zerdareader;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
-import lombok.Data;
+import lombok.Getter;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -14,18 +13,15 @@ import java.util.List;
  * Created by Rita on 2017-01-19.
  */
 
-@Data
+@Getter
 public class TempSyndFeedStorage {
+
     private SyndFeed syndFeed;
     private String rssPath;
 
     public TempSyndFeedStorage(String rssPath) throws IOException, FeedException {
         this.rssPath = rssPath;
         populateSyndFeed();
-    }
-
-    public URL createUrl() throws MalformedURLException {
-        return new URL(rssPath);
     }
 
     public Feed convertToFeed() {
@@ -37,9 +33,9 @@ public class TempSyndFeedStorage {
         }
         return result;
     }
-    
+
     public void populateSyndFeed() throws IOException, FeedException {
         FeedReader reader = new FeedReader();
-        syndFeed = reader.convertRssFeed(createUrl());
+        syndFeed = reader.convertRssFeed(new URL(rssPath));
     }
 }
