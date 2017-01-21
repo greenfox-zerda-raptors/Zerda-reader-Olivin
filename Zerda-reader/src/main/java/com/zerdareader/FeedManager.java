@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 
 /**
  * Created by Rita on 2017-01-19.
@@ -37,9 +36,9 @@ public class FeedManager {
     public void updateAllFeeds() throws IOException, FeedException {
         // option1 : repeated calls to the database
         for (long i = 1; i <= feedService.getNumberOfFeeds(); i++) {
-            String rssPath = feedService.getFeed(i).getRssPath();
+            Feed feed = feedService.getFeed(i);
+            String rssPath = feed.getRssPath();
             TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
-            Feed feed = feedService.getFeedBasedOnTempSFStorage(storage);
             if (isUpdateNeeded(feed, storage.getSyndFeed())) {
                 feed.updateEntries(storage.getSyndFeed());
                 feedService.updateFeed(feed);
@@ -60,6 +59,6 @@ public class FeedManager {
     }
 
     private boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
-        return LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
+        return !LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
     }
 }

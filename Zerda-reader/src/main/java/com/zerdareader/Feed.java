@@ -54,7 +54,7 @@ public class Feed {
         setDescription(storage.getSyndFeed().getDescription());
         setLanguage(storage.getSyndFeed().getLanguage());
         setCopyright(storage.getSyndFeed().getCopyright());
-        setPubDate(LocalDateTime.ofInstant(storage.getSyndFeed().getPublishedDate().toInstant(), ZoneId.systemDefault()));
+        setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
     }
 
     public void updateEntries(SyndFeed syndFeed) {
