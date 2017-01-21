@@ -49,4 +49,8 @@ public class FeedService {
     public void updateFeed(Feed feed) {
         feedRepo.save(feed);
     }
+
+    public long getNumberOfFeeds() {
+        return feedRepo.count();
+    }
 }

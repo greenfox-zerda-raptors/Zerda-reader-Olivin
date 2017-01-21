@@ -2,6 +2,7 @@ package com.zerdareader;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,5 +55,20 @@ public class Feed {
         setLanguage(storage.getSyndFeed().getLanguage());
         setCopyright(storage.getSyndFeed().getCopyright());
         setPubDate(LocalDateTime.ofInstant(storage.getSyndFeed().getPublishedDate().toInstant(), ZoneId.systemDefault()));
+    }
+
+    public void updateEntries(SyndFeed syndFeed) {
+        if (convertDate(syndFeed.getPublishedDate()).isEqual(pubDate)) {
+            for (SyndEntry se : syndFeed.getEntries()) {
+                if (convertDate(se.getPublishedDate()).isAfter(pubDate)) {
+                    addNewEntry(se);
+                }
+            }
+            setPubDate(convertDate(syndFeed.getPublishedDate()));
+        }
+    }
+
+    private LocalDateTime convertDate(Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 }
