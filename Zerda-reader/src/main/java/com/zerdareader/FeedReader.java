@@ -1,27 +1,22 @@
 package com.zerdareader;
 
+import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URL;
 
 
 /**
  * Created by ${rudolfps} on 2017.01.18..
  */
 
-@Component
-@AllArgsConstructor
-@Getter
 public class FeedReader {
 
-    public TempSyndFeedStorage getSyndFeedStorageFromRssUrl(TempSyndFeedStorage tempSyndFeedStorage) throws IOException, FeedException {
+    public SyndFeed convertRssFeed(URL url) throws IOException, FeedException {
         SyndFeedInput input = new SyndFeedInput();
-        tempSyndFeedStorage.setSyndFeed(input.build(new XmlReader(tempSyndFeedStorage.createUrl())));
-        return tempSyndFeedStorage;
+        return input.build(new XmlReader(url));
     }
 }

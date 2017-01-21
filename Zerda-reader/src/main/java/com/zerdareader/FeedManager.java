@@ -7,8 +7,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Rita on 2017-01-19.
@@ -17,28 +15,26 @@ import java.util.List;
 @EnableScheduling
 public class FeedManager {
 
-    FeedReader feedReader;
     FeedService feedService;
 
     @Autowired
-    public FeedManager(FeedReader feedReader, FeedService feedService) {
-        this.feedReader = feedReader;
+    public FeedManager(FeedService feedService) {
         this.feedService = feedService;
     }
 
     public void addNewFeed(String rssPath) throws IOException, FeedException {
         TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
         if (!feedService.isExist(storage)) {
-            feedService.addAllEntries(feedReader.getSyndFeedStorageFromRssUrl(storage));
+            feedService.addAllEntries(storage);
         }
     }
 
     @Scheduled(fixedRate = 120000)
     public void updateAllFeeds() throws IOException, FeedException {
         // option1 : repeated calls to the database
-        for (long i = 0; i < feedService.getNumberOfFeeds(); i++) {
+        for (long i = 1; i <= feedService.getNumberOfFeeds(); i++) {
             String rssPath = feedService.getFeed(i).getRssPath();
-            TempSyndFeedStorage storage = feedReader.getSyndFeedStorageFromRssUrl(new TempSyndFeedStorage(rssPath));
+            TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
             Feed feed = feedService.getFeedBasedOnTempSFStorage(storage);
             feed.updateEntries(storage.getSyndFeed());
             feedService.updateFeed(feed);
