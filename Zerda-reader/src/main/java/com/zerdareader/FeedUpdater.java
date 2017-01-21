@@ -9,6 +9,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class FeedUpdater {
 
     @Scheduled(fixedRate = 120000)
     public void updateAllFeeds() throws IOException, FeedException {
-        List<String> rssLinks = feedService.getAllrssLinks();
+        List<String> rssLinks = feedService.getAllRssLinks();
         for (String rssLink : rssLinks) {
             feedsToUpdate.add(feedReader.getSyndFeedStorageFromRssUrl(new TempSyndFeedStorage(rssLink)));
         }
@@ -51,13 +53,13 @@ public class FeedUpdater {
 
     public void updateFeed(TempSyndFeedStorage tempSyndFeedStorage, Feed feed) {
         SyndFeed syndFeed = tempSyndFeedStorage.getSyndFeed();
-        if (!feedService.convertDate(syndFeed.getPublishedDate()).isEqual(feed.getPubDate())) {
+        if (!LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate())) {
             for (SyndEntry se : syndFeed.getEntries()) {
-                if (feedService.convertDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
-                    feedService.addNewEntry(se, feed);
+                if (LocalDateTime.ofInstant(se.getPublishedDate().toInstant(), ZoneId.systemDefault()).isAfter(feed.getPubDate())) {
+                    feed.addNewEntry(se);
                 }
             }
-            feed.setPubDate(feedService.convertDate(syndFeed.getPublishedDate()));
+            feed.setPubDate(LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()));
             feedService.updateFeed(feed);
         }
     }

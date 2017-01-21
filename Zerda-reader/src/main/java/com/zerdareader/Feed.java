@@ -1,12 +1,14 @@
 package com.zerdareader;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.rometools.rome.feed.synd.SyndEntry;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,23 @@ public class Feed {
     @JsonManagedReference
     private List<FeedItem> entries = new ArrayList<FeedItem>();
 
-    public void addNewEntries(FeedItem feedItem) {
+    public void addNewEntry(FeedItem feedItem) {
         entries.add(feedItem);
+    }
+
+    public void addNewEntry(SyndEntry entry) {
+        FeedItem feedItem = new FeedItem();
+        feedItem.setFields(entry, this);
+        addNewEntry(feedItem);
+    }
+
+    public void setFields(TempSyndFeedStorage storage) {
+        setRssPath(storage.getRssPath());
+        setTitle(storage.getSyndFeed().getTitle());
+        setLink(storage.getSyndFeed().getLink());
+        setDescription(storage.getSyndFeed().getDescription());
+        setLanguage(storage.getSyndFeed().getLanguage());
+        setCopyright(storage.getSyndFeed().getCopyright());
+        setPubDate(LocalDateTime.ofInstant(storage.getSyndFeed().getPublishedDate().toInstant(), ZoneId.systemDefault()));
     }
 }

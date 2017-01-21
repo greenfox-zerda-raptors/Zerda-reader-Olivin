@@ -2,12 +2,13 @@ package com.zerdareader;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rometools.rome.feed.synd.SyndEntry;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * Created by Rita on 2017-01-18.
@@ -38,5 +39,14 @@ public class FeedItem {
         this.description = description;
         this.link = link;
         this.author = author;
+    }
+
+    public void setFields(SyndEntry entry, Feed feed) {
+        setTitle(entry.getTitle());
+        setDescription(entry.getDescription().getValue());
+        setLink(entry.getLink());
+        setAuthor(entry.getAuthor());
+        setPubDate(LocalDateTime.ofInstant(entry.getPublishedDate().toInstant(), ZoneId.systemDefault()));
+        setFeed(feed);
     }
 }
