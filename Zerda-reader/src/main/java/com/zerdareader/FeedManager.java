@@ -1,5 +1,6 @@
 package com.zerdareader;
 
+import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -7,6 +8,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * Created by Rita on 2017-01-19.
@@ -36,8 +40,10 @@ public class FeedManager {
             String rssPath = feedService.getFeed(i).getRssPath();
             TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
             Feed feed = feedService.getFeedBasedOnTempSFStorage(storage);
-            feed.updateEntries(storage.getSyndFeed());
-            feedService.updateFeed(feed);
+            if (isUpdateNeeded(feed, storage.getSyndFeed())) {
+                feed.updateEntries(storage.getSyndFeed());
+                feedService.updateFeed(feed);
+            }
         }
 
         //option2 : requires more memory to store the lists + repeated calls to the DB when feed is saved
@@ -51,5 +57,9 @@ public class FeedManager {
 //            feed.updateEntries(feedStorage.getSyndFeed());
 //            feedService.updateFeed(feed);
 //        }
+    }
+
+    private boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
+        return LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
     }
 }

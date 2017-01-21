@@ -58,14 +58,12 @@ public class Feed {
     }
 
     public void updateEntries(SyndFeed syndFeed) {
-        if (convertDate(syndFeed.getPublishedDate()).isEqual(pubDate)) {
-            for (SyndEntry se : syndFeed.getEntries()) {
-                if (convertDate(se.getPublishedDate()).isAfter(pubDate)) {
-                    addNewEntry(se);
-                }
+        for (SyndEntry se : syndFeed.getEntries()) {
+            if (convertDate(se.getPublishedDate()).isAfter(pubDate)) {
+                addNewEntry(se);
             }
-            setPubDate(convertDate(syndFeed.getPublishedDate()));
         }
+        setPubDate(convertDate(syndFeed.getPublishedDate()));
     }
 
     private LocalDateTime convertDate(Date date) {
