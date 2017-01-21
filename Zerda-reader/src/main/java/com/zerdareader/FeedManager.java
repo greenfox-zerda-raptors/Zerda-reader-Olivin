@@ -19,17 +19,15 @@ import java.util.List;
  */
 @Component
 @EnableScheduling
-public class FeedUpdater {
+public class FeedManager {
 
     FeedReader feedReader;
     FeedService feedService;
-    List<TempSyndFeedStorage> feedsToUpdate;
 
     @Autowired
-    public FeedUpdater(FeedReader feedReader, FeedService feedService) {
+    public FeedManager(FeedReader feedReader, FeedService feedService) {
         this.feedReader = feedReader;
         this.feedService = feedService;
-        feedsToUpdate = new ArrayList<>();
     }
 
     public void addNewFeed(String rssPath) throws IOException, FeedException {
@@ -41,6 +39,7 @@ public class FeedUpdater {
 
     @Scheduled(fixedRate = 120000)
     public void updateAllFeeds() throws IOException, FeedException {
+        List<TempSyndFeedStorage> feedsToUpdate = new ArrayList<>();
         List<String> rssLinks = feedService.getAllRssLinks();
         for (String rssLink : rssLinks) {
             feedsToUpdate.add(feedReader.getSyndFeedStorageFromRssUrl(new TempSyndFeedStorage(rssLink)));
@@ -48,7 +47,6 @@ public class FeedUpdater {
         for (TempSyndFeedStorage feed : feedsToUpdate) {
             updateFeed(feed, feedService.getFeedBasedOnTempSFStorage(feed));
         }
-        feedsToUpdate.clear();
     }
 
     public void updateFeed(TempSyndFeedStorage tempSyndFeedStorage, Feed feed) {

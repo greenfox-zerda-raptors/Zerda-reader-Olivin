@@ -13,7 +13,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     }
 
     @Autowired
-    FeedUpdater updater;
+    FeedManager updater;
 
     @Override
     public void run(String... strings) throws Exception {
