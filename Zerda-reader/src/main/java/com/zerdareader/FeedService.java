@@ -3,8 +3,6 @@ package com.zerdareader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
  * Created by ${rudolfps} on 2017.01.18..
  */
@@ -32,14 +30,6 @@ public class FeedService {
 
     public boolean isExist(TempSyndFeedStorage tempSyndFeedStorage) {
         return feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath()) != null;
-    }
-
-    protected List<String> getAllRssLinks() {
-        return feedRepo.getAllUrls();
-    }
-
-    public Feed getFeedBasedOnTempSFStorage(TempSyndFeedStorage tempSyndFeedStorage) {
-        return feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath());
     }
 
     public Feed getFeed(Long id) {
