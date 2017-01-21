@@ -63,7 +63,6 @@ public class Feed {
                 addNewEntry(se);
             }
         }
-        setPubDate(convertDate(syndFeed.getPublishedDate()));
     }
 
     private LocalDateTime convertDate(Date date) {

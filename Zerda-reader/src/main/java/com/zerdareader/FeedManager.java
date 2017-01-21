@@ -41,6 +41,7 @@ public class FeedManager {
             TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
             if (isUpdateNeeded(feed, storage.getSyndFeed())) {
                 feed.updateEntries(storage.getSyndFeed());
+                feed.setPubDate(LocalDateTime.ofInstant(storage.getSyndFeed().getPublishedDate().toInstant(), ZoneId.systemDefault()));
                 feedService.updateFeed(feed);
             }
         }
