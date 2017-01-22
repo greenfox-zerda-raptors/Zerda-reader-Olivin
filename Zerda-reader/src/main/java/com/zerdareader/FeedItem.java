@@ -3,11 +3,13 @@ package com.zerdareader;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zerdareader.Model.TestUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by Rita on 2017-01-18.
@@ -32,6 +34,10 @@ public class FeedItem {
     @JsonBackReference
 //    @JsonIgnore
     private Feed feed;
+
+    @ManyToMany(mappedBy = "subscribedFeedItems")
+    private List<TestUser> subscribedUsers;
+
 
     public FeedItem(String title, String description, String link, String author) {
         this.title = title;

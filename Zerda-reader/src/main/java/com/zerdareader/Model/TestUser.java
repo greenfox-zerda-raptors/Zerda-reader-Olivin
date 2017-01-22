@@ -2,6 +2,7 @@ package com.zerdareader.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.zerdareader.Feed;
+import com.zerdareader.FeedItem;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,10 @@ public class TestUser {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "feeds_for_users")
     private List<Feed> subscribedFeeds;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "feedItems_for_users")
+    private List<FeedItem> subscribedFeedItems;
 
     public TestUser(int accessToken){
         this.accessToken = accessToken;

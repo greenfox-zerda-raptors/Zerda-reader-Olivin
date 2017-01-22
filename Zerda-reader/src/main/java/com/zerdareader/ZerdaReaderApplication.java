@@ -22,9 +22,11 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     @Autowired
     FeedService feedService;
     @Autowired
-    TestUserRepository testUserRepository;
+    TestUserRepository testUserRepo;
     @Autowired
-    FeedRepository repository;
+    FeedRepository feedRepo;
+    @Autowired
+    FeedItemRepository feedItemRepo;
 
 
     @Override
@@ -35,18 +37,27 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         updater.updateAllFeeds();
 
         TestUser testUser = new TestUser(1);
-        testUserRepository.save(testUser);
-        testUser=testUserRepository.findOne(1L);
-        testUser.getSubscribedFeeds().add(repository.findOne(1L));
-        testUser.getSubscribedFeeds().add(repository.findOne(2L));
-        Feed feed = repository.findOne(1L);
+        testUserRepo.save(testUser);
+        testUser= testUserRepo.findOne(1L);
+        testUser.getSubscribedFeeds().add(feedRepo.findOne(1L));
+        testUser.getSubscribedFeeds().add(feedRepo.findOne(2L));
+        Feed feed = feedRepo.findOne(1L);
         feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-        Feed feed2 = repository.findOne(2L);
+        Feed feed2 = feedRepo.findOne(2L);
         feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-        repository.save(feed);
-        repository.save(feed2);
+        feedRepo.save(feed);
+        feedRepo.save(feed2);
+        for (Feed f:testUser.getSubscribedFeeds()
+             ) {
+            for (FeedItem fi:f.getEntries()
+                 ) {
+                testUser.getSubscribedFeedItems().add(fi);
+                fi.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+                feedItemRepo.save(fi);
+            }
+        }
 
-        testUserRepository.save(testUser);
+        testUserRepo.save(testUser);
 
     }
 }
