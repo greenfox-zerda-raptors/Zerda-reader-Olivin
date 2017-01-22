@@ -27,9 +27,9 @@ public class TestUser {
 ////    @OneToMany
 //    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "TestUser")
 //    private  SubscribedFeeds subscribedFeeds;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "feeds_for_users")
-    private List<Feed> subscribedFeeds;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "feeds_for_users")
+//    private List<Feed> subscribedFeeds;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "feedItems_for_users")
@@ -37,7 +37,8 @@ public class TestUser {
 
     public TestUser(int accessToken){
         this.accessToken = accessToken;
-        subscribedFeeds = new ArrayList<>();
+//        subscribedFeeds = new ArrayList<>();
+        subscribedFeedItems = new ArrayList<>();
         }
     }
 

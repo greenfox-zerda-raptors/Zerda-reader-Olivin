@@ -39,23 +39,24 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         TestUser testUser = new TestUser(1);
         testUserRepo.save(testUser);
         testUser= testUserRepo.findOne(1L);
-        testUser.getSubscribedFeeds().add(feedRepo.findOne(1L));
-        testUser.getSubscribedFeeds().add(feedRepo.findOne(2L));
-        Feed feed = feedRepo.findOne(1L);
-        feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-        Feed feed2 = feedRepo.findOne(2L);
-        feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-        feedRepo.save(feed);
-        feedRepo.save(feed2);
-        for (Feed f:testUser.getSubscribedFeeds()
-             ) {
+//        testUser.getSubscribedFeeds().add(feedRepo.findOne(1L));
+//        testUser.getSubscribedFeeds().add(feedRepo.findOne(2L));
+//        Feed feed = feedRepo.findOne(1L);
+//        feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+//        Feed feed2 = feedRepo.findOne(2L);
+//        feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+//        feedRepo.save(feed);
+//        feedRepo.save(feed2);
+//        for (Feed f:testUser.getSubscribedFeeds()
+//             ) {
+        Feed f = feedRepo.findOne(1L);
             for (FeedItem fi:f.getEntries()
                  ) {
                 testUser.getSubscribedFeedItems().add(fi);
                 fi.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-                feedItemRepo.save(fi);
+//                feedItemRepo.save(fi);
             }
-        }
+//        }
 
         testUserRepo.save(testUser);
 
