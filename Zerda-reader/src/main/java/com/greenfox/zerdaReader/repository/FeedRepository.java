@@ -1,5 +1,6 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader.repository;
 
+import com.greenfox.zerdaReader.domain.Feed;
 import org.springframework.data.repository.CrudRepository;
 
 /**

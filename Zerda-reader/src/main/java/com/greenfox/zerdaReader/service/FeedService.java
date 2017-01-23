@@ -1,5 +1,9 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader.service;
 
+import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
+import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.repository.FeedItemRepository;
+import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import org.springframework.beans.factory.annotation.Autowired;

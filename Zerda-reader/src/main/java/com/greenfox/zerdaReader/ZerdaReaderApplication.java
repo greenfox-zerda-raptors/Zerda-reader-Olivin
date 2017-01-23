@@ -1,5 +1,6 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader;
 
+import com.greenfox.zerdaReader.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

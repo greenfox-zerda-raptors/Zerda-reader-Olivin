@@ -1,10 +1,10 @@
-package com.zerdareader.Controller;
+package com.greenfox.zerdaReader.controller;
 
-import com.zerdareader.Feed;
-import com.zerdareader.FeedItem;
-import com.zerdareader.FeedItemService;
-import com.zerdareader.FeedService;
-import com.zerdareader.Model.TestJson;
+import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.domain.FeedItem;
+import com.greenfox.zerdaReader.domain.TestJson;
+import com.greenfox.zerdaReader.service.FeedItemService;
+import com.greenfox.zerdaReader.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

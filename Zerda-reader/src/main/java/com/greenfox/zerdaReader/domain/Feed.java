@@ -1,6 +1,7 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import lombok.Getter;

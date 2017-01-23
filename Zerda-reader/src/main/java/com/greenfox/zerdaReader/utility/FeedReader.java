@@ -1,4 +1,4 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader.utility;
 
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;

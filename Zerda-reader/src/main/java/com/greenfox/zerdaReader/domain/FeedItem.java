@@ -1,4 +1,4 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;

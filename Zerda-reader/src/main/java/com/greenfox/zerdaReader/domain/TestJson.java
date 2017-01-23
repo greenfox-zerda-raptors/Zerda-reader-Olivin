@@ -1,4 +1,4 @@
-package com.zerdareader.Model;
+package com.greenfox.zerdaReader.domain;
 
 /**
  * Created by zoloe on 2017. 01. 18..
