@@ -36,7 +36,7 @@ public class FeedItem {
     @JsonBackReference
     private Feed feed;
 
-    public void setFields(SyndEntry entry, Feed feed) {
+    void setFields(SyndEntry entry, Feed feed) {
         setTitle(entry.getTitle());
         setDescription(entry.getDescription().getValue());
         setLink(entry.getLink());
