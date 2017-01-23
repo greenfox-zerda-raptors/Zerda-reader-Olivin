@@ -39,6 +39,11 @@ public class Feed {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feed")
     @JsonManagedReference
     private List<FeedItem> entries = new ArrayList<FeedItem>();
+    @ManyToMany(mappedBy = "subscribedFeeds")
+    private List<User> subscribedUsers;
+
+
+
 
     private void addNewEntry(FeedItem feedItem) {
         entries.add(feedItem);
