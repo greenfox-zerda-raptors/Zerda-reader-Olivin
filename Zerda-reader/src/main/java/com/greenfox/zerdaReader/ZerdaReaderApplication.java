@@ -23,10 +23,10 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     @Autowired
     FeedService service;
 
-        //needed to initialize user
+    //needed to initialize user
     @Autowired
     UserRepository userRepository;
-        //needed to initialize user-feed subscription
+    //needed to initialize user-feed subscription
     @Autowired
     FeedRepository feedRepository;
 
