@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 /**
  * Created by Rita on 2017-01-18.
@@ -35,6 +36,8 @@ public class FeedItem {
     @JoinColumn(name = "feed_id")
     @JsonBackReference
     private Feed feed;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feedItem")
+    private List<ReadStatusAndStarred> readStatusAndStarred;
 
     void setFields(SyndEntry entry, Feed feed) {
         setTitle(entry.getTitle());

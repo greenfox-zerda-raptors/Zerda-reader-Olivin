@@ -33,23 +33,23 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        service.addNewFeed("http://index.hu/24ora/rss/");
-        service.addNewFeed("http://444.hu/feed");
-        service.addNewFeed("http://444.hu/feed");
-        service.updateAllFeeds();
-
-        User testUser = new User(1);
-        userRepository.save(testUser);
-        testUser = userRepository.findOne(1L);
-        testUser.getSubscribedFeeds().add(service.getFeed(1L));
-        testUser.getSubscribedFeeds().add(service.getFeed(2L));
-        Feed feed = feedRepository.findOne(1L);
-        feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-        Feed feed2 = feedRepository.findOne(2L);
-        feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-        feedRepository.save(feed);
-        feedRepository.save(feed2);
-        userRepository.save(testUser);
+//        service.addNewFeed("http://index.hu/24ora/rss/");
+//        service.addNewFeed("http://444.hu/feed");
+//        service.addNewFeed("http://444.hu/feed");
+//        service.updateAllFeeds();
+//
+//        User testUser = new User(1);
+//        userRepository.save(testUser);
+//        testUser = userRepository.findOne(1L);
+//        testUser.getSubscribedFeeds().add(service.getFeed(1L));
+//        testUser.getSubscribedFeeds().add(service.getFeed(2L));
+//        Feed feed = feedRepository.findOne(1L);
+//        feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+//        Feed feed2 = feedRepository.findOne(2L);
+//        feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+//        feedRepository.save(feed);
+//        feedRepository.save(feed2);
+//        userRepository.save(testUser);
     }
 }
 

@@ -3,8 +3,8 @@ package com.greenfox.zerdaReader.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -24,9 +24,13 @@ public class User {
     @JoinTable(name = "feeds_for_users")
     private List<Feed> subscribedFeeds;
 
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<ReadStatusAndStarred> readStatusAndStarred;
+
+
     public User(int accessToken){
         this.accessToken = accessToken;
-        subscribedFeeds = new ArrayList<>();
+//        subscribedFeeds = new ArrayList<>();
     }
 }
 
