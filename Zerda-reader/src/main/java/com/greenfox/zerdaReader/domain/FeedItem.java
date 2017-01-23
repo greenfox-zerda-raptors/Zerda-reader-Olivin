@@ -1,13 +1,16 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rometools.rome.feed.synd.SyndEntry;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * Created by Rita on 2017-01-18.
@@ -20,6 +23,7 @@ public class FeedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Setter(AccessLevel.NONE)
     private long id;
     private String title;
     @Column(columnDefinition = "TEXT")
@@ -30,13 +34,14 @@ public class FeedItem {
     @ManyToOne
     @JoinColumn(name = "feed_id")
     @JsonBackReference
-//    @JsonIgnore
     private Feed feed;
 
-    public FeedItem(String title, String description, String link, String author) {
-        this.title = title;
-        this.description = description;
-        this.link = link;
-        this.author = author;
+    void setFields(SyndEntry entry, Feed feed) {
+        setTitle(entry.getTitle());
+        setDescription(entry.getDescription().getValue());
+        setLink(entry.getLink());
+        setAuthor(entry.getAuthor());
+        setPubDate(LocalDateTime.ofInstant(entry.getPublishedDate().toInstant(), ZoneId.systemDefault()));
+        setFeed(feed);
     }
 }

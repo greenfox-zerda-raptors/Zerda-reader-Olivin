@@ -1,4 +1,4 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader.utility;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

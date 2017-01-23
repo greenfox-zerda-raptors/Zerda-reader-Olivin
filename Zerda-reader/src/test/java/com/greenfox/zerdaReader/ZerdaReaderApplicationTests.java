@@ -1,4 +1,4 @@
-package com.zerdareader;
+package com.greenfox.zerdaReader;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

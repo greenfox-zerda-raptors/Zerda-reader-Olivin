@@ -1,9 +1,10 @@
-package com.zerdareader.Controller;
+package com.greenfox.zerdaReader.controller;
 
-import com.zerdareader.Feed;
-import com.zerdareader.FeedItem;
-import com.zerdareader.FeedService;
-import com.zerdareader.Model.TestJson;
+import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.domain.FeedItem;
+import com.greenfox.zerdaReader.domain.TestJson;
+import com.greenfox.zerdaReader.service.FeedItemService;
+import com.greenfox.zerdaReader.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,14 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TestJsonController {
     private final AtomicLong counter = new AtomicLong();
 
-    @Autowired
+    FeedItemService itemService;
     FeedService feedService;
+
+    @Autowired
+    public TestJsonController(FeedItemService itemService, FeedService feedService) {
+        this.itemService = itemService;
+        this.feedService = feedService;
+    }
 
     @RequestMapping(value = "/list")
     public TestJson myJson() {
@@ -30,21 +37,21 @@ public class TestJsonController {
 
     @RequestMapping(value = "/j")
     public FeedItem feedItemJson() {
-        return feedService.getFeedItem(1L);
+        return itemService.getFeedItem(1L);
     }
 
     @RequestMapping(value = "/parameterrel")
     public FeedItem feedItemJson2(@RequestParam(value = "id", required = false, defaultValue = "1") String id) {
-        return feedService.getFeedItem(Long.parseLong(id));
+        return itemService.getFeedItem(Long.parseLong(id));
     }
 
     @RequestMapping(value = "/{Id}")
     public FeedItem feedItemJson3(@PathVariable String Id) {
-        return feedService.getFeedItem(Long.parseLong(Id));
+        return itemService.getFeedItem(Long.parseLong(Id));
     }
 
     @RequestMapping(value = "/feed/{Id}")
-    public Feed feedItemJson4(@PathVariable String Id){
+    public Feed feedItemJson4(@PathVariable String Id) {
         return feedService.getFeed((Long.parseLong(Id)));
     }
 }
