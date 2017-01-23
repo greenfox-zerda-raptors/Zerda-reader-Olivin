@@ -42,9 +42,6 @@ public class Feed {
     @ManyToMany(mappedBy = "subscribedFeeds")
     private List<User> subscribedUsers;
 
-
-
-
     private void addNewEntry(FeedItem feedItem) {
         entries.add(feedItem);
     }
