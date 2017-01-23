@@ -2,6 +2,9 @@ package com.greenfox.zerdaReader.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,15 +27,14 @@ public class User {
     private int accessToken;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "feeds_for_users")
-    private Set<Feed> subscribedFeeds;
+    private List<Feed> subscribedFeeds;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private Set<ReadStatusAndStarred> readStatusAndStarred;
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<ReadStatusAndStarred> readStatusAndStarred;
 
     public User(int accessToken){
         this.accessToken = accessToken;
-        subscribedFeeds = new HashSet<>();
-        readStatusAndStarred = new HashSet<>();
     }
 }
 

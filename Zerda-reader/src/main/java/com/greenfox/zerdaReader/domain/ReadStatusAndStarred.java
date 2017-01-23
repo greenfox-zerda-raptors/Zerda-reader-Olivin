@@ -1,8 +1,6 @@
 package com.greenfox.zerdaReader.domain;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +10,8 @@ import java.util.List;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReadStatusAndStarred {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,5 +25,13 @@ public class ReadStatusAndStarred {
     @ManyToOne
     @JoinColumn(name = "feedItem_id")
     private FeedItem feedItem;
+
+
+    public ReadStatusAndStarred(boolean starred, boolean readByUser, User user, FeedItem feedItem) {
+        this.starred = starred;
+        this.readByUser = readByUser;
+        this.user = user;
+        this.feedItem = feedItem;
+    }
 }
 
