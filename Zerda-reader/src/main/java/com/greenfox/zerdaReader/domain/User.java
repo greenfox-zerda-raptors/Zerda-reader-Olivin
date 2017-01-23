@@ -3,6 +3,8 @@ package com.greenfox.zerdaReader.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,15 +24,15 @@ public class User {
     private int accessToken;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "feeds_for_users")
-    private List<Feed> subscribedFeeds;
+    private Set<Feed> subscribedFeeds;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<ReadStatusAndStarred> readStatusAndStarred;
-
 
     public User(int accessToken){
         this.accessToken = accessToken;
-//        subscribedFeeds = new ArrayList<>();
+        subscribedFeeds = new HashSet<>();
+        readStatusAndStarred = new HashSet<>();
     }
 }
 

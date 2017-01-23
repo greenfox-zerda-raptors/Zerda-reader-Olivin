@@ -1,8 +1,12 @@
 package com.greenfox.zerdaReader;
 
 import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.domain.FeedItem;
+import com.greenfox.zerdaReader.domain.ReadStatusAndStarred;
 import com.greenfox.zerdaReader.domain.User;
+import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
+import com.greenfox.zerdaReader.repository.ReadStatusAndStarredRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 
 @SpringBootApplication
 public class ZerdaReaderApplication implements CommandLineRunner {
@@ -29,27 +35,54 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     //needed to initialize user-feed subscription
     @Autowired
     FeedRepository feedRepository;
-
+    @Autowired
+    ReadStatusAndStarredRepository readStatusAndStarredRepository;
+    @Autowired
+    FeedItemRepository feedItemRepository;
 
     @Override
     public void run(String... strings) throws Exception {
-//        service.addNewFeed("http://index.hu/24ora/rss/");
-//        service.addNewFeed("http://444.hu/feed");
-//        service.addNewFeed("http://444.hu/feed");
-//        service.updateAllFeeds();
-//
-//        User testUser = new User(1);
-//        userRepository.save(testUser);
-//        testUser = userRepository.findOne(1L);
-//        testUser.getSubscribedFeeds().add(service.getFeed(1L));
-//        testUser.getSubscribedFeeds().add(service.getFeed(2L));
-//        Feed feed = feedRepository.findOne(1L);
-//        feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-//        Feed feed2 = feedRepository.findOne(2L);
-//        feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
-//        feedRepository.save(feed);
-//        feedRepository.save(feed2);
-//        userRepository.save(testUser);
+        service.addNewFeed("http://index.hu/24ora/rss/");
+        service.addNewFeed("http://444.hu/feed");
+        service.addNewFeed("http://444.hu/feed");
+        service.updateAllFeeds();
+
+        ReadStatusAndStarred readStatusAndStarred = new ReadStatusAndStarred();
+        readStatusAndStarredRepository.save(readStatusAndStarred);
+        readStatusAndStarred = readStatusAndStarredRepository.findOne(1L);
+
+        User testUser = new User(1);
+        userRepository.save(testUser);
+        testUser = userRepository.findOne(1L);
+
+        testUser.getSubscribedFeeds().add(service.getFeed(1L));
+        testUser.getSubscribedFeeds().add(service.getFeed(2L));
+        Feed feed = feedRepository.findOne(1L);
+        feed.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+        Feed feed2 = feedRepository.findOne(2L);
+        feed2.setSubscribedUsers(new ArrayList<>(Arrays.asList(testUser)));
+        feedRepository.save(feed);
+        feedRepository.save(feed2);
+        FeedItem feedItem = feed.getEntries().get(1);
+
+
+        readStatusAndStarred.setFeedItem(feedItem);
+        readStatusAndStarred.setUser(testUser);
+        readStatusAndStarred.setReadByUser(false);
+        readStatusAndStarred.setStarred(true);
+
+        testUser.getReadStatusAndStarred().add(readStatusAndStarred);
+
+        feedItem.getReadStatusAndStarred().add(readStatusAndStarred);
+
+        readStatusAndStarredRepository.save(readStatusAndStarred);
+        feedItemRepository.save(feedItem);
+        userRepository.save(testUser);
+
+
+
+
+
     }
 }
 
