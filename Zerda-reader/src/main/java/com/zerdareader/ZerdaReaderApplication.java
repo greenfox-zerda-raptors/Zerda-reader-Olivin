@@ -13,13 +13,13 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     }
 
     @Autowired
-    FeedManager updater;
+    FeedService service;
 
     @Override
     public void run(String... strings) throws Exception {
-        updater.addNewFeed("http://index.hu/24ora/rss/");
-        updater.addNewFeed("http://444.hu/feed");
-        updater.addNewFeed("http://444.hu/feed");
-        updater.updateAllFeeds();
+        service.addNewFeed("http://index.hu/24ora/rss/");
+        service.addNewFeed("http://444.hu/feed");
+        service.addNewFeed("http://444.hu/feed");
+        service.updateAllFeeds();
     }
 }
