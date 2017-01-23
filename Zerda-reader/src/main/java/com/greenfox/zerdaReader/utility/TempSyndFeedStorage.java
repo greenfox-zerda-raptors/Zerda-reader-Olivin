@@ -35,7 +35,7 @@ public class TempSyndFeedStorage {
         return result;
     }
 
-    public void populateSyndFeed() throws IOException, FeedException {
+    private void populateSyndFeed() throws IOException, FeedException {
         FeedReader reader = new FeedReader();
         syndFeed = reader.convertRssFeed(new URL(rssPath));
     }

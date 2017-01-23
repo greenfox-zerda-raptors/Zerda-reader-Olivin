@@ -1,9 +1,9 @@
 package com.greenfox.zerdaReader.service;
 
-import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
+import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,12 +57,12 @@ public class FeedService {
         return !LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
     }
 
-    public void addAllEntries(TempSyndFeedStorage storage) {
+    private void addAllEntries(TempSyndFeedStorage storage) {
         Feed feed = storage.convertToFeed();
         feedRepo.save(feed);
     }
 
-    public boolean isExist(TempSyndFeedStorage tempSyndFeedStorage) {
+    private boolean isExist(TempSyndFeedStorage tempSyndFeedStorage) {
         return feedRepo.findOneByRssPath(tempSyndFeedStorage.getRssPath()) != null;
     }
 
@@ -70,11 +70,11 @@ public class FeedService {
         return feedRepo.findOne(id);
     }
 
-    public void updateFeed(Feed feed) {
+    private void updateFeed(Feed feed) {
         feedRepo.save(feed);
     }
 
-    public long getNumberOfFeeds() {
+    private long getNumberOfFeeds() {
         return feedRepo.count();
     }
 }

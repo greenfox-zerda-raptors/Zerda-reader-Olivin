@@ -13,9 +13,9 @@ import java.net.URL;
  * Created by ${rudolfps} on 2017.01.18..
  */
 
-public class FeedReader {
+class FeedReader {
 
-    public SyndFeed convertRssFeed(URL url) throws IOException, FeedException {
+    SyndFeed convertRssFeed(URL url) throws IOException, FeedException {
         SyndFeedInput input = new SyndFeedInput();
         return input.build(new XmlReader(url));
     }

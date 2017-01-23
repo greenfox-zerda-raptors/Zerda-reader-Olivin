@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ import java.util.List;
 public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Setter(AccessLevel.NONE)
     private long id;
     private String rssPath;
     private String title;
@@ -38,7 +40,7 @@ public class Feed {
     @JsonManagedReference
     private List<FeedItem> entries = new ArrayList<FeedItem>();
 
-    public void addNewEntry(FeedItem feedItem) {
+    private void addNewEntry(FeedItem feedItem) {
         entries.add(feedItem);
     }
 
