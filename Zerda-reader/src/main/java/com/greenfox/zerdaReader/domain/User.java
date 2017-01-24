@@ -1,5 +1,7 @@
 package com.greenfox.zerdaReader.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
@@ -25,11 +27,10 @@ public class  User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "subscribed_users")
     private List<Feed> subscribedFeeds;
-
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     private List<FeedsForUsers> feedsForUsers;
-
     public User(int accessToken){
         this.accessToken = accessToken;
     }
@@ -44,5 +45,12 @@ public class  User {
             }
         }
     }
+//
+//    public List<FeedItem> getFeedsItemsForUsers(){
+//        feedsForUsers.
+//
+//        return
+//    }
+//
 }
 

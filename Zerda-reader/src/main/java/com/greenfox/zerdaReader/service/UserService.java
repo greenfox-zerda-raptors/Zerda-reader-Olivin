@@ -1,5 +1,6 @@
 package com.greenfox.zerdaReader.service;
 
+import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,4 +17,10 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+
+    public User getUser(Long id){
+        return userRepository.findOne(id);
+    }
+
 }

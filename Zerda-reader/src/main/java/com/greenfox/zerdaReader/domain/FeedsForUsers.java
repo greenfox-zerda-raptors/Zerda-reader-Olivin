@@ -1,5 +1,7 @@
 package com.greenfox.zerdaReader.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +11,7 @@ import java.util.List;
  * Created by zoloe on 2017. 01. 23..
  */
 @Entity
-@Data
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedsForUsers {
@@ -26,7 +28,6 @@ public class FeedsForUsers {
     @JoinColumn(name = "feedItem_id")
     private FeedItem feedItem;
 
-
     public FeedsForUsers(boolean starred, boolean readByUser, User user, FeedItem feedItem) {
         this.starred = starred;
         this.readByUser = readByUser;
@@ -39,6 +40,46 @@ public class FeedsForUsers {
         this.feedItem = feedItem;
         starred=false;
         readByUser = false;
+    }
+    @JsonIgnore
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.starred = starred;
+    }
+
+    public boolean isReadByUser() {
+        return readByUser;
+    }
+
+    public void setReadByUser(boolean readByUser) {
+        this.readByUser = readByUser;
+    }
+    @JsonIgnore
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public FeedItem getFeedItem() {
+        return feedItem;
+    }
+
+    public void setFeedItem(FeedItem feedItem) {
+        this.feedItem = feedItem;
     }
 }
 

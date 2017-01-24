@@ -2,9 +2,9 @@ package com.greenfox.zerdaReader.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rometools.rome.feed.synd.SyndEntry;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "feed_items")
-@Data
+//@Data
 @NoArgsConstructor
 public class FeedItem {
 
@@ -37,7 +37,7 @@ public class FeedItem {
     @JsonBackReference
     private Feed feed;
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feedItem")
-    private List<FeedsForUsers> readStatusAndStarred;
+    private List<FeedsForUsers> feedsForUsers;
 
     void setFields(SyndEntry entry, Feed feed) {
         setTitle(entry.getTitle());
@@ -46,5 +46,70 @@ public class FeedItem {
         setAuthor(entry.getAuthor());
         setPubDate(LocalDateTime.ofInstant(entry.getPublishedDate().toInstant(), ZoneId.systemDefault()));
         setFeed(feed);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public LocalDateTime getPubDate() {
+        return pubDate;
+    }
+
+    public void setPubDate(LocalDateTime pubDate) {
+        this.pubDate = pubDate;
+    }
+    @JsonIgnore
+    @JsonBackReference
+    public Feed getFeed() {
+        return feed;
+    }
+    @JsonBackReference
+    public void setFeed(Feed feed) {
+        this.feed = feed;
+    }
+    @JsonIgnore
+    public List<FeedsForUsers> getFeedsForUsers() {
+        return feedsForUsers;
+    }
+
+    public void setFeedsForUsers(List<FeedsForUsers> feedsForUsers) {
+        this.feedsForUsers = feedsForUsers;
     }
 }

@@ -1,16 +1,18 @@
 package com.greenfox.zerdaReader.controller;
 
-import com.greenfox.zerdaReader.domain.Feed;
-import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.TestJson;
+import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedService;
+import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -23,11 +25,12 @@ public class TestJsonController {
 
     FeedItemService itemService;
     FeedService feedService;
-
+    UserService userService;
     @Autowired
-    public TestJsonController(FeedItemService itemService, FeedService feedService) {
+    public TestJsonController(FeedItemService itemService, FeedService feedService, UserService userService) {
         this.itemService = itemService;
         this.feedService = feedService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/list")
@@ -54,4 +57,17 @@ public class TestJsonController {
     public Feed feedItemJson4(@PathVariable String Id) {
         return feedService.getFeed((Long.parseLong(Id)));
     }
+
+    @RequestMapping(value = "/User/{Id}")
+    public List<FeedsForUsers> feedItemJson5(@PathVariable String Id) {
+//        List<FeedsForUsers> userslist = new <>();
+        return userService.getUser(Long.parseLong(Id)).getFeedsForUsers();
+    }
+    @RequestMapping(value = "/x")
+    public FeedsForUsers feedItemJson6() {
+        List<FeedsForUsers> al = new ArrayList<>();
+        al = userService.getUser(1L).getFeedsForUsers();
+        return al.get(2);
+    }
+
 }
