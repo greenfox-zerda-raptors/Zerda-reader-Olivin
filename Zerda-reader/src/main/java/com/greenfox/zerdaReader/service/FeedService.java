@@ -1,7 +1,6 @@
 package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.domain.Feed;
-import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndFeed;
@@ -24,12 +23,10 @@ import java.time.ZoneId;
 public class FeedService {
 
     FeedRepository feedRepo;
-    FeedItemRepository feedItemRepo;
 
     @Autowired
-    public FeedService(FeedRepository feedRepo, FeedItemRepository feedItemRepo) {
+    public FeedService(FeedRepository feedRepo) {
         this.feedRepo = feedRepo;
-        this.feedItemRepo = feedItemRepo;
     }
 
     public void addNewFeed(String rssPath) throws IOException, FeedException {
