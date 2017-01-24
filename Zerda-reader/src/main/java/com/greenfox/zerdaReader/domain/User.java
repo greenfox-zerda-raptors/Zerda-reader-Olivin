@@ -38,7 +38,9 @@ public class  User {
                 ) {
             for (FeedItem fi:f.getEntries()
                     ) {
-                this.getFeedsForUsers().add(new FeedsForUsers(this,fi));
+                if(!(this.getFeedsForUsers().contains(fi))){
+                    this.getFeedsForUsers().add(new FeedsForUsers(this,fi));
+                }
             }
         }
     }
