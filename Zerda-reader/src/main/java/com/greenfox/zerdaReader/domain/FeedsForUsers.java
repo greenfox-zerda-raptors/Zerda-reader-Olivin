@@ -33,5 +33,12 @@ public class FeedsForUsers {
         this.user = user;
         this.feedItem = feedItem;
     }
+
+    public FeedsForUsers(User user, FeedItem feedItem) {
+        this.user = user;
+        this.feedItem = feedItem;
+        starred=false;
+        readByUser = false;
+    }
 }
 

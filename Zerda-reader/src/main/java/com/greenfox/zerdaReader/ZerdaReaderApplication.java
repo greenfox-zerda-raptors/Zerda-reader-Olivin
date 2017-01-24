@@ -1,5 +1,6 @@
 package com.greenfox.zerdaReader;
 
+import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
@@ -34,26 +35,35 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         feedService.addNewFeed("http://index.hu/24ora/rss/");
         feedService.addNewFeed("http://444.hu/feed");
         feedService.addNewFeed("http://444.hu/feed");
+        feedService.addNewFeed("http://hvg.hu/rss");
+        feedService.addNewFeed("http://24.hu/feed/");
         feedService.updateAllFeeds();
 
 //        FeedsForUsersRepository feedsForUsers = new FeedsForUsersRepository();
 //        readStatusAndStarredRepository.save(feedsForUsers);
 //        feedsForUsers = readStatusAndStarredRepository.findOne(1L);
 
-        User testUser = new User(1);
+        User testUser = new User(1234);
         userRepository.save(testUser);
         testUser = userRepository.findOne(1L);
 
         testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
-        testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
+        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
 
-        com.greenfox.zerdaReader.domain.FeedsForUsers feedsForUsers = new com.greenfox.zerdaReader.domain.FeedsForUsers(true,false,testUser,feedService.getFeed(1L).getEntries().get(1));
-
-        testUser.getFeedsForUsers().add(feedsForUsers);
-
+        testUser.populateFeedsForUsers();
         userRepository.save(testUser);
 
 
+        testUser = new User(567246);
+        userRepository.save(testUser);
+        testUser = userRepository.findOne(2L);
+
+        testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
+        testUser.getSubscribedFeeds().add(feedService.getFeed(4L));
+
+        testUser.populateFeedsForUsers();
+
+        userRepository.save(testUser);
     }
 }
 

@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-public class User {
+public class  User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -32,6 +32,15 @@ public class User {
 
     public User(int accessToken){
         this.accessToken = accessToken;
+    }
+    public void populateFeedsForUsers() {
+        for (Feed f :this.getSubscribedFeeds()
+                ) {
+            for (FeedItem fi:f.getEntries()
+                    ) {
+                this.getFeedsForUsers().add(new FeedsForUsers(this,fi));
+            }
+        }
     }
 }
 
