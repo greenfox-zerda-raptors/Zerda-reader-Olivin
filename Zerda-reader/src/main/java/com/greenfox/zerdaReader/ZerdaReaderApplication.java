@@ -1,9 +1,8 @@
 package com.greenfox.zerdaReader;
 
-import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
-import com.greenfox.zerdaReader.repository.ReadStatusAndStarredRepository;
+import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     @Autowired
     FeedRepository feedRepository;
     @Autowired
-    ReadStatusAndStarredRepository readStatusAndStarredRepository;
+    FeedsForUsersRepository feedsForUsersRepository;
 
     @Override
     public void run(String... strings) throws Exception {
@@ -37,9 +36,9 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         feedService.addNewFeed("http://444.hu/feed");
         feedService.updateAllFeeds();
 
-//        FeedsForUsers readStatusAndStarred = new FeedsForUsers();
-//        readStatusAndStarredRepository.save(readStatusAndStarred);
-//        readStatusAndStarred = readStatusAndStarredRepository.findOne(1L);
+//        FeedsForUsersRepository feedsForUsers = new FeedsForUsersRepository();
+//        readStatusAndStarredRepository.save(feedsForUsers);
+//        feedsForUsers = readStatusAndStarredRepository.findOne(1L);
 
         User testUser = new User(1);
         userRepository.save(testUser);
@@ -48,9 +47,9 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
         testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
 
-        FeedsForUsers readStatusAndStarred = new FeedsForUsers(true,false,testUser,feedService.getFeed(1L).getEntries().get(1));
+        com.greenfox.zerdaReader.domain.FeedsForUsers feedsForUsers = new com.greenfox.zerdaReader.domain.FeedsForUsers(true,false,testUser,feedService.getFeed(1L).getEntries().get(1));
 
-        testUser.getReadStatusAndStarred().add(readStatusAndStarred);
+        testUser.getFeedsForUsers().add(feedsForUsers);
 
         userRepository.save(testUser);
 
