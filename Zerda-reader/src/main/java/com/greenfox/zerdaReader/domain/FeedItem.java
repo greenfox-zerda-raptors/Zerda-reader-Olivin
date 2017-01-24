@@ -37,7 +37,7 @@ public class FeedItem {
     @JsonBackReference
     private Feed feed;
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feedItem")
-    private List<ReadStatusAndStarred> readStatusAndStarred;
+    private List<FeedsForUsers> readStatusAndStarred;
 
     void setFields(SyndEntry entry, Feed feed) {
         setTitle(entry.getTitle());

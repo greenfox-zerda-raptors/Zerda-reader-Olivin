@@ -6,10 +6,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -31,7 +28,7 @@ public class User {
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<ReadStatusAndStarred> readStatusAndStarred;
+    private List<FeedsForUsers> readStatusAndStarred;
 
     public User(int accessToken){
         this.accessToken = accessToken;

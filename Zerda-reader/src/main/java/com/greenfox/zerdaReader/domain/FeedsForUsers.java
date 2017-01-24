@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReadStatusAndStarred {
+public class FeedsForUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
@@ -27,7 +27,7 @@ public class ReadStatusAndStarred {
     private FeedItem feedItem;
 
 
-    public ReadStatusAndStarred(boolean starred, boolean readByUser, User user, FeedItem feedItem) {
+    public FeedsForUsers(boolean starred, boolean readByUser, User user, FeedItem feedItem) {
         this.starred = starred;
         this.readByUser = readByUser;
         this.user = user;

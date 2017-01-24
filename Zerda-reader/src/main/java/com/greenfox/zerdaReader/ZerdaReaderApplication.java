@@ -1,8 +1,6 @@
 package com.greenfox.zerdaReader;
 
-import com.greenfox.zerdaReader.domain.Feed;
-import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.ReadStatusAndStarred;
+import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.ReadStatusAndStarredRepository;
@@ -12,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 @SpringBootApplication
 public class ZerdaReaderApplication implements CommandLineRunner {
@@ -42,7 +37,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         feedService.addNewFeed("http://444.hu/feed");
         feedService.updateAllFeeds();
 
-//        ReadStatusAndStarred readStatusAndStarred = new ReadStatusAndStarred();
+//        FeedsForUsers readStatusAndStarred = new FeedsForUsers();
 //        readStatusAndStarredRepository.save(readStatusAndStarred);
 //        readStatusAndStarred = readStatusAndStarredRepository.findOne(1L);
 
@@ -53,7 +48,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
         testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
 
-        ReadStatusAndStarred readStatusAndStarred = new ReadStatusAndStarred(true,false,testUser,feedService.getFeed(1L).getEntries().get(1));
+        FeedsForUsers readStatusAndStarred = new FeedsForUsers(true,false,testUser,feedService.getFeed(1L).getEntries().get(1));
 
         testUser.getReadStatusAndStarred().add(readStatusAndStarred);
 
