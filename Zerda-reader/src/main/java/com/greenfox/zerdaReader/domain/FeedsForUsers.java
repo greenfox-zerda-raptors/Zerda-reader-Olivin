@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -49,7 +50,7 @@ public class FeedsForUsers {
     public void setId(Long id) {
         this.id = id;
     }
-
+    @JsonProperty("favorited")
     public boolean isStarred() {
         return starred;
     }
@@ -57,7 +58,7 @@ public class FeedsForUsers {
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
-
+    @JsonProperty("opened")
     public boolean isReadByUser() {
         return readByUser;
     }
