@@ -24,16 +24,15 @@ public class UserFeedItemsToCustomJson {
     private String url;
 
 
-    public UserFeedItemsToCustomJson(FeedItem feedItem,
-                                     FeedsForUsers feedsForUsers) {
-        this.id = feedItem.getId();
-        this.title = feedItem.getTitle();
-        this.description = feedItem.getDescription();
+    public UserFeedItemsToCustomJson(FeedsForUsers feedsForUsers) {
+        this.id = feedsForUsers.getFeedItem().getId();
+        this.title = feedsForUsers.getFeedItem().getTitle();
+        this.description = feedsForUsers.getFeedItem().getDescription();
 //        this.created = feedItem.getPubDate(); //atirni java utildatere moindekhol a pubdatet
-        this.feed_name = feedItem.getFeed().getTitle();
-        this.feed_id = feedItem.getFeed().getId();
+        this.feed_name = feedsForUsers.getFeedItem().getFeed().getTitle();
+        this.feed_id = feedsForUsers.getFeedItem().getFeed().getId();
         this.favorite = feedsForUsers.isStarred();
         this.opened = feedsForUsers.isReadByUser();
-        this.url = feedItem.getLink();
+        this.url = feedsForUsers.getFeedItem().getLink();
     }
 }

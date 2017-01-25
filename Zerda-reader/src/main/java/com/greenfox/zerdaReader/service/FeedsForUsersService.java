@@ -30,7 +30,7 @@ public class FeedsForUsersService {
         List<UserFeedItemsToCustomJson> l= new ArrayList<>();
         for (FeedsForUsers fi:user.getFeedsForUsers()
              ) {
-            l.add( new UserFeedItemsToCustomJson(fi.getFeedItem(), fi));
+            l.add( new UserFeedItemsToCustomJson(fi));
         }
 
         return l;
