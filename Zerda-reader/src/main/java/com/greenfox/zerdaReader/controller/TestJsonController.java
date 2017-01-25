@@ -75,7 +75,18 @@ public class TestJsonController {
     }
 
     @RequestMapping(value = "/x2")
-    public List<UserFeedItemsToCustomJson> feedItemJso7() {
-        return feedsForUsersService.getThatFuckingListFinally(userService.getUser(1L));
+    public ArrayList<UserFeedItemsToCustomJson> feedItemJso7() {
+        ArrayList<UserFeedItemsToCustomJson> feed = feedsForUsersService.getThatFuckingListFinally(userService.getUser(1L));
+        return feed;
     }
+
+    @RequestMapping(value = "/x3")
+    public UserFeed feedItemJso8() {
+        UserFeed userFeed = new UserFeed();
+        userFeed.setFeeds(feedsForUsersService.getThatFuckingListFinally(userService.getUser(1L)));
+
+        return userFeed;
+    }
+
+
 }

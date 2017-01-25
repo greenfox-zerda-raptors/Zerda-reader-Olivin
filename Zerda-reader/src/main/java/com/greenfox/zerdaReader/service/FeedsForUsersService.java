@@ -26,13 +26,12 @@ public class FeedsForUsersService {
         this.feedsForUsersRepository = feedsForUsersRepository;
     }
 
-    public List<UserFeedItemsToCustomJson> getThatFuckingListFinally(User user) {
-        List<UserFeedItemsToCustomJson> l= new ArrayList<>();
+    public ArrayList<UserFeedItemsToCustomJson> getThatFuckingListFinally(User user) {
+        ArrayList<UserFeedItemsToCustomJson> l= new ArrayList<>();
         for (FeedsForUsers fi:user.getFeedsForUsers()
              ) {
             l.add( new UserFeedItemsToCustomJson(fi));
         }
-
         return l;
     }
 }
