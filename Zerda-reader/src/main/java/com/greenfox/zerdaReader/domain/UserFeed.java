@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 @Data
 public class UserFeed {
-    private ArrayList<UserFeedItemsToCustomJson> feeds;
+    private ArrayList<UserFeedItemsToCustomJson> feed;
 }

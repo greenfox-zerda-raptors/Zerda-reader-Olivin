@@ -83,10 +83,8 @@ public class TestJsonController {
     @RequestMapping(value = "/x3")
     public UserFeed feedItemJso8() {
         UserFeed userFeed = new UserFeed();
-        userFeed.setFeeds(feedsForUsersService.getThatFuckingListFinally(userService.getUser(1L)));
+        userFeed.setFeed(feedsForUsersService.getThatFuckingListFinally(userService.getUser(1L)));
 
         return userFeed;
     }
-
-
 }
