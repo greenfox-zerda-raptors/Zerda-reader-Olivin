@@ -34,6 +34,6 @@ public class UserFeedItemsToCustomJson {
         this.feed_id = feedItem.getFeed().getId();
         this.favorite = feedsForUsers.isStarred();
         this.opened = feedsForUsers.isReadByUser();
-        this.url = feedItem.getFeed().getRssPath();
+        this.url = feedItem.getLink();
     }
 }
