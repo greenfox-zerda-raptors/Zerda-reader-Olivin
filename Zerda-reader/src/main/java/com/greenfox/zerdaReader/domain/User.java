@@ -24,7 +24,7 @@ public class  User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private int accessToken;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "subscribed_users")
     private List<Feed> subscribedFeeds;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")
@@ -34,23 +34,6 @@ public class  User {
     public User(int accessToken){
         this.accessToken = accessToken;
     }
-    public void populateFeedsForUsers() {
-        for (Feed f :this.getSubscribedFeeds()
-                ) {
-            for (FeedItem fi:f.getEntries()
-                    ) {
-                if(!(this.getFeedsForUsers().contains(fi))){
-                    this.getFeedsForUsers().add(new FeedsForUsers(this,fi));
-                }
-            }
-        }
-    }
-//
-//    public List<FeedItem> getFeedsItemsForUsers(){
-//        feedsForUsers.
-//
-//        return
-//    }
-//
+
 }
 

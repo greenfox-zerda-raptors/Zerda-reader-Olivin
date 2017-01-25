@@ -67,7 +67,7 @@ public class FeedService {
         return feedRepo.findOne(id);
     }
 
-    private void updateFeed(Feed feed) {
+    public void updateFeed(Feed feed) {
         feedRepo.save(feed);
     }
 

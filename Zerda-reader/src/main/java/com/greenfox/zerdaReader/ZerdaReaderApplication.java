@@ -6,6 +6,7 @@ import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedService;
+import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,19 +30,16 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     FeedRepository feedRepository;
     @Autowired
     FeedsForUsersRepository feedsForUsersRepository;
+    @Autowired
+    FeedsForUsersService feedsForUsersService;
 
     @Override
     public void run(String... strings) throws Exception {
         feedService.addNewFeed("http://index.hu/24ora/rss/");
         feedService.addNewFeed("http://444.hu/feed");
-        feedService.addNewFeed("http://444.hu/feed");
         feedService.addNewFeed("http://hvg.hu/rss");
         feedService.addNewFeed("http://24.hu/feed/");
         feedService.updateAllFeeds();
-
-//        FeedsForUsersRepository feedsForUsers = new FeedsForUsersRepository();
-//        readStatusAndStarredRepository.save(feedsForUsers);
-//        feedsForUsers = readStatusAndStarredRepository.findOne(1L);
 
         User testUser = new User(1234);
         userRepository.save(testUser);
@@ -49,10 +47,8 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
         testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
         testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
-
-        testUser.populateFeedsForUsers();
+        feedsForUsersService.populateFeedsForUsers(testUser);
         userRepository.save(testUser);
-
 
         testUser = new User(567246);
         userRepository.save(testUser);
@@ -60,10 +56,13 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
         testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
         testUser.getSubscribedFeeds().add(feedService.getFeed(4L));
-
-        testUser.populateFeedsForUsers();
-
+        feedsForUsersService.populateFeedsForUsers(testUser);
         userRepository.save(testUser);
+
+        feedsForUsersService.populateFeedsForUsers(testUser);
+
+
+
     }
 }
 

@@ -1,9 +1,6 @@
 package com.greenfox.zerdaReader.service;
 
-import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.FeedsForUsers;
-import com.greenfox.zerdaReader.domain.User;
-import com.greenfox.zerdaReader.domain.UserFeedItemsToCustomJson;
+import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +31,19 @@ public class FeedsForUsersService {
         }
         return l;
     }
+
+    public void populateFeedsForUsers(User user) {
+//        List<Feed> sf = this.getSubscribedFeeds();
+        for (Feed f :user.getSubscribedFeeds()
+                ) {
+            for (FeedItem fi:f.getEntries()
+                    ) {
+                if(!(user.getFeedsForUsers().contains(fi))){
+                    user.getFeedsForUsers().add(new FeedsForUsers(user,fi));
+                }
+            }
+        }
+        feedsForUsersRepository.save(user.getFeedsForUsers());
+    }
+
 }
