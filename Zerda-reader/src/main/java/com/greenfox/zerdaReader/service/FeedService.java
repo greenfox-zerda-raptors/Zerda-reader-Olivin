@@ -1,7 +1,10 @@
 package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.domain.FeedsForUsers;
+import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
+import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -13,13 +16,14 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 /**
  * Created by ${rudolfps} on 2017.01.18..
  */
 
 @Component
-@EnableScheduling
+//@EnableScheduling
 public class FeedService {
 
     FeedRepository feedRepo;
@@ -29,6 +33,7 @@ public class FeedService {
         this.feedRepo = feedRepo;
     }
 
+
     public void addNewFeed(String rssPath) throws IOException, FeedException {
         TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
         if (!isExist(storage)) {
@@ -36,7 +41,7 @@ public class FeedService {
         }
     }
 
-    @Scheduled(fixedRate = 120000)
+//    @Scheduled(fixedRate = 120000)
     public void updateAllFeeds() throws IOException, FeedException {
         for (long i = 1; i <= getNumberOfFeeds(); i++) {
             Feed feed = getFeed(i);

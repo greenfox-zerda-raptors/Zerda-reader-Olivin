@@ -18,6 +18,7 @@ import java.util.List;
 public class FeedsForUsersService {
     FeedsForUsersRepository feedsForUsersRepository;
 
+
     @Autowired
     public FeedsForUsersService(FeedsForUsersRepository feedsForUsersRepository) {
         this.feedsForUsersRepository = feedsForUsersRepository;
@@ -42,4 +43,14 @@ public class FeedsForUsersService {
         feedsForUsersRepository.save(user.getFeedsForUsers());
     }
 
+    public void populateFeedsForUsersforOneFeed(List<User> users, Feed feed) {
+        for (User user:users) {
+            for (FeedItem fi:feed.getEntries()) {
+                if  (feedsForUsersRepository.findByUserAndFeedItem(user,fi) == null){
+                    user.getFeedsForUsers().add(new FeedsForUsers(user,fi));
+                }
+                feedsForUsersRepository.save(user.getFeedsForUsers());
+            }
+        }
+    }
 }
