@@ -31,6 +31,7 @@ public class  User {
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonBackReference
     private List<FeedsForUsers> feedsForUsers;
+
     public User(int accessToken){
         this.accessToken = accessToken;
     }

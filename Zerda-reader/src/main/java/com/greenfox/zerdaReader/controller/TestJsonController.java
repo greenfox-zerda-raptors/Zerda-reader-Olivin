@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -64,27 +63,25 @@ public class TestJsonController {
 
     @RequestMapping(value = "/User/{Id}")
     public List<FeedsForUsers> feedItemJson5(@PathVariable String Id) {
-//        List<FeedsForUsers> userslist = new <>();
         return userService.getUser(Long.parseLong(Id)).getFeedsForUsers();
     }
     @RequestMapping(value = "/x")
     public FeedsForUsers feedItemJson6() {
-        List<FeedsForUsers> al = new ArrayList<>();
+        List<FeedsForUsers> al;
         al = userService.getUser(1L).getFeedsForUsers();
         return al.get(2);
     }
 
     @RequestMapping(value = "/x2")
     public ArrayList<UserFeedItemsToCustomJson> feedItemJso7() {
-        ArrayList<UserFeedItemsToCustomJson> feed = feedsForUsersService.getThatFuckingListFinally(userService.getUser(1L));
+        ArrayList<UserFeedItemsToCustomJson> feed = feedsForUsersService.getFeedItemsForUser(userService.getUser(1L));
         return feed;
     }
 
     @RequestMapping(value = "/x3")
     public UserFeed feedItemJso8() {
         UserFeed userFeed = new UserFeed();
-        userFeed.setFeed(feedsForUsersService.getThatFuckingListFinally(userService.getUser(1L)));
-
+        userFeed.setFeed(feedsForUsersService.getFeedItemsForUser(userService.getUser(1L)));
         return userFeed;
     }
 }

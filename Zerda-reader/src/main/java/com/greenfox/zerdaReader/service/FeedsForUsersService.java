@@ -23,23 +23,17 @@ public class FeedsForUsersService {
         this.feedsForUsersRepository = feedsForUsersRepository;
     }
 
-    public ArrayList<UserFeedItemsToCustomJson> getThatFuckingListFinally(User user) {
+    public ArrayList<UserFeedItemsToCustomJson> getFeedItemsForUser(User user) {
         ArrayList<UserFeedItemsToCustomJson> l= new ArrayList<>();
-        for (FeedsForUsers fi:user.getFeedsForUsers()
-             ) {
+        for (FeedsForUsers fi:user.getFeedsForUsers()) {
             l.add( new UserFeedItemsToCustomJson(fi));
         }
         return l;
     }
 
     public void populateFeedsForUsers(User user) {
-
-
-        for (Feed f :user.getSubscribedFeeds()
-                ) {
-            for (FeedItem fi:f.getEntries()
-                    ) {
-//                if(!(user.getFeedsForUsers().contains(fi))){
+        for (Feed f :user.getSubscribedFeeds()) {
+            for (FeedItem fi:f.getEntries()) {
                 if  (feedsForUsersRepository.findByUserAndFeedItem(user,fi) == null){
                     user.getFeedsForUsers().add(new FeedsForUsers(user,fi));
                 }
