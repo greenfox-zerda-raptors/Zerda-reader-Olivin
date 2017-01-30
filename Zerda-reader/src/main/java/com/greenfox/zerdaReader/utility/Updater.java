@@ -34,6 +34,7 @@ public class Updater {
     @Scheduled(fixedRate = 120000)
     public void update() throws IOException, FeedException {
         feedService.updateAllFeeds();
+
         for (User user:userService.getAllUsers()) {
             feedsForUsersService.populateFeedsForUsers(user);
         }
