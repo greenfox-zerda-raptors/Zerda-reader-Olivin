@@ -33,12 +33,14 @@ public class FeedsForUsersService {
     }
 
     public void populateFeedsForUsers(User user) {
-//        List<Feed> sf = this.getSubscribedFeeds();
+
+
         for (Feed f :user.getSubscribedFeeds()
                 ) {
             for (FeedItem fi:f.getEntries()
                     ) {
-                if(!(user.getFeedsForUsers().contains(fi))){
+//                if(!(user.getFeedsForUsers().contains(fi))){
+                if  (feedsForUsersRepository.findByUserAndFeedItem(user,fi) == null){
                     user.getFeedsForUsers().add(new FeedsForUsers(user,fi));
                 }
             }
