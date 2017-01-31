@@ -21,7 +21,7 @@ import java.util.List;
  * Created by zoloe on 2017. 01. 30..
  */
 
-@EnableScheduling
+//@EnableScheduling
 @Component
 @Transactional
 @Log
@@ -39,7 +39,7 @@ public class Updater {
         this.userService = userService;
     }
 
-    @Scheduled(fixedRate = UPDATEFREQUENCY)
+//    @Scheduled(fixedRate = UPDATEFREQUENCY)
     public void update() throws IOException, FeedException {
         log.info("update started");
         List<FeedItem> updatedFeedItems = feedService.updateAllFeeds();

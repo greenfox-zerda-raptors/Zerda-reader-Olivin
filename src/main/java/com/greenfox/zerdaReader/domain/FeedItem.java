@@ -39,7 +39,7 @@ public class FeedItem {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feedItem")
     private List<FeedsForUsers> feedsForUsers;
 
-    void setFields(SyndEntry entry, Feed feed) {
+    public void setFields(SyndEntry entry, Feed feed) {
         setTitle(entry.getTitle());
         setDescription(entry.getDescription().getValue());
         setLink(entry.getLink());

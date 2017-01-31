@@ -42,6 +42,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         feedService.addNewFeed("http://444.hu/feed");
         feedService.addNewFeed("http://hvg.hu/rss");
         feedService.addNewFeed("http://24.hu/feed/");
+        feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30");
         feedService.updateAllFeeds();
 
         User testUser = new User(1234);
@@ -50,6 +51,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
         testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
         testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
+        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
         feedsForUsersService.populateFeedsForUsers(testUser);
         userRepository.save(testUser);
 
