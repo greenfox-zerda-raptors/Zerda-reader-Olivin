@@ -41,6 +41,9 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         feedService.addNewFeed("http://444.hu/feed");
         feedService.addNewFeed("http://hvg.hu/rss");
         feedService.addNewFeed("http://24.hu/feed/");
+
+//         bocs Rita
+
 //        feedService.updateAllFeeds();
 
 //        User testUser = new User(1234);
