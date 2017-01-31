@@ -65,7 +65,6 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         feedsForUsersService.populateFeedsForUsers(testUser);
 
 
-
     }
 }
 
