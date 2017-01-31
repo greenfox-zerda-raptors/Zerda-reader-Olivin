@@ -36,3 +36,6 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
