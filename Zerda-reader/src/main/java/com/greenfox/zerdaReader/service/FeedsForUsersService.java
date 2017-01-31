@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
+import com.sun.codemodel.internal.JForEach;
 import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,6 +44,11 @@ public class FeedsForUsersService {
         feedsForUsersRepository.save(user.getFeedsForUsers());
     }
 
+    public void addFeedsForUsers(User user, FeedItem feedItem){
+        feedItem.getFeedsForUsers().add(new FeedsForUsers(user,feedItem));
+        feedsForUsersRepository.save(feedItem.getFeedsForUsers());
+    }
+
     public void populateFeedsForUsersforOneFeed(List<User> users, Feed feed) {
         for (User user:users) {
             for (FeedItem fi:feed.getEntries()) {
@@ -51,6 +57,16 @@ public class FeedsForUsersService {
                 }
                 feedsForUsersRepository.save(user.getFeedsForUsers());
             }
+        }
+    }
+    public void populateFeedsForUsersforFeedItems(List<User> users, List<FeedItem> feedItems) {
+        for (User user : users) {
+            for (FeedItem feedItem:feedItems) {
+                if  (feedsForUsersRepository.findByUserAndFeedItem(user,feedItem) == null){
+                    user.getFeedsForUsers().add(new FeedsForUsers(user,feedItem));
+                }
+            }
+            feedsForUsersRepository.save(user.getFeedsForUsers());
         }
     }
 }

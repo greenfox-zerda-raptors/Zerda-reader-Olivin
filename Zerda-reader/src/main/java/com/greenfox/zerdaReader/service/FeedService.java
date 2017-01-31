@@ -1,6 +1,7 @@
 package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,18 +43,19 @@ public class FeedService {
         }
     }
 
-//    @Scheduled(fixedRate = 120000)
-    public void updateAllFeeds() throws IOException, FeedException {
+    public List<FeedItem> updateAllFeeds() throws IOException, FeedException {
+        List<FeedItem> updatedFeedItemList = new ArrayList<>();
         for (long i = 1; i <= getNumberOfFeeds(); i++) {
             Feed feed = getFeed(i);
             String rssPath = feed.getRssPath();
             TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
             if (isUpdateNeeded(feed, storage.getSyndFeed())) {
-                feed.updateEntries(storage.getSyndFeed());
+                updatedFeedItemList.addAll(feed.updateEntries(storage.getSyndFeed()));
                 feed.setPubDate(LocalDateTime.ofInstant(storage.getSyndFeed().getPublishedDate().toInstant(), ZoneId.systemDefault()));
                 updateFeed(feed);
             }
         }
+    return updatedFeedItemList;
     }
 
     private boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
@@ -75,6 +78,7 @@ public class FeedService {
     public void updateFeed(Feed feed) {
         feedRepo.save(feed);
     }
+
 
     private long getNumberOfFeeds() {
         return feedRepo.count();

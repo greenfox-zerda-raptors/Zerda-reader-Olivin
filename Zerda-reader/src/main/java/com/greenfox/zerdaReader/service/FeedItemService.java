@@ -20,4 +20,6 @@ public class FeedItemService {
     public FeedItem getFeedItem(Long id) {
         return repo.findOne(id);
     }
+
+
 }

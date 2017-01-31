@@ -13,6 +13,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.transaction.Transactional;
+
 @SpringBootApplication
 public class ZerdaReaderApplication implements CommandLineRunner {
 
@@ -38,6 +40,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     FeedsForUsersService feedsForUsersService;
 
     @Override
+//    @Transactional
     public void run(String... strings) throws Exception {
         feedService.addNewFeed("http://index.hu/24ora/rss/");
         feedService.addNewFeed("http://444.hu/feed");
@@ -48,7 +51,8 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         User testUser = new User(1234);
         userRepository.save(testUser);
         testUser = userRepository.findOne(1L);
-
+//        User testUser = userRepository.findOne(1L);
+//
         testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
         testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
         feedsForUsersService.populateFeedsForUsers(testUser);

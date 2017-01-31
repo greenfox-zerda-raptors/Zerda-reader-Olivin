@@ -44,10 +44,11 @@ public class Feed {
         entries.add(feedItem);
     }
 
-    public void addNewEntry(SyndEntry entry) {
+    public FeedItem addNewEntry(SyndEntry entry) {
         FeedItem feedItem = new FeedItem();
         feedItem.setFields(entry, this);
         addNewEntry(feedItem);
+        return feedItem;
     }
 
     public void setFields(TempSyndFeedStorage storage) {
@@ -60,12 +61,14 @@ public class Feed {
         setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
     }
 
-    public void updateEntries(SyndFeed syndFeed) {
+    public List<FeedItem> updateEntries(SyndFeed syndFeed) {
+        List<FeedItem> updatedFeedItems = new ArrayList<>();
         for (SyndEntry se : syndFeed.getEntries()) {
             if (convertDate(se.getPublishedDate()).isAfter(pubDate)) {
-                addNewEntry(se);
+                updatedFeedItems.add(addNewEntry(se));
             }
         }
+        return updatedFeedItems;
     }
 
     private LocalDateTime convertDate(Date date) {
