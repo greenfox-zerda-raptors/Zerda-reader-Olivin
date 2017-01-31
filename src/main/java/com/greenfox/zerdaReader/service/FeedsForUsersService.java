@@ -66,4 +66,11 @@ public class FeedsForUsersService {
             feedsForUsersRepository.save(user.getFeedsForUsers());
         }
     }
+
+    public void nothing(){
+
+        int a=3;
+        int b=2;
+        
+    }
 }
