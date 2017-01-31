@@ -19,8 +19,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "feeds")
-@Setter
-@Getter
 @Data
 public class Feed {
     @Id

@@ -41,8 +41,8 @@ public class FeedsForUsersService {
     }
 
     public void addFeedsForUsers(User user, FeedItem feedItem) {
-        feedItem.getFeedsForUsers().add(new FeedsForUsers(user, feedItem));
-        feedsForUsersRepository.save(feedItem.getFeedsForUsers());
+        user.getFeedsForUsers().add(new FeedsForUsers(user, feedItem));
+        feedsForUsersRepository.save(user.getFeedsForUsers());
     }
 
     public void populateFeedsForUsersforOneFeed(List<User> users, Feed feed) {
