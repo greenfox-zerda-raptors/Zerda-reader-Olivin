@@ -48,12 +48,12 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         userRepository.save(testUser);
         testUser = userRepository.findOne(1L);
 //
-        testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
+        testUser.getSubscribedFeeds().add(feedService.getFeed(1L)); //ettől fagy le, ha rámentünk
 //        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
 //        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
 //        feedsForUsersService.populateFeedsForUsers(testUser);
-        userRepository.save(testUser);
-        updateService.update();
+//        userRepository.save(testUser);
+//        updateService.update();
 
 
 //        testUser = new User(567246);
