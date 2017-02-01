@@ -28,14 +28,12 @@ public class FeedsForUsersService {
         return l;
     }
 
-    public ArrayList<UserFeedItemsToCustomJson> getFeedForUser(User user, Long feed_id) {
+    public ArrayList<UserFeedItemsToCustomJson> getFeedForUser(User user, Integer feed_id) {
         ArrayList<UserFeedItemsToCustomJson> l = new ArrayList<>();
         for (FeedsForUsers fa : user.getFeedsForUsers()) {
             if (feed_id == fa.getFeedItem().getFeed().getId()) {
                 l.add(new UserFeedItemsToCustomJson(fa));
             }
-
-
         }
         return l;
     }

@@ -29,7 +29,7 @@ public class TestJsonController {
     FeedsForUsersService feedsForUsersService;
 
     @Autowired
-    public TestJsonController(FeedItemService itemService, FeedService feedService, UserService userService) {
+    public TestJsonController(FeedItemService itemService, FeedService feedService, UserService userService, FeedsForUsersService feedsForUsersService) {
         this.itemService = itemService;
         this.feedService = feedService;
         this.userService = userService;
@@ -86,7 +86,7 @@ public class TestJsonController {
     }
 
     @RequestMapping(value = "/feed/{Id}")
-    public UserFeed filterForFeed(@PathVariable Long Id ) {
+    public UserFeed filterForFeed(@PathVariable Integer Id ) {
         UserFeed userFeed = new UserFeed();
         User user = userService.getUser(1L);
         ArrayList<UserFeedItemsToCustomJson> x = feedsForUsersService.getFeedForUser(user,Id);
