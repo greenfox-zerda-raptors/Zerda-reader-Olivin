@@ -47,11 +47,10 @@ public class Feed {
         entries.add(feedItem);
     }
 
-    public FeedItem addNewEntry(SyndEntry entry) {
+    public void addNewEntry(SyndEntry entry) {
         FeedItem feedItem = new FeedItem();
         feedItem.setFields(entry, this);
         addNewEntry(feedItem);
-        return feedItem;
     }
 
     public void setFields(TempSyndFeedStorage storage) {
