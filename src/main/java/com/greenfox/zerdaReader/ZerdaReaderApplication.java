@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//@PropertySource("application-${spring.profiles.active}.properties")
 public class ZerdaReaderApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
