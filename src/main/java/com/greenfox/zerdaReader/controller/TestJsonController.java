@@ -29,7 +29,7 @@ public class TestJsonController {
     FeedsForUsersService feedsForUsersService;
 
     @Autowired
-    public TestJsonController(FeedItemService itemService, FeedService feedService, UserService userService, FeedsForUsersService feedsForUsersService) {
+    public TestJsonController(FeedItemService itemService, FeedService feedService, UserService userService) {
         this.itemService = itemService;
         this.feedService = feedService;
         this.userService = userService;
@@ -56,10 +56,10 @@ public class TestJsonController {
         return itemService.getFeedItem(Long.parseLong(Id));
     }
 
-    @RequestMapping(value = "/feed/{Id}")
-    public Feed feedItemJson4(@PathVariable String Id) {
-        return feedService.getFeed((Long.parseLong(Id)));
-    }
+//    @RequestMapping(value = "/feed/{Id}")
+//    public Feed feedItemJson4(@PathVariable String Id) {
+//        return feedService.getFeed((Long.parseLong(Id)));
+//    }
 
     @RequestMapping(value = "/User/{Id}")
     public List<FeedsForUsers> feedItemJson5(@PathVariable String Id) {
@@ -82,6 +82,13 @@ public class TestJsonController {
     public UserFeed feedItemJso8() {
         UserFeed userFeed = new UserFeed();
         userFeed.setFeed(feedsForUsersService.getFeedItemsForUser(userService.getUser(1L)));
+        return userFeed;
+    }
+
+    @RequestMapping(value = "/feed/{Id}")
+    public UserFeed filterForFeed(@PathVariable Long Id ) {
+        UserFeed userFeed = new UserFeed();
+        userFeed.setFeed(feedsForUsersService.getFeedForUser(userService.getUser(1L),Id));
         return userFeed;
     }
 }
