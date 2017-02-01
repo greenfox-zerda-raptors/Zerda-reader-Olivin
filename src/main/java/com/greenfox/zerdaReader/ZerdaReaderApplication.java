@@ -6,7 +6,6 @@ import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
-import com.greenfox.zerdaReader.utility.Updater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,9 +20,6 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
     @Autowired
     FeedService feedService;
-
-    @Autowired
-    Updater updater;
 
     //needed to initialize user
     @Autowired

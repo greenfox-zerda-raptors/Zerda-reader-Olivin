@@ -11,6 +11,4 @@ import java.util.List;
  */
 
 public interface FeedItemRepository extends CrudRepository<FeedItem, Long> {
-
-    List<FeedItem> findByPubDateAfter(LocalDateTime pubDateMinusUpdateFrequency);
 }

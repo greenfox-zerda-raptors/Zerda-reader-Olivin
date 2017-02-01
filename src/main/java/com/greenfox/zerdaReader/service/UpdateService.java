@@ -18,7 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -27,29 +26,24 @@ import java.util.Date;
 /**
  * Created by zoloe on 2017. 01. 31..
  */
+
 @EnableScheduling
 @Component
 @Log
-
 public class UpdateService {
 
     FeedItemRepository feedItemRepository;
     FeedRepository feedRepository;
-    FeedsForUsersRepository feedsForUsersRepository;
-    UserRepository userRepository;
 
     @Autowired
-    public UpdateService(FeedItemRepository feedItemRepository, FeedRepository feedRepository, FeedsForUsersRepository feedsForUsersRepository, UserRepository userRepository) {
-        this.feedItemRepository = feedItemRepository;
+    public UpdateService(FeedItemRepository feedItemRepository, FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
-        this.feedsForUsersRepository = feedsForUsersRepository;
-        this.userRepository = userRepository;
     }
-//    @Transactional
+
     @Scheduled(fixedRate = 60000)
-    void update() throws IOException, FeedException {
+    public void update() throws IOException, FeedException {
         log.info("update started");
-        for(long i:feedRepository.getAllFeedId()){
+        for (long i : feedRepository.getAllFeedId()) {
             Feed feed = feedRepository.findOne(i);
             String rssPath = feed.getRssPath();
             TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
@@ -58,13 +52,9 @@ public class UpdateService {
                     if (convertDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
                         FeedItem feedItem = new FeedItem();
                         feedItem.setFields(se, feed);
-                        feed.getEntries().add(feedItem);
-                        feedRepository.save(feed);
-//                        feedItem=feedItemRepository.findOne(feedItem.getId());
                         for (User user : feed.getSubscribedUsers()) {
-                            user.getFeedsForUsers().add(new FeedsForUsers(user, feedItem));
-//                        feedsForUsersRepository.save(user.getFeedsForUsers());
-                            userRepository.save(user);
+                            feedItem.addNewFeedsForUsers(new FeedsForUsers(user, feedItem));
+                            feedItemRepository.save(feedItem);
                         }
                     }
                 }
@@ -74,9 +64,11 @@ public class UpdateService {
         }
         log.info("update stopped");
     }
+
     private LocalDateTime convertDate(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
+
     private boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
         return !LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
     }

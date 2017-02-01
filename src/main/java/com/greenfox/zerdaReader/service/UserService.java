@@ -25,8 +25,4 @@ public class UserService {
     public User getUser(Long id){
         return userRepository.findOne(id);
     }
-    public List<User> getAllUsers() {
-        return (List<User>) userRepository.findAll();
-    }
-
 }

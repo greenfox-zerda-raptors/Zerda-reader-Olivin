@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * Created by zoloe on 2017. 01. 23..
  */
+
 @Entity
-//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedsForUsers {
@@ -29,13 +29,6 @@ public class FeedsForUsers {
     @JoinColumn(name = "feedItem_id")
     private FeedItem feedItem;
 
-    public FeedsForUsers(boolean starred, boolean readByUser, User user, FeedItem feedItem) {
-        this.starred = starred;
-        this.readByUser = readByUser;
-        this.user = user;
-        this.feedItem = feedItem;
-    }
-
     public FeedsForUsers(User user, FeedItem feedItem) {
         this.user = user;
         this.feedItem = feedItem;
@@ -47,9 +40,6 @@ public class FeedsForUsers {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
     @JsonProperty("favorited")
     public boolean isStarred() {
         return starred;

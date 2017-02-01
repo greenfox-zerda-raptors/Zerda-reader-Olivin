@@ -20,7 +20,6 @@ import java.util.List;
  */
 
 @Component
-//@EnableScheduling
 public class FeedService {
 
     FeedRepository feedRepo;
@@ -38,25 +37,6 @@ public class FeedService {
         }
     }
 
-    public List<FeedItem> updateAllFeeds() throws IOException, FeedException {
-        List<FeedItem> updatedFeedItemList = new ArrayList<>();
-        for (long i = 1; i <= getNumberOfFeeds(); i++) {
-            Feed feed = getFeed(i);
-            String rssPath = feed.getRssPath();
-            TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
-            if (isUpdateNeeded(feed, storage.getSyndFeed())) {
-                updatedFeedItemList.addAll(feed.updateEntries(storage.getSyndFeed()));
-                feed.setPubDate(LocalDateTime.ofInstant(storage.getSyndFeed().getPublishedDate().toInstant(), ZoneId.systemDefault()));
-                updateFeed(feed);
-            }
-        }
-    return updatedFeedItemList;
-    }
-
-    private boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
-        return !LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
-    }
-
     private void addAllEntries(TempSyndFeedStorage storage) {
         Feed feed = storage.convertToFeed();
         feedRepo.save(feed);
@@ -68,14 +48,5 @@ public class FeedService {
 
     public Feed getFeed(Long id) {
         return feedRepo.findOne(id);
-    }
-
-    public void updateFeed(Feed feed) {
-        feedRepo.save(feed);
-    }
-
-
-    private long getNumberOfFeeds() {
-        return feedRepo.count();
     }
 }

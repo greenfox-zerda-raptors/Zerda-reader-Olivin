@@ -62,16 +62,6 @@ public class Feed {
         setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
     }
 
-    public List<FeedItem> updateEntries(SyndFeed syndFeed) {
-        List<FeedItem> updatedFeedItems = new ArrayList<>();
-        for (SyndEntry se : syndFeed.getEntries()) {
-            if (convertDate(se.getPublishedDate()).isAfter(pubDate)) {
-                updatedFeedItems.add(addNewEntry(se));
-            }
-        }
-        return updatedFeedItems;
-    }
-
     private LocalDateTime convertDate(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
