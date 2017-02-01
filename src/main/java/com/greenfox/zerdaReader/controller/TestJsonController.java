@@ -88,7 +88,9 @@ public class TestJsonController {
     @RequestMapping(value = "/feed/{Id}")
     public UserFeed filterForFeed(@PathVariable Long Id ) {
         UserFeed userFeed = new UserFeed();
-        userFeed.setFeed(feedsForUsersService.getFeedForUser(userService.getUser(1L),Id));
+        User user = userService.getUser(1L);
+        ArrayList<UserFeedItemsToCustomJson> x = feedsForUsersService.getFeedForUser(user,Id);
+        userFeed.setFeed(x);
         return userFeed;
     }
 }
