@@ -6,8 +6,6 @@ import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
-import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
-import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;

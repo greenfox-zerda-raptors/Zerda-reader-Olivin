@@ -1,12 +1,13 @@
 package com.greenfox.zerdaReader.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by zoloe on 2017. 01. 23..
@@ -32,9 +33,10 @@ public class FeedsForUsers {
     public FeedsForUsers(User user, FeedItem feedItem) {
         this.user = user;
         this.feedItem = feedItem;
-        starred=false;
+        starred = false;
         readByUser = false;
     }
+
     @JsonIgnore
     public Long getId() {
         return id;
@@ -48,6 +50,7 @@ public class FeedsForUsers {
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
+
     @JsonProperty("opened")
     public boolean isReadByUser() {
         return readByUser;
@@ -56,6 +59,7 @@ public class FeedsForUsers {
     public void setReadByUser(boolean readByUser) {
         this.readByUser = readByUser;
     }
+
     @JsonIgnore
     public User getUser() {
         return user;

@@ -1,19 +1,13 @@
 package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.domain.Feed;
-import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
-import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ${rudolfps} on 2017.01.18..
