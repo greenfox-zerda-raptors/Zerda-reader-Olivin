@@ -36,6 +36,7 @@ public class UpdateService {
     @Autowired
     public UpdateService(FeedItemRepository feedItemRepository, FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
+        this.feedItemRepository = feedItemRepository;
     }
 
     @Scheduled(fixedRate = 60000)
