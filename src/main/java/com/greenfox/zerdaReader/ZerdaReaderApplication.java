@@ -34,10 +34,10 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        feedService.addNewFeed("http://index.hu/24ora/rss/");
-        feedService.addNewFeed("http://444.hu/feed");
-        feedService.addNewFeed("http://hvg.hu/rss");
-        feedService.addNewFeed("http://24.hu/feed/");
+//        feedService.addNewFeed("http://index.hu/24ora/rss/");
+//        feedService.addNewFeed("http://444.hu/feed");
+//        feedService.addNewFeed("http://hvg.hu/rss");
+//        feedService.addNewFeed("http://24.hu/feed/");
         feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30");
 
         User testUser = new User(1234);
@@ -45,20 +45,20 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         testUser = userRepository.findOne(1L);
 
         testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
-        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
-        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
-        feedsForUsersService.populateFeedsForUsers(testUser);
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
+//        feedsForUsersService.populateFeedsForUsers(testUser);
         userRepository.save(testUser);
 
-        testUser = new User(567246);
-        userRepository.save(testUser);
-        testUser = userRepository.findOne(2L);
-
-        testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
-        testUser.getSubscribedFeeds().add(feedService.getFeed(4L));
-        feedsForUsersService.populateFeedsForUsers(testUser);
-        userRepository.save(testUser);
-
+//        testUser = new User(567246);
+//        userRepository.save(testUser);
+//        testUser = userRepository.findOne(2L);
+//
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(4L));
+//        feedsForUsersService.populateFeedsForUsers(testUser);
+//        userRepository.save(testUser);
+//
 
     }
 }
