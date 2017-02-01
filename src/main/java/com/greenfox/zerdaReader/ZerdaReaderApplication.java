@@ -6,6 +6,7 @@ import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
+import com.greenfox.zerdaReader.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,6 +32,8 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     FeedsForUsersRepository feedsForUsersRepository;
     @Autowired
     FeedsForUsersService feedsForUsersService;
+    @Autowired
+    UpdateService updateService;
 
     @Override
     public void run(String... strings) throws Exception {
@@ -49,6 +52,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 //        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
 //        feedsForUsersService.populateFeedsForUsers(testUser);
         userRepository.save(testUser);
+        updateService.update();
 
 //        testUser = new User(567246);
 //        userRepository.save(testUser);
