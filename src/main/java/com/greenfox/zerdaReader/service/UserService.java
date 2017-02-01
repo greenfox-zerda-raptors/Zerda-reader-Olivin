@@ -5,9 +5,6 @@ import com.greenfox.zerdaReader.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Rita on 2017-01-23.
  */
@@ -22,11 +19,7 @@ public class UserService {
     }
 
 
-    public User getUser(Long id){
+    public User getUser(Long id) {
         return userRepository.findOne(id);
     }
-    public List<User> getAllUsers() {
-        return (List<User>) userRepository.findAll();
-    }
-
 }

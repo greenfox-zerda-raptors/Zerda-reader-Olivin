@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,6 @@ import java.util.List;
  */
 @Entity
 @Table(name = "feed_items")
-//@Data
 @NoArgsConstructor
 public class FeedItem {
 
@@ -39,13 +39,20 @@ public class FeedItem {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feedItem")
     private List<FeedsForUsers> feedsForUsers;
 
-    void setFields(SyndEntry entry, Feed feed) {
+    public void setFields(SyndEntry entry, Feed feed) {
         setTitle(entry.getTitle());
         setDescription(entry.getDescription().getValue());
         setLink(entry.getLink());
         setAuthor(entry.getAuthor());
         setPubDate(LocalDateTime.ofInstant(entry.getPublishedDate().toInstant(), ZoneId.systemDefault()));
         setFeed(feed);
+    }
+
+    public void addNewFeedsForUsers(FeedsForUsers feedsForUser) {
+        if (feedsForUsers == null) {
+            feedsForUsers = new ArrayList<>();
+        }
+        feedsForUsers.add(feedsForUser);
     }
 
     public long getId() {
@@ -95,15 +102,18 @@ public class FeedItem {
     public void setPubDate(LocalDateTime pubDate) {
         this.pubDate = pubDate;
     }
+
     @JsonIgnore
     @JsonBackReference
     public Feed getFeed() {
         return feed;
     }
+
     @JsonBackReference
     public void setFeed(Feed feed) {
         this.feed = feed;
     }
+
     @JsonIgnore
     public List<FeedsForUsers> getFeedsForUsers() {
         return feedsForUsers;

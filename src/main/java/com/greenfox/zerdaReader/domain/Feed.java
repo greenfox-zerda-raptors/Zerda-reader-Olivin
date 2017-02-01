@@ -3,8 +3,12 @@ package com.greenfox.zerdaReader.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,8 +23,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "feeds")
-@Setter
-@Getter
 @Data
 public class Feed {
     @Id
@@ -37,6 +39,7 @@ public class Feed {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feed")
     @JsonManagedReference
     private List<FeedItem> entries = new ArrayList<FeedItem>();
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(mappedBy = "subscribedFeeds")
     private List<User> subscribedUsers;
 
@@ -59,16 +62,6 @@ public class Feed {
         setLanguage(storage.getSyndFeed().getLanguage());
         setCopyright(storage.getSyndFeed().getCopyright());
         setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
-    }
-
-    public List<FeedItem> updateEntries(SyndFeed syndFeed) {
-        List<FeedItem> updatedFeedItems = new ArrayList<>();
-        for (SyndEntry se : syndFeed.getEntries()) {
-            if (convertDate(se.getPublishedDate()).isAfter(pubDate)) {
-                updatedFeedItems.add(addNewEntry(se));
-            }
-        }
-        return updatedFeedItems;
     }
 
     private LocalDateTime convertDate(Date date) {

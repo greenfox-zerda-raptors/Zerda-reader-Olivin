@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by zoloe on 2017. 01. 25..
@@ -38,39 +37,5 @@ public class FeedsForUsersService {
             }
         }
         feedsForUsersRepository.save(user.getFeedsForUsers());
-    }
-
-    public void addFeedsForUsers(User user, FeedItem feedItem) {
-        feedItem.getFeedsForUsers().add(new FeedsForUsers(user, feedItem));
-        feedsForUsersRepository.save(feedItem.getFeedsForUsers());
-    }
-
-    public void populateFeedsForUsersforOneFeed(List<User> users, Feed feed) {
-        for (User user : users) {
-            for (FeedItem fi : feed.getEntries()) {
-                if (feedsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
-                    user.getFeedsForUsers().add(new FeedsForUsers(user, fi));
-                }
-                feedsForUsersRepository.save(user.getFeedsForUsers());
-            }
-        }
-    }
-
-    public void populateFeedsForUsersforFeedItems(List<User> users, List<FeedItem> feedItems) {
-        for (User user : users) {
-            for (FeedItem feedItem : feedItems) {
-                if (feedsForUsersRepository.findByUserAndFeedItem(user, feedItem) == null) {
-                    user.getFeedsForUsers().add(new FeedsForUsers(user, feedItem));
-                }
-            }
-            feedsForUsersRepository.save(user.getFeedsForUsers());
-        }
-    }
-
-    public void nothing(){
-
-        int a=3;
-        int b=2;
-        
     }
 }

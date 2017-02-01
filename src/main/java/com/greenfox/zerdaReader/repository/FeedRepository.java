@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.repository;
 
 import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -13,4 +14,7 @@ public interface FeedRepository extends CrudRepository<Feed, Long> {
 
     Feed findOneByRssPath(String rssPath);
 
+    @Query("select f.id from Feed f")
+    List<Long> getAllFeedId();
 }
+

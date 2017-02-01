@@ -14,7 +14,6 @@ import java.net.URL;
  */
 
 class FeedReader {
-    
 
     SyndFeed convertRssFeed(URL url) throws IOException, FeedException {
         SyndFeedInput input = new SyndFeedInput();
