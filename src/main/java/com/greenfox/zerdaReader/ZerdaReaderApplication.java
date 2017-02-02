@@ -48,7 +48,8 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         Long id = userRepository.getAllUserId().get(0);
         testUser = userRepository.findOne(id);
 
-        testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
+        id = feedRepository.getAllFeedId().get(0);
+        testUser.getSubscribedFeeds().add(feedService.getFeed(id));
 //        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
 //        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
 //        feedsForUsersService.populateFeedsForUsers(testUser);

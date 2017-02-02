@@ -1,6 +1,9 @@
 package com.greenfox.zerdaReader.controller;
 
 import com.greenfox.zerdaReader.domain.*;
+import com.greenfox.zerdaReader.repository.FeedItemRepository;
+import com.greenfox.zerdaReader.repository.FeedRepository;
+import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
@@ -23,17 +26,38 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TestJsonController {
     private final AtomicLong counter = new AtomicLong();
 
-    FeedItemService itemService;
+    FeedItemService feedItemService;
     FeedService feedService;
     UserService userService;
     FeedsForUsersService feedsForUsersService;
+    FeedRepository feedRepository;
+    UserRepository userRepository;
+    FeedItemRepository feedItemRepository;
 
     @Autowired
-    public TestJsonController(FeedItemService itemService, FeedService feedService, UserService userService, FeedsForUsersService feedsForUsersService) {
-        this.itemService = itemService;
+    public TestJsonController(FeedItemRepository feedItemRepository, UserRepository userRepository, FeedItemService feedItemService, FeedService feedService, UserService userService, FeedsForUsersService feedsForUsersService, FeedRepository feedRepository) {
+        this.feedItemService = feedItemService;
         this.feedService = feedService;
         this.userService = userService;
         this.feedsForUsersService = feedsForUsersService;
+        this.feedRepository = feedRepository;
+        this.userRepository = userRepository;
+        this.feedItemRepository = feedItemRepository;
+    }
+
+    @RequestMapping(value = "/userid")
+    public List<Long> getUserIds() {
+        return userRepository.getAllUserId();
+    }
+
+    @RequestMapping(value = "/feedid")
+    public List<Long> getFeedIds(){
+        return feedRepository.getAllFeedId();
+    }
+
+    @RequestMapping(value = "/feeditemid")
+    public List<Long> getFeedItemIds(){
+        return feedItemRepository.getAllFeedItemId();
     }
 
     @RequestMapping(value = "/list")
@@ -43,17 +67,18 @@ public class TestJsonController {
 
     @RequestMapping(value = "/j")
     public FeedItem feedItemJson() {
-        return itemService.getFeedItem(1L);
+        Long id = feedRepository.getAllFeedId().get(0);
+        return feedItemService.getFeedItem(id);
     }
 
     @RequestMapping(value = "/parameterrel")
     public FeedItem feedItemJson2(@RequestParam(value = "id", required = false, defaultValue = "1") String id) {
-        return itemService.getFeedItem(Long.parseLong(id));
+        return feedItemService.getFeedItem(Long.parseLong(id));
     }
 
     @RequestMapping(value = "/{Id}")
     public FeedItem feedItemJson3(@PathVariable String Id) {
-        return itemService.getFeedItem(Long.parseLong(Id));
+        return feedItemService.getFeedItem(Long.parseLong(Id));
     }
 
     @RequestMapping(value = "/feed/{Id}")
