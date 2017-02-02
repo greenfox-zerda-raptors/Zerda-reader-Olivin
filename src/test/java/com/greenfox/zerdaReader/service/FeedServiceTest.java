@@ -2,9 +2,7 @@ package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +26,8 @@ public class FeedServiceTest {
     @Autowired
     private FeedItemRepository feedItemRepository;
 
-    @Before
-    @Sql("/populateTables.sql")
-    public void setUp() {
-    }
-
-    @After
-    @Sql("/clear-tables.sql")
-    public void tearDown() {
-    }
-
     @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestAddNewFeedWithPathNotYetInDb() throws Exception {
         long initialNumOfFeeds = feedService.feedRepo.count();
         long initialNumOfFeedItems = feedItemRepository.count();
@@ -48,9 +37,11 @@ public class FeedServiceTest {
     }
 
     @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestAddNewFeedWithPathAlreadyInDb() throws Exception {
         long initialNumOfFeeds = feedService.feedRepo.count();
         long initialNumOfFeedItems = feedItemRepository.count();
+        Assert.assertEquals(3, initialNumOfFeeds);
         feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30");
         Assert.assertEquals(initialNumOfFeeds, feedService.feedRepo.count());
         Assert.assertEquals(initialNumOfFeedItems, feedItemRepository.count());

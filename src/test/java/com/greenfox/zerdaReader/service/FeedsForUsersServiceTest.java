@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
@@ -32,8 +33,10 @@ public class FeedsForUsersServiceTest {
     }
 
     @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void populateFeedsForUsers() throws Exception {
-
+        User user = userRepository.findOne(2L);
+        Assert.assertEquals(2, user.getSubscribedFeeds());
     }
 
 }
