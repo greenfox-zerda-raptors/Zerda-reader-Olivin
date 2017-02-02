@@ -1,13 +1,13 @@
 package com.greenfox.zerdaReader.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-public class  User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -32,8 +32,10 @@ public class  User {
     @JsonBackReference
     private List<FeedsForUsers> feedsForUsers;
 
-    public User(int accessToken){
+    public User(int accessToken) {
         this.accessToken = accessToken;
+        subscribedFeeds = new ArrayList<>();
+        feedsForUsers = new ArrayList<>();
     }
 
 }
