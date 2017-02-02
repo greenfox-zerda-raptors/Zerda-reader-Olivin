@@ -1,0 +1,23 @@
+<!DOCTYPE dataset SYSTEM "dataset.dtd">
+<dataset>
+    <table name="feeds">
+        <column>id</column>
+        <column>copyright</column>
+        <column>description</column>
+        <column>language</column>
+        <column>link</column>
+        <column>pub_date</column>
+        <column>rss_path</column>
+        <column>title</column>
+        <row>
+            <value>1</value>
+            <value>Michael Bertolacci, licensed under a Creative Commons Attribution 3.0 Unported License.</value>
+            <value>This is a constantly updating lorem ipsum feed</value>
+            <value>NULL</value>
+            <value>http://example.com/</value>
+            <value>'2017-02-01 16:41:30'</value>
+            <value>http://lorem-rss.herokuapp.com/feed?unit=second&amp;interval=30</value>
+            <value>Lorem ipsum feed for an interval of 30 seconds</value>
+        </row>
+    </table>
+</dataset>
