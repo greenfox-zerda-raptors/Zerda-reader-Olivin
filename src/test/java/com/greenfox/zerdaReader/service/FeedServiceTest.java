@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ZerdaReaderApplication.class)
-@Configuration
+@DataJpaTest
 public class FeedServiceTest {
 
     @Autowired
@@ -28,9 +28,9 @@ public class FeedServiceTest {
     }
 
     @Test
-    public void TestAddNewFeedWithPathAlreadyInDb() throws Exception {
+    public void TestAddNewFeedWithPathNotYetInDb() throws Exception {
         long initialNumOfFeeds = feedService.feedRepo.count();
         feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&amp;interval=30");
-        Assert.assertEquals(initialNumOfFeeds, feedService.feedRepo.count());
+        Assert.assertEquals(initialNumOfFeeds + 1, feedService.feedRepo.count());
     }
 }
