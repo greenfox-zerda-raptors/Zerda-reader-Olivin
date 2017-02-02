@@ -45,13 +45,14 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
         User testUser = new User(1234);
         userRepository.save(testUser);
-        testUser = userRepository.findOne(1L);
+        Long id = userRepository.getAllUserId().get(0);
+        testUser = userRepository.findOne(id);
 
         testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
 //        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
 //        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
 //        feedsForUsersService.populateFeedsForUsers(testUser);
-        userRepository.save(testUser);
+//        userRepository.save(testUser);
         updateService.update();
 
 //        testUser = new User(567246);
@@ -62,8 +63,6 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 //        testUser.getSubscribedFeeds().add(feedService.getFeed(4L));
 //        feedsForUsersService.populateFeedsForUsers(testUser);
 //        userRepository.save(testUser);
-
-
     }
 }
 
