@@ -103,10 +103,10 @@ public class TestJsonController {
         return feed;
     }
 
-    @RequestMapping(value = "/x3")
-    public UserFeed feedItemJso8() {
+    @RequestMapping(value = "/userfeed/{Id}")
+    public UserFeed feedItemJso8(@PathVariable String Id) {
         UserFeed userFeed = new UserFeed();
-        userFeed.setFeed(feedsForUsersService.getFeedItemsForUser(userService.getUser(1L)));
+        userFeed.setFeed(feedsForUsersService.getFeedItemsForUser(userService.getUser(Long.parseLong(Id))));
         return userFeed;
     }
 }
