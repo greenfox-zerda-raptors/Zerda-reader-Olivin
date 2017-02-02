@@ -1,5 +1,6 @@
 package com.greenfox.zerdaReader;
 
+import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
@@ -45,25 +46,20 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
         User testUser = new User(1234);
         userRepository.save(testUser);
-        Long id = userRepository.getAllUserId().get(0);
-        testUser = userRepository.findOne(id);
+//        a feedidkat trukkosen kell osszeszedni, ezek kozul elekerjuk az elsot
+        Long id = feedRepository.getAllFeedId().get(0);
+//        azzal előszedjük a feedet
+        Feed feed = feedService.getFeed(id);
+//        hozzáadjuk a tesztuserhez
+        testUser.getSubscribedFeeds().add(feed);
+//        a testusert is hozzáadjuk a feed-hez, így most mindkét ID a helyén van
+        feed.getSubscribedUsers().add(testUser);
+//        mentünk mindkét oldalon
+        feedRepository.save(feed);
+        userRepository.save(testUser);
 
-        id = feedRepository.getAllFeedId().get(0);
-        testUser.getSubscribedFeeds().add(feedService.getFeed(id));
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
-//        feedsForUsersService.populateFeedsForUsers(testUser);
-//        userRepository.save(testUser);
         updateService.update();
 
-//        testUser = new User(567246);
-//        userRepository.save(testUser);
-//        testUser = userRepository.findOne(2L);
-//
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(4L));
-//        feedsForUsersService.populateFeedsForUsers(testUser);
-//        userRepository.save(testUser);
     }
 }
 
