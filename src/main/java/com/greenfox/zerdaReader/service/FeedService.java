@@ -43,4 +43,5 @@ public class FeedService {
     public Feed getFeed(Long id) {
         return feedRepo.findOne(id);
     }
+
 }
