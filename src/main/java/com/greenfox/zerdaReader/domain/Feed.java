@@ -3,7 +3,10 @@ package com.greenfox.zerdaReader.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -20,7 +23,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "feeds")
-@Data
+@Setter
+@Getter
 public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,11 +48,10 @@ public class Feed {
         entries.add(feedItem);
     }
 
-    public FeedItem addNewEntry(SyndEntry entry) {
+    public void addNewEntry(SyndEntry entry) {
         FeedItem feedItem = new FeedItem();
         feedItem.setFields(entry, this);
         addNewEntry(feedItem);
-        return feedItem;
     }
 
     public void setFields(TempSyndFeedStorage storage) {

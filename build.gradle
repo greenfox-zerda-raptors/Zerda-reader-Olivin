@@ -36,6 +36,7 @@ dependencies {
     runtime('mysql:mysql-connector-java')
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile group: 'com.h2database', name: 'h2', version: '1.4.193'
 }
 
 task stage(dependsOn: ['build', 'clean'])
