@@ -66,13 +66,20 @@ public class EndpointController {
     }
 //    visszaad egy stringet Jsonban
     @RequestMapping(value = "/test")
-    public TestJson myJson() {
-        return new TestJson(counter.incrementAndGet(), "TestJson");
+    public String myJson() {
+        return "TestJson";
     }
-    //    példának marad itt
+//        példának marad itt
     @RequestMapping(value = "/parameterrel")
     public FeedItem feedItemJson2(@RequestParam(value = "id", required = false, defaultValue = "1") String id) {
         return feedItemService.getFeedItem(Long.parseLong(id));
+    }
+//      visszaadja egy beadott user feedjét
+    @RequestMapping(value = "/feed/user/{Id}")
+    public UserFeed filterForFeedAndUser(@PathVariable String Id ) {
+//        amig nincs user auth, addig az elso usert hasznaljuk
+        User user = userService.getUser(Long.parseLong(Id));
+        return endpointService.getUserFeed(user);
     }
 
 //*******************************************************
@@ -85,7 +92,6 @@ public class EndpointController {
         User user = userService.getFirstUser();
         return endpointService.getUserFeed(user);
     }
-
 
     @RequestMapping(value = "/feed/{Id}")
     public UserFeed filterForFeed(@PathVariable Integer Id ) {

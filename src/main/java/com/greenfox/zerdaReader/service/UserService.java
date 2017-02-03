@@ -25,4 +25,8 @@ public class UserService {
     public User getFirstUser(){
         return userRepository.findOne(userRepository.getAllUserId().get(0));
     }
+
+    public User getUserById(Long id){
+        return userRepository.findOne(id);
+    }
 }
