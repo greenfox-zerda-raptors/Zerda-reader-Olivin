@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 
 @RestController
-public class TestJsonController {
+public class EndpointController {
     private final AtomicLong counter = new AtomicLong();
 
     FeedItemService feedItemService;
@@ -36,7 +36,7 @@ public class TestJsonController {
 
 
     @Autowired
-    public TestJsonController(FeedItemRepository feedItemRepository, UserRepository userRepository, FeedItemService feedItemService, FeedService feedService, UserService userService, EndpointService endpointService, FeedRepository feedRepository) {
+    public EndpointController(FeedItemRepository feedItemRepository, UserRepository userRepository, FeedItemService feedItemService, FeedService feedService, UserService userService, EndpointService endpointService, FeedRepository feedRepository) {
         this.feedItemService = feedItemService;
         this.feedService = feedService;
         this.userService = userService;
