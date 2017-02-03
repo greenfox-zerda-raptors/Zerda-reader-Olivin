@@ -22,4 +22,7 @@ public class UserService {
     public User getUser(Long id) {
         return userRepository.findOne(id);
     }
+    public User getFirstUser(){
+        return userRepository.findOne(userRepository.getAllUserId().get(0));
+    }
 }

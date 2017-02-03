@@ -11,31 +11,35 @@ import java.util.ArrayList;
  * Created by zoloe on 2017. 01. 25..
  */
 @Component
-public class FeedsForUsersService {
+public class EndpointService {
     FeedsForUsersRepository feedsForUsersRepository;
 
 
     @Autowired
-    public FeedsForUsersService(FeedsForUsersRepository feedsForUsersRepository) {
+    public EndpointService(FeedsForUsersRepository feedsForUsersRepository) {
         this.feedsForUsersRepository = feedsForUsersRepository;
     }
 
-    public ArrayList<UserFeedItemsToCustomJson> getFeedItemsForUser(User user) {
-        ArrayList<UserFeedItemsToCustomJson> l = new ArrayList<>();
+    public UserFeed getUserFeed(User user) {
+        ArrayList<UserFeedItem> allUserFeedItemsToCustomJsons = new ArrayList<>();
         for (FeedsForUsers fi : user.getFeedsForUsers()) {
-            l.add(new UserFeedItemsToCustomJson(fi));
+            allUserFeedItemsToCustomJsons.add(new UserFeedItem(fi));
         }
-        return l;
+        UserFeed userFeed = new UserFeed();
+        userFeed.setFeed(allUserFeedItemsToCustomJsons);
+        return userFeed;
     }
 
-    public ArrayList<UserFeedItemsToCustomJson> getFeedForUser(User user, Integer feed_id) {
-        ArrayList<UserFeedItemsToCustomJson> l = new ArrayList<>();
+    public UserFeed getFilteredUserFeed(User user, Integer feed_id) {
+        ArrayList<UserFeedItem> userFeedItems = new ArrayList<>();
         for (FeedsForUsers fa : user.getFeedsForUsers()) {
             if (feed_id == fa.getFeedItem().getFeed().getId()) {
-                l.add(new UserFeedItemsToCustomJson(fa));
+                userFeedItems.add(new UserFeedItem(fa));
             }
         }
-        return l;
+        UserFeed userFeed = new UserFeed();
+        userFeed.setFeed(userFeedItems);
+        return userFeed;
     }
 
 

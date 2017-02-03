@@ -14,7 +14,7 @@ import java.util.Date;
  * Created by zoloe on 2017. 01. 24..
  */
 @Data
-public class UserFeedItemsToCustomJson {
+public class UserFeedItem {
     private long id;
     private String title;
     private String description;
@@ -27,7 +27,7 @@ public class UserFeedItemsToCustomJson {
     private String url;
 
 
-    public UserFeedItemsToCustomJson(FeedsForUsers feedsForUsers) {
+    public UserFeedItem(FeedsForUsers feedsForUsers) {
         this.id = feedsForUsers.getFeedItem().getId();
         this.title = feedsForUsers.getFeedItem().getTitle();
         this.description = feedsForUsers.getFeedItem().getDescription();
