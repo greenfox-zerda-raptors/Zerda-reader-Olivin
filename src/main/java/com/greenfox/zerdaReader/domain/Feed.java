@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
@@ -23,7 +23,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "feeds")
-@Data
+@Setter
+@Getter
 public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
