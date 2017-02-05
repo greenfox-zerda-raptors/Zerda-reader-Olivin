@@ -12,6 +12,8 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -23,7 +25,7 @@ import java.util.Date;
  * Created by zoloe on 2017. 01. 31..
  */
 
-//@EnableScheduling
+@EnableScheduling
 @Component
 @Log
 public class UpdateService {
@@ -37,7 +39,7 @@ public class UpdateService {
         this.feedItemRepository = feedItemRepository;
     }
 
-    //    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 60000)
     public void update() throws IOException, FeedException {
         log.info("update started");
         for (long i : feedRepository.getAllFeedId()) {
@@ -55,7 +57,7 @@ public class UpdateService {
                         }
                     }
                 }
-                feed.setPubDate(LocalDateTime.ofInstant(storage.getSyndFeed().getPublishedDate().toInstant(), ZoneId.systemDefault()));
+                feed.setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
                 feedRepository.save(feed);
             }
         }
@@ -67,6 +69,6 @@ public class UpdateService {
     }
 
     private boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
-        return !LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
+        return !convertDate(syndFeed.getPublishedDate()).isEqual(feed.getPubDate());
     }
 }
