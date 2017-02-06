@@ -1,20 +1,18 @@
 package com.greenfox.zerdaReader.controller;
 
-import com.greenfox.zerdaReader.domain.*;
+import com.greenfox.zerdaReader.domain.FeedItem;
+import com.greenfox.zerdaReader.domain.User;
+import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
+import com.greenfox.zerdaReader.service.EndpointService;
 import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedService;
-import com.greenfox.zerdaReader.service.EndpointService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -49,34 +47,40 @@ public class EndpointController {
 //*************** Ezek az TEST endpointok ***************
 //*******************************************************
 
-//    visszaadja a DB-ből a useridkat
+    //    visszaadja a DB-ből a useridkat
     @RequestMapping(value = "/userid")
+    @ResponseBody
     public List<Long> getUserIds() {
         return userRepository.getAllUserId();
     }
-//    visszaadja a DB-ből a feedidkat
+
+    //    visszaadja a DB-ből a feedidkat
     @RequestMapping(value = "/feedid")
-    public List<Long> getFeedIds(){
+    public List<Long> getFeedIds() {
         return feedRepository.getAllFeedId();
     }
-//    visszaadja a DB-ből a feed itfm idkat
+
+    //    visszaadja a DB-ből a feed itfm idkat
     @RequestMapping(value = "/feeditemid")
-    public List<Long> getFeedItemIds(){
+    public List<Long> getFeedItemIds() {
         return feedItemRepository.getAllFeedItemId();
     }
-//    visszaad egy stringet Jsonban
+
+    //    visszaad egy stringet Jsonban
     @RequestMapping(value = "/test")
     public String myJson() {
         return "TestJson";
     }
-//        példának marad itt
+
+    //        példának marad itt
     @RequestMapping(value = "/parameterrel")
     public FeedItem feedItemJson2(@RequestParam(value = "id", required = false, defaultValue = "1") String id) {
         return feedItemService.getFeedItem(Long.parseLong(id));
     }
-//      visszaadja egy beadott user feedjét
+
+    //      visszaadja egy beadott user feedjét
     @RequestMapping(value = "/feed/user/{Id}")
-    public UserFeed filterForFeedAndUser(@PathVariable String Id ) {
+    public UserFeed filterForFeedAndUser(@PathVariable String Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getUser(Long.parseLong(Id));
         return endpointService.getUserFeed(user);
@@ -87,16 +91,16 @@ public class EndpointController {
 //*******************************************************
 
     @RequestMapping(value = "/feed")
-    public UserFeed allUserFeedItems(){
+    public UserFeed allUserFeedItems() {
 //         amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
         return endpointService.getUserFeed(user);
     }
 
     @RequestMapping(value = "/feed/{Id}")
-    public UserFeed filterForFeed(@PathVariable Integer Id ) {
+    public UserFeed filterForFeed(@PathVariable Integer Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
-        return endpointService.getFilteredUserFeed(user,Id);
+        return endpointService.getFilteredUserFeed(user, Id);
     }
 }

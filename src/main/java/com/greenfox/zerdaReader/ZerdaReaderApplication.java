@@ -5,17 +5,19 @@ import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
-import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.EndpointService;
+import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @ComponentScan("com.greenfox.zerdaReader")
+@EnableWebMvc
 public class ZerdaReaderApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
