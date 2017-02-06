@@ -18,9 +18,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 @Setter
 @Getter
-@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,6 +39,7 @@ public class User {
         subscribedFeeds = new ArrayList<>();
         feedsForUsers = new ArrayList<>();
     }
+
 
 }
 
