@@ -18,3 +18,4 @@
 lib/
 
 .env
+/src/main/java/META-INF/persistence.xml
