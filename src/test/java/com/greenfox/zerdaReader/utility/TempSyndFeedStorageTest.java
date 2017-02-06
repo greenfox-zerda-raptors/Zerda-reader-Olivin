@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.utility;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.domain.Feed;
+import com.rometools.rome.io.FeedException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +26,13 @@ public class TempSyndFeedStorageTest {
     }
 
     @Test
-    public void TestConstructor() throws Exception {
+    public void TestConstructor2() throws Exception {
         storage = new TempSyndFeedStorage("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30");
+    }
+
+    @Test(expected = FeedException.class)
+    public void TestConstructor3() throws Exception {
+        storage = new TempSyndFeedStorage("file:///D:\\Green Fox Academy\\greenfox\\Zerda-reader-Olivin\\src\\test\\resources\\rssFeedWithError.xml");
     }
 
     @Test
