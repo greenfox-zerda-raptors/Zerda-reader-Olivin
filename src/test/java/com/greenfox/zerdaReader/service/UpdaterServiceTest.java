@@ -1,9 +1,9 @@
-package com.greenfox.zerdaReader.domain;
+package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
+import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
-import com.greenfox.zerdaReader.service.UpdateService;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,9 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by zsofiaprincz on 02/02/17.
@@ -37,13 +34,15 @@ public class UpdaterServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-     public void TestUpdateNeeded() throws Exception {
+     public void TestUpdateNeededFalse() throws Exception {
 
         Feed feed = feedRepository.findOne(2L);
-        LocalDateTime feedDateinDb = feed.getPubDate();
         TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:///Users/zsofiaprincz/Greenfox/Zerda-reader-Olivin/src/test/resources/index.xml");
-        Date dateOfXml = tempSyndFeedStorage.getSyndFeed().getPublishedDate();
         Assert.assertTrue(updateService.isUpdateNeeded(feed,tempSyndFeedStorage.getSyndFeed()));
+
+    }
+
+    public void TestUpdateNeededTrue() throws Exception {
 
     }
 
