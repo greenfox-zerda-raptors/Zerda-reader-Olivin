@@ -1,0 +1,35 @@
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+<channel>
+<title>
+<![CDATA[ Index - 24óra ]]>
+</title>
+<link>http://index.hu/24ora/</link>
+<description/>
+<language>hu-HU</language>
+<docs>http://backend.userland.com/rss</docs>
+<lastBuildDate>Mon, 06 Feb 2017 10:23:00 +0100</lastBuildDate>
+<item>
+<title>
+<![CDATA[
+Alig tért vissza, máris csúnyát esett a tízszeres világbajnok
+]]>
+</title>
+<link>
+http://index.hu/sport/telisport/2017/02/06/siugras_schlierenzauer_bukas_oberstdorf/
+</link>
+<pubDate>Mon, 06 Feb 2017 10:23:00 +0100</pubDate>
+<guid>
+http://index.hu/sport/telisport/2017/02/06/siugras_schlierenzauer_bukas_oberstdorf/
+</guid>
+<description>
+<![CDATA[ A osztrák síugró 200 méteres repülés után bukott. ]]>
+</description>
+<content:encoded>
+<![CDATA[ A osztrák síugró 200 méteres repülés után bukott. ]]>
+</content:encoded>
+<category domain="main">
+<![CDATA[ Téli sport ]]>
+</category>
+</item>
+</channel>
+</rss>
