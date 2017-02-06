@@ -122,4 +122,6 @@ public class FeedItem {
     public void setFeedsForUsers(List<FeedsForUsers> feedsForUsers) {
         this.feedsForUsers = feedsForUsers;
     }
+
+
 }

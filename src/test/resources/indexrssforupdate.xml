@@ -12,11 +12,11 @@
             <width>144</width>
             <height>35</height>
         </image>
-        <link>file:///D:\Zerda-reader-Olivin\src\test\resources\noupdate.sql</link>
+        <link>file:///D:\Zerda-reader-Olivin\src\test\resources\update.sql</link>
         <description/>
         <language>hu-HU</language>
         <docs>http://backend.userland.com/rss</docs>
-        <lastBuildDate>Mon, 06 Feb 2017 11:05:00 +0100</lastBuildDate>
+        <lastBuildDate>Mon, 06 Feb 2017 14:25 +0100</lastBuildDate>
         <item>
             <title>
                 <![CDATA[ Félmilliárdból épül a szovjet megszállási emlékmű ]]>
@@ -24,7 +24,7 @@
             <link>
                 http://index.hu/belfold/2017/02/06/felmilliardbol_epul_a_szovjet_megszallasi_emlekmu/
             </link>
-            <pubDate>Mon, 06 Feb 2017 09:53:00 +0100</pubDate>
+            <pubDate>Mon, 06 Feb 2017 13:53:00 +0100</pubDate>
             <guid>
                 http://index.hu/belfold/2017/02/06/felmilliardbol_epul_a_szovjet_megszallasi_emlekmu/
             </guid>
@@ -47,7 +47,7 @@ Kimit vakáción zavarni olyan, mint ez az interjú vele
             <link>
                 http://index.hu/sport/forma1/2017/02/06/kimit_vakacion_zavarni_olyan_mint_ez_az_interju_lett_vele/
             </link>
-            <pubDate>Mon, 06 Feb 2017 09:25:00 +0100</pubDate>
+            <pubDate>Mon, 06 Feb 2017 14:25:00 +0100</pubDate>
             <guid>
                 http://index.hu/sport/forma1/2017/02/06/kimit_vakacion_zavarni_olyan_mint_ez_az_interju_lett_vele/
             </guid>
