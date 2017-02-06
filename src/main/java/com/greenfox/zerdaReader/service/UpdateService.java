@@ -62,11 +62,11 @@ public class UpdateService {
         log.info("update stopped");
     }
 
-    private LocalDateTime convertDate(Date date) {
+    public LocalDateTime convertDate(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
-    private boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
+    public boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
         return !LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
     }
 }
