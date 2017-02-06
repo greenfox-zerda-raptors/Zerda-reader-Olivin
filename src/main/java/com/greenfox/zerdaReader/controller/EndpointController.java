@@ -6,7 +6,7 @@ import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
-import com.greenfox.zerdaReader.service.EndpointService;
+import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.UserService;
@@ -25,23 +25,24 @@ public class EndpointController {
     private final AtomicLong counter = new AtomicLong();
 
     FeedItemService feedItemService;
-    FeedService feedService;
     UserService userService;
-    EndpointService endpointService;
     FeedRepository feedRepository;
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
 
 
     @Autowired
-    public EndpointController(FeedItemRepository feedItemRepository, UserRepository userRepository, FeedItemService feedItemService, FeedService feedService, UserService userService, EndpointService endpointService, FeedRepository feedRepository) {
-        this.feedItemService = feedItemService;
-        this.feedService = feedService;
-        this.userService = userService;
-        this.endpointService = endpointService;
-        this.feedRepository = feedRepository;
-        this.userRepository = userRepository;
-        this.feedItemRepository = feedItemRepository;
+    public EndpointController(FeedItemRepository feedItemRepository,
+                              UserRepository userRepository,
+                              FeedItemService feedItemService,
+                              UserService userService,
+                              FeedRepository feedRepository) {
+
+            this.feedItemService = feedItemService;
+            this.userService = userService;
+            this.feedRepository = feedRepository;
+            this.userRepository = userRepository;
+            this.feedItemRepository = feedItemRepository;
     }
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
@@ -83,7 +84,7 @@ public class EndpointController {
     public UserFeed filterForFeedAndUser(@PathVariable String Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getUser(Long.parseLong(Id));
-        return endpointService.getUserFeed(user);
+        return new UserFeed().getUserFeed(user);
     }
 
 //*******************************************************
@@ -94,13 +95,13 @@ public class EndpointController {
     public UserFeed allUserFeedItems() {
 //         amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
-        return endpointService.getUserFeed(user);
+        return new UserFeed().getUserFeed(user);
     }
 
     @RequestMapping(value = "/feed/{Id}")
     public UserFeed filterForFeed(@PathVariable Integer Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
-        return endpointService.getFilteredUserFeed(user, Id);
+        return new UserFeed().getFilteredUserFeed(user, Id);
     }
 }

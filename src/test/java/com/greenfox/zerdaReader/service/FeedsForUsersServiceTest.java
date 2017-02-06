@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.domain.User;
+import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.junit.Assert;
@@ -24,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class FeedsForUsersServiceTest {
 
     @Autowired
-    EndpointService service;
+    FeedsForUsersService service;
 
     @Autowired
     UserRepository userRepository;
@@ -33,36 +34,16 @@ public class FeedsForUsersServiceTest {
     FeedRepository feedRepository;
 
     @Test
-    public void TestGetFeedItemsForUserShouldReturnEmptyListForNewUser() throws Exception {
-        User user = new User(123);
-        Assert.assertTrue(service.getUserFeed(user).getFeed().size() == 0);
-    }
-
-    @Test
-    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetFeedItemsForUserShouldReturnTwo() throws Exception {
-        User user = userRepository.findOne(2L);
-        Assert.assertEquals(2, service.getUserFeed(user).getFeed().size());
-    }
-
-    @Test
-    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetFeedItemsForUserShouldReturnEmptyListForUserWithOutSubscription() throws Exception {
-        User user = userRepository.findOne(3L);
-        Assert.assertEquals(0, service.getUserFeed(user).getFeed().size());
-    }
-
-    @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestPopulateFeedsForUsersForFirstNewSubscription() throws Exception {
         User user = userRepository.findOne(3L);
-        Assert.assertEquals(0, service.getUserFeed(user).getFeed().size());
+        Assert.assertEquals(0, new UserFeed().getUserFeed(user).getFeed().size());
         user.getSubscribedFeeds().add(feedRepository.findOne(2L));
         userRepository.save(user);
         service.populateFeedsForUsers(user);
         userRepository.save(user);
         user = userRepository.findOne(3L);
-        Assert.assertEquals(1, service.getUserFeed(user).getFeed().size());
+        Assert.assertEquals(1, new UserFeed().getUserFeed(user).getFeed().size());
     }
 
     @Test
@@ -74,6 +55,6 @@ public class FeedsForUsersServiceTest {
         service.populateFeedsForUsers(user);
         userRepository.save(user);
         user = userRepository.findOne(2L);
-        Assert.assertEquals(3, service.getUserFeed(user).getFeed().size());
+        Assert.assertEquals(3, new UserFeed().getUserFeed(user).getFeed().size());
     }
 }

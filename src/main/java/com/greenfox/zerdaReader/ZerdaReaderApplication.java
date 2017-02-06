@@ -5,7 +5,7 @@ import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
-import com.greenfox.zerdaReader.service.EndpointService;
+import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @ComponentScan("com.greenfox.zerdaReader")
-@EnableWebMvc
 public class ZerdaReaderApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
@@ -36,7 +35,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     @Autowired
     FeedsForUsersRepository feedsForUsersRepository;
     @Autowired
-    EndpointService endpointService;
+    FeedsForUsersService feedsForUsersService;
     @Autowired
     UpdateService updateService;
 
