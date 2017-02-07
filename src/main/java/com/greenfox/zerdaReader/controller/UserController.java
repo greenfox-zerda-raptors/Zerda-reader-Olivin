@@ -23,7 +23,7 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
-    public ResponseEntity<JsonNode> signup(@RequestBody String signupRequest) throws IOException {
+    public ResponseEntity<JsonNode> signUp(@RequestBody String signupRequest) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree("{\"result\": \"success\", \"token\": \"ABC123\", \"id\": 431}");
         return new ResponseEntity<JsonNode>(jsonNode, HttpStatus.OK);

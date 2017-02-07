@@ -1,8 +1,7 @@
 package com.greenfox.zerdaReader.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
+import com.greenfox.zerdaReader.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -40,6 +40,9 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
     @Before
@@ -48,17 +51,26 @@ public class UserControllerTest {
     }
 
     @Test
-    public void TestSuccessfulSignup() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree("{\"email\": \"example@gmail.com\", \"password\": \"12345\"}");
-        String json = jsonNode.toString();
+    public void TestSuccessfulSignUp() throws Exception {
         mockMvc.perform(post("/user/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                .content("{\"email\": \"example@gmail.com\", \"password\": \"12345\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.result", is("success")))
-                .andExpect(jsonPath("$.token", is("ABC123")))
-                .andExpect(jsonPath("$.id", is(431)));
+                .andExpect(jsonPath("$.token", is(userRepository.findOneByEmail("example@gmail.com").getToken())))
+                .andExpect(jsonPath("$.id", is(userRepository.findOneByEmail("example@gmail.com").getId())));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestUnsuccessfulSignUp() throws Exception {
+        mockMvc.perform(post("/user/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\": \"name@example.com\", \"password\": \"12345\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("fail")))
+                .andExpect(jsonPath("$.message", is("email address already exists")));
     }
 }

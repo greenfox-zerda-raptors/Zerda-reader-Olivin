@@ -9,8 +9,10 @@ import java.util.List;
 /**
  * Created by zoloe on 2017. 01. 23..
  */
-public interface UserRepository extends CrudRepository<User, Long>{
+public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query("select u.id from User u")
     List<Long> getAllUserId();
+
+    User findOneByEmail(String email);
 }
