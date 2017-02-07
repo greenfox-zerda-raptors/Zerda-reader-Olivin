@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -42,25 +43,38 @@ public class UpdateService {
     @Scheduled(fixedRate = 60000)
     public void update() throws IOException, FeedException {
         log.info("update started");
-        for (long i : feedRepository.getAllFeedId()) {
-            Feed feed = feedRepository.findOne(i);
-            String rssPath = feed.getRssPath();
-            TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
-            if (isUpdateNeeded(feed, storage.getSyndFeed())) {
-                for (SyndEntry se : storage.getSyndFeed().getEntries()) {
-                    if (convertDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
-                        FeedItem feedItem = new FeedItem();
-                        feedItem.setFields(se, feed);
-                        for (User user : feed.getSubscribedUsers()) {
-                            feedItem.addNewFeedsForUsers(new FeedsForUsers(user, feedItem));
-                           feedItemRepository.save(feedItem);
+        ArrayList<FeedItem> feedItemsList = new ArrayList<FeedItem>();
+        ArrayList<Feed> feedsList = new ArrayList<Feed>();
+        try {
+            for (long i : feedRepository.getAllFeedId()) {
+                Feed feed = feedRepository.findOne(i);
+                String rssPath = feed.getRssPath();
+                TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
+                if (isUpdateNeeded(feed, storage.getSyndFeed())) {
+                    for (SyndEntry se : storage.getSyndFeed().getEntries()) {
+                        if (convertDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
+                            FeedItem feedItem = new FeedItem();
+                            feedItem.setFields(se, feed);
+                            for (User user : feed.getSubscribedUsers()) {
+                                feedItem.addNewFeedsForUsers(new FeedsForUsers(user, feedItem));
+                                //feedItemRepository.save(feedItem);
+                                feedItemsList.add(feedItem);
+                            }
                         }
                     }
+
+                    feed.setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
+                    feedsList.add(feed);
+
                 }
-                feed.setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
-                feedRepository.save(feed);
             }
+        } catch (OutOfMemoryError error) {
+            log.info("OutOfMemoryError"+ "\n" + error.getMessage()+ "\n" +error.getStackTrace());
+            log.info("Exiting without saving");
+            return;
         }
+        feedItemRepository.save(feedItemsList);
+        feedRepository.save(feedsList);
         log.info("update stopped");
     }
 
