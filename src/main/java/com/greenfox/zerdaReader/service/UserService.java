@@ -23,10 +23,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void addNewUser(String email, String password) {
+    public String generateResponseForSignUp(boolean successful, User user) {
+        if (successful) {
+            return "{\"result\": \"success\", \"token\": \"" + user.getToken() + "\", \"id\": " + user.getId() + "}";
+        } else {
+            return "{\"result\": \"fail\", \"message\": \"email address already exists\"}";
+        }
+    }
+
+    public User addNewUser(String email, String password) {
         String encryptedPassword = passwordEncoder.encode(password);
         User newUser = new User(email, encryptedPassword);
-        userRepository.save(newUser);
+        return userRepository.save(newUser);
     }
 
     public boolean isExistingEmail(String email) {

@@ -1,6 +1,7 @@
 package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
+import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,6 +25,22 @@ public class UserServiceTest {
 
     @Autowired
     UserRepository repository;
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGenerateResponseForSignUpFails() throws Exception {
+        User user = repository.findOneByEmail("name@example.com");
+        String answer = service.generateResponseForSignUp(false, user);
+        Assert.assertEquals("{\"result\": \"fail\", \"message\": \"email address already exists\"}", answer);
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGenerateResponseForSignUpSuccess() throws Exception {
+        User user = repository.findOneByEmail("name@example.com");
+        String answer = service.generateResponseForSignUp(true, user);
+        Assert.assertEquals("{\"result\": \"success\", \"token\": \"ABCD1234\", \"id\": 2}", answer);
+    }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
