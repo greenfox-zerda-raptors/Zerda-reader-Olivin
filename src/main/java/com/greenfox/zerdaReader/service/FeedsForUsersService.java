@@ -14,24 +14,15 @@ import java.util.ArrayList;
 public class FeedsForUsersService {
     FeedsForUsersRepository feedsForUsersRepository;
 
-
     @Autowired
     public FeedsForUsersService(FeedsForUsersRepository feedsForUsersRepository) {
         this.feedsForUsersRepository = feedsForUsersRepository;
     }
 
-    public ArrayList<UserFeedItemsToCustomJson> getFeedItemsForUser(User user) {
-        ArrayList<UserFeedItemsToCustomJson> l = new ArrayList<>();
-        for (FeedsForUsers fi : user.getFeedsForUsers()) {
-            l.add(new UserFeedItemsToCustomJson(fi));
-        }
-        return l;
-    }
-
     public void populateFeedsForUsers(User user) {
         for (Feed f : user.getSubscribedFeeds()) {
             for (FeedItem fi : f.getEntries()) {
-                if (feedsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
+                    if (feedsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
                     user.getFeedsForUsers().add(new FeedsForUsers(user, fi));
                 }
             }
