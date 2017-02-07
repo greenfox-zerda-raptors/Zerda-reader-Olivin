@@ -24,7 +24,7 @@ public class UserFeedTest {
 
     @Test
     public void TestGetUserFeedShouldReturnEmptyListForNewUser() throws Exception {
-        User user = new User(123);
+        User user = new User("123");
         Assert.assertTrue(new UserFeed().getUserFeed(user).getFeed().size() == 0);
     }
 
@@ -41,8 +41,6 @@ public class UserFeedTest {
         User user = userRepository.findOne(3L);
         Assert.assertEquals(0, new UserFeed().getUserFeed(user).getFeed().size());
     }
-
-
 
 
 }

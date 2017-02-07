@@ -25,7 +25,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private int accessToken;
+    private String email;
+    private String password;
+    private String token;
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "subscribed_users")
     private List<Feed> subscribedFeeds;
@@ -34,8 +36,8 @@ public class User {
     @JsonBackReference
     private List<FeedsForUsers> feedsForUsers;
 
-    public User(int accessToken) {
-        this.accessToken = accessToken;
+    public User(String token) {
+        this.token = token;
         subscribedFeeds = new ArrayList<>();
         feedsForUsers = new ArrayList<>();
     }
