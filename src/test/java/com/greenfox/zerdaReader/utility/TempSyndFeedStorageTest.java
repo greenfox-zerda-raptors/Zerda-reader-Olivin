@@ -32,7 +32,9 @@ public class TempSyndFeedStorageTest {
 
     @Test(expected = FeedException.class)
     public void TestConstructor3() throws Exception {
-        storage = new TempSyndFeedStorage("file:///D:\\Green Fox Academy\\greenfox\\Zerda-reader-Olivin\\src\\test\\resources\\rssFeedWithError.xml");
+        storage = new TempSyndFeedStorage("file:src/test/resources/rssFeedWithError.xml");
+
+
     }
 
     @Test

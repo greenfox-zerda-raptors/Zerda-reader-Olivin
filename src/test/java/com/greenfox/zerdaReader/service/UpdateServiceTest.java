@@ -49,32 +49,32 @@ public class UpdateServiceTest {
     @Test
     @Sql({"/clear-tables.sql", "/noupdate.sql"})
     public void noUpdateNeededTest() throws Exception {
-        feedService.addNewFeed("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\indexrss.xml");
+        feedService.addNewFeed("file:src/test/resources/indexrss.xml");
        updateService.update();
         String str = "2017-02-06 11:05";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-        Assert.assertEquals(dateTime,feedRepository.findOneByRssPath("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\indexrss.xml").getPubDate());
+        Assert.assertEquals(dateTime,feedRepository.findOneByRssPath("file:src/test/resources/indexrss.xml").getPubDate());
     }
 
     @Test
     @Sql({"/clear-tables.sql"})
     public void updateNeededTest() throws Exception {
-      // feedService.addNewFeed("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\indexrss.xml");
-      feedService.addNewFeed("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\indexrssforupdate.xml");
+      // feedService.addNewFeed("file:src/test/resources/indexrss.xml");
+      feedService.addNewFeed("file:src/test/resources/indexrssforupdate.xml");
       updateService.update();
        String str = "2017-02-06 14:25";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-        Assert.assertEquals(dateTime,feedRepository.findOneByRssPath("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\indexrssforupdate.xml").getPubDate());
+        Assert.assertEquals(dateTime,feedRepository.findOneByRssPath("file:src/test/resources/indexrssforupdate.xml").getPubDate());
         Assert.assertEquals(2,feedItemRepository.count());
     }
 
     @Test
     @Sql({"/clear-tables.sql","/update.sql"})
     public void feedForUsersTablepopulated() throws Exception {
-        // feedService.addNewFeed("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\indexrss.xml");
-        feedService.addNewFeed("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\indexrssforupdate.xml");
+        // feedService.addNewFeed("file:src/test/resources/indexrss.xml");
+        feedService.addNewFeed("file:src/test/resources/indexrssforupdate.xml");
         updateService.update();
         Assert.assertEquals(2,feedsForUsersRepository.count());
     }
@@ -82,7 +82,7 @@ public class UpdateServiceTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void convertDateTest() throws Exception {
-        TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\index.xml");
+        TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
         String str = "2017-02-06 10:23";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
@@ -95,7 +95,7 @@ public class UpdateServiceTest {
     public void TestUpdateNeeded() throws Exception {
         Feed feed = feedRepository.findOne(2L);
         LocalDateTime feedDateinDb = feed.getPubDate();
-        TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\index.xml");
+        TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
         Date dateOfXml = tempSyndFeedStorage.getSyndFeed().getPublishedDate();
         Assert.assertTrue(updateService.isUpdateNeeded(feed,tempSyndFeedStorage.getSyndFeed()));
     }
@@ -105,7 +105,7 @@ public class UpdateServiceTest {
     public void setPubdateTest() throws Exception {
         Feed feed = feedRepository.findOne(2L);
         String rssPath = feed.getRssPath();
-        TempSyndFeedStorage storage = new TempSyndFeedStorage("file:///D:\\Zerda-reader-Olivin\\src\\test\\resources\\index.xml");
+        TempSyndFeedStorage storage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
         String str = "2017-02-06 10:23";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
