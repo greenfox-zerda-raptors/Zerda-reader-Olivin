@@ -10,6 +10,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -42,5 +43,12 @@ public class User {
         feedsForUsers = new ArrayList<>();
     }
 
+    public User(String email, String encryptedPassword) {
+        this.email = email;
+        this.password = encryptedPassword;
+        token = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+        subscribedFeeds = new ArrayList<>();
+        feedsForUsers = new ArrayList<>();
+    }
 }
 
