@@ -53,7 +53,7 @@ public class UpdateService {
                         feedItem.setFields(se, feed);
                         for (User user : feed.getSubscribedUsers()) {
                             feedItem.addNewFeedsForUsers(new FeedsForUsers(user, feedItem));
-                            feedItemRepository.save(feedItem);
+                           feedItemRepository.save(feedItem);
                         }
                     }
                 }
