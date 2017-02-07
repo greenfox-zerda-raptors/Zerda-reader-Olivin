@@ -22,7 +22,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -92,11 +91,9 @@ public class UpdateServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestUpdateNeeded() throws Exception {
+    public void TestUpdateNeededTrue() throws Exception {
         Feed feed = feedRepository.findOne(2L);
-        LocalDateTime feedDateinDb = feed.getPubDate();
         TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
-        Date dateOfXml = tempSyndFeedStorage.getSyndFeed().getPublishedDate();
         Assert.assertTrue(updateService.isUpdateNeeded(feed,tempSyndFeedStorage.getSyndFeed()));
     }
 
