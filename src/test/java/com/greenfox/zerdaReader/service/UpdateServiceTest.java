@@ -7,10 +7,13 @@ package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
+import com.rometools.rome.feed.synd.SyndEntry;
+import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,7 +98,27 @@ public class UpdateServiceTest {
         Feed feed = feedRepository.findOne(2L);
         TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
         Assert.assertTrue(updateService.isUpdateNeeded(feed,tempSyndFeedStorage.getSyndFeed()));
+
     }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestNumberOfUpdatedFeedItems() throws Exception {
+        Feed feed = feedRepository.findOne(2L);
+        TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
+        updateService.isUpdateNeeded(feed, tempSyndFeedStorage.getSyndFeed());
+        for (SyndEntry se : tempSyndFeedStorage.getSyndFeed().getEntries()) {
+           updateService.convertDate(se.getPublishedDate()).isAfter(feed.getPubDate());
+                FeedItem feedItem = new FeedItem();
+                feedItem.setFields(se, feed);
+                feedItemRepository.save(feedItem);
+                Lists.newArrayList(feedItemRepository.findAll()).size();
+        }
+
+            Assert.assertEquals(4,Lists.newArrayList(feedItemRepository.findAll()).size());
+        }
+
+
 
     @Test
     @Sql({"/clear-tables.sql","/PopulateTables2.sql"})
