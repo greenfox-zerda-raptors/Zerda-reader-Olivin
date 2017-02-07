@@ -57,15 +57,12 @@ public class UpdateService {
                             feedItem.setFields(se, feed);
                             for (User user : feed.getSubscribedUsers()) {
                                 feedItem.addNewFeedsForUsers(new FeedsForUsers(user, feedItem));
-                                //feedItemRepository.save(feedItem);
                                 feedItemsList.add(feedItem);
                             }
                         }
                     }
-
                     feed.setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
                     feedsList.add(feed);
-
                 }
             }
         } catch (OutOfMemoryError error) {
