@@ -1,0 +1,71 @@
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://purl.org/rss/1.0/modules/content/ ">
+    <channel>
+        <title>
+            <![CDATA[ Index - 24óra ]]>
+        </title>
+        <image>
+            <url>http://index.hu/assets/images/rss_logo.gif</url>
+            <title>Index</title>
+            <link>http://index.hu/</link>
+            <width>144</width>
+            <height>35</height>
+        </image>
+        <link>file:///D:\Zerda-reader-Olivin\src\test\resources\update.sql</link>
+        <description/>
+        <language>hu-HU</language>
+        <docs>http://backend.userland.com/rss</docs>
+        <lastBuildDate>Mon, 06 Feb 2017 14:25 +0100</lastBuildDate>
+        <item>
+            <title>
+                <![CDATA[ Félmilliárdból épül a szovjet megszállási emlékmű ]]>
+            </title>
+            <link>
+                http://index.hu/belfold/2017/02/06/felmilliardbol_epul_a_szovjet_megszallasi_emlekmu/
+            </link>
+            <pubDate>Mon, 06 Feb 2017 13:53:00 +0100</pubDate>
+            <guid>
+                http://index.hu/belfold/2017/02/06/felmilliardbol_epul_a_szovjet_megszallasi_emlekmu/
+            </guid>
+            <description>
+                <![CDATA[ A tervek szerint novemberben át is adják majd. ]]>
+            </description>
+            <content:encoded>
+                <![CDATA[ A tervek szerint novemberben át is adják majd. ]]>
+            </content:encoded>
+            <category domain="main">
+                <![CDATA[ Belföld ]]>
+            </category>
+        </item>
+        <item>
+            <title>
+                <![CDATA[
+Kimit vakáción zavarni olyan, mint ez az interjú vele
+]]>
+            </title>
+            <link>
+                http://index.hu/sport/forma1/2017/02/06/kimit_vakacion_zavarni_olyan_mint_ez_az_interju_lett_vele/
+            </link>
+            <pubDate>Mon, 06 Feb 2017 14:25:00 +0100</pubDate>
+            <guid>
+                http://index.hu/sport/forma1/2017/02/06/kimit_vakacion_zavarni_olyan_mint_ez_az_interju_lett_vele/
+            </guid>
+            <description>
+                <![CDATA[ Räikkönen öregszik, de nem változik. ]]>
+            </description>
+            <content:encoded>
+                <![CDATA[ Räikkönen öregszik, de nem változik. ]]>
+            </content:encoded>
+            <category domain="main">
+                <![CDATA[ Forma-1 ]]>
+            </category>
+            <enclosure
+                    url="http://kep.index.hu/1/0/1458/14586/145868/14586857_775173_cc0758daaf5d7bad38bec18aae2343e3_wm.jpg"
+                    width="309" height="174" type="image/jpeg" length="27518"/>
+            <enclosure
+                    url="http://kep.index.hu/1/0/1458/14586/145868/14586853_775173_d7694fc2613341bd63dfe6b7fcd26659_wm.jpg"
+                    width="768" height="432" type="image/jpeg" length="124795"/>
+        </item>
+    </channel>
+</rss>

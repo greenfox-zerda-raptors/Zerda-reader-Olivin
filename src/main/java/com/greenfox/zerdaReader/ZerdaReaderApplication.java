@@ -46,9 +46,28 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 //        feedService.addNewFeed("http://hvg.hu/rss");
 //        feedService.addNewFeed("http://24.hu/feed/");
         feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30");
-
+//
         User testUser = new User(1234);
         userRepository.save(testUser);
+////<<<<<<< HEAD
+//        testUser = userRepository.findOne(1L);
+//
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
+//        feedsForUsersService.populateFeedsForUsers(testUser);
+//        userRepository.save(testUser);
+//
+//        testUser = new User(567246);
+//        userRepository.save(testUser);
+//        testUser = userRepository.findOne(2L);
+//
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
+//        testUser.getSubscribedFeeds().add(feedService.getFeed(4L));
+//        feedsForUsersService.populateFeedsForUsers(testUser);
+//        userRepository.save(testUser);
+
+//=======
 //        a feedidkat trukkosen kell osszeszedni, ezek kozul elekerjuk az elsot
         Long id = feedRepository.getAllFeedId().get(0);
 //        azzal előszedjük a feedet
@@ -62,6 +81,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
         userRepository.save(testUser);
 
         updateService.update();
+//>>>>>>> origin/master
 
     }
 }
