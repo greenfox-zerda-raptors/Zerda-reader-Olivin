@@ -13,8 +13,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Created by Rita on 2017-02-07.
+ * Created by ${rudolfps} on 2017.02.06..
  */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ZerdaReaderApplication.class)
 @DataJpaTest
@@ -62,4 +63,11 @@ public class UserServiceTest {
         Assert.assertFalse(service.isExistingEmail("name2@example.com"));
     }
 
+    @Test
+    @Sql({"/clear-tables.sql", "/Userrepo.sql"})
+    public void getUserTest() throws Exception {
+        User testUser = new User("ABCD1234");
+        repository.save(testUser);
+        Assert.assertEquals(2, repository.findOne(2L).getId());
+    }
 }
