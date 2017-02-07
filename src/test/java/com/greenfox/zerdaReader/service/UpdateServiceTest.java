@@ -6,6 +6,7 @@ package com.greenfox.zerdaReader.service;
  */
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
+import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
@@ -85,6 +86,28 @@ public class UpdateServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
         Assert.assertEquals(dateTime, updateService.convertDate(tempSyndFeedStorage.getSyndFeed().getPublishedDate()));
+
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestUpdateNeededTrue() throws Exception {
+        Feed feed = feedRepository.findOne(2L);
+        TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
+        Assert.assertTrue(updateService.isUpdateNeeded(feed,tempSyndFeedStorage.getSyndFeed()));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql","/PopulateTables2.sql"})
+    public void setPubdateTest() throws Exception {
+        Feed feed = feedRepository.findOne(2L);
+        String rssPath = feed.getRssPath();
+        TempSyndFeedStorage storage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
+        String str = "2017-02-06 10:23";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+        feed.setPubDate(updateService.convertDate(storage.getSyndFeed().getPublishedDate()));
+        Assert.assertEquals(dateTime,feed.getPubDate());
 
     }
 }
