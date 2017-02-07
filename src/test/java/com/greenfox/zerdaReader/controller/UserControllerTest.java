@@ -59,7 +59,7 @@ public class UserControllerTest {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.result", is("success")))
                 .andExpect(jsonPath("$.token", is(userRepository.findOneByEmail("example@gmail.com").getToken())))
-                .andExpect(jsonPath("$.id", is(userRepository.findOneByEmail("example@gmail.com").getId())));
+                .andExpect(jsonPath("$.id", is((int) (userRepository.findOneByEmail("example@gmail.com").getId()))));
     }
 
     @Test

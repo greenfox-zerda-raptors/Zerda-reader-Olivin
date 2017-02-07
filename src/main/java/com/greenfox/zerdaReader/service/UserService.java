@@ -33,6 +33,14 @@ public class UserService {
         return userRepository.findOneByEmail(email) != null;
     }
 
+    public String getTokenForUser(String email) {
+        return userRepository.findOneByEmail(email).getToken();
+    }
+
+    public Long getIDForUser(String email) {
+        return userRepository.findOneByEmail(email).getId();
+    }
+
     public User getUser(Long id) {
         return userRepository.findOne(id);
     }

@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,17 @@ public class UserController {
     @RequestMapping(value = "/user/signup", method = RequestMethod.POST)
     public ResponseEntity<JsonNode> signUp(@RequestBody String signupRequest) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree("{\"result\": \"success\", \"token\": \"ABC123\", \"id\": 431}");
-        return new ResponseEntity<JsonNode>(jsonNode, HttpStatus.OK);
+        JsonNode request = mapper.readTree(signupRequest);
+        ObjectNode answer = mapper.createObjectNode();
+        if (!userService.isExistingEmail(request.get("email").textValue())) {
+            userService.addNewUser(request.get("email").textValue(), request.get("password").textValue());
+            answer.put("result", "success")
+                    .put("token", userService.getTokenForUser(request.get("email").textValue()))
+                    .put("id", userService.getIDForUser(request.get("email").textValue()));
+        } else {
+            answer.put("result", "fail")
+                    .put("message", "email address already exists");
+        }
+        return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
 }
