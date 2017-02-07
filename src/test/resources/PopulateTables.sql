@@ -6,7 +6,7 @@ INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_pat
 
 -- user
 INSERT INTO users (id, email, password, token) VALUES (2, 'name@example.com', '1234', 'ABCD1234');
-INSERT INTO users (id, email, password, token) VALUES (3, 'anothername@example.com', 'QWERTY9876');
+INSERT INTO users (id, email, password, token) VALUES (3, 'anothername@example.com','5678', 'QWERTY9876');
 
 -- these feeditems should appear
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (11, NULL, 'A Fülöp-szigetek elnöke még több rohadék drogost akar megöletni, csak a korrupt rendorség helyett a katonákkal.', 'http://index.hu/kulfold/2017/02/02/duterte_a_hadsereget_is_beveti_a_droghaboruban/', '2017-02-02 12:30:00', 'Duterte a hadsereget is beveti a drogháborúban', 2 );
