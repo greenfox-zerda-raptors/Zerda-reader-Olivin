@@ -94,11 +94,11 @@ public class UpdateServiceTest {
     public void TestUpdateNeededTrue() throws Exception {
         Feed feed = feedRepository.findOne(2L);
         TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
-        Assert.assertTrue(updateService.isUpdateNeeded(feed,tempSyndFeedStorage.getSyndFeed()));
+        Assert.assertTrue(updateService.isUpdateNeeded(feed, tempSyndFeedStorage.getSyndFeed()));
     }
 
     @Test
-    @Sql({"/clear-tables.sql","/PopulateTables2.sql"})
+    @Sql({"/clear-tables.sql", "/PopulateTables2.sql"})
     public void setPubdateTest() throws Exception {
         Feed feed = feedRepository.findOne(2L);
         String rssPath = feed.getRssPath();
@@ -107,9 +107,7 @@ public class UpdateServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
         feed.setPubDate(updateService.convertDate(storage.getSyndFeed().getPublishedDate()));
-        Assert.assertEquals(dateTime,feed.getPubDate());
-
+        Assert.assertEquals(dateTime, feed.getPubDate());
     }
+
 }
-
-
