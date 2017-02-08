@@ -1,5 +1,5 @@
 -- Feeds that the user is subscribed to
-INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_path, title) VALUES (2, NULL , NULL, 'HU-hu', 'http://index.hu/24ora/', '2017-02-02 10:23:00', 'http://index.hu/24ora/rss/','Index - 24óra');
+INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_path, title) VALUES (2, NULL , NULL, 'HU-hu', 'http://index.hu/24ora/', '2017-02-02 12:30:00', 'http://index.hu/24ora/rss/','Index - 24óra');
 INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_path, title) VALUES (3, 'Michael Bertolacci, licensed under a Creative Commons Attribution 3.0 Unported License.' , 'This is a constantly updating lorem ipsum feed', NULL, 'http://example.com/', '2017-02-02 12:35:00', 'http://lorem-rss.herokuapp.com/feed?unit=second&interval=30','Lorem ipsum feed for an interval of 30 seconds');
 -- Feed to what the user is NOT subscribed to
 INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_path, title) VALUES (4, 'hvg@hvg.hu' , 'hvg.hu RSS', 'HU-hu', 'http://hvg.hu/', '2017-02-02 12:33:39', 'http://hvg.hu/rss','hvg.hu RSS' );
