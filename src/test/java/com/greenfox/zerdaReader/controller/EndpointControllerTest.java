@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 @DataJpaTest
 @EnableWebMvc
-@Log
 public class EndpointControllerTest {
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
