@@ -46,7 +46,6 @@ public class UpdateServiceTest {
     @Autowired
     private FeedsForUsersRepository feedsForUsersRepository;
 
-
     @Test
     @Sql({"/clear-tables.sql", "/noupdate.sql"})
     public void noUpdateNeededTest() throws Exception {
@@ -62,7 +61,6 @@ public class UpdateServiceTest {
     @Test
     @Sql({"/clear-tables.sql"})
     public void updateNeededTest() throws Exception {
-        // feedService.addNewFeed("file:src/test/resources/indexrss.xml");
         feedService.addNewFeed("file:src/test/resources/indexrssforupdate.xml");
         updateService.update();
         String str = "2017-02-06 14:25";
@@ -75,7 +73,6 @@ public class UpdateServiceTest {
     @Test
     @Sql({"/clear-tables.sql", "/update.sql"})
     public void feedForUsersTablepopulated() throws Exception {
-        // feedService.addNewFeed("file:src/test/resources/indexrss.xml");
         feedService.addNewFeed("file:src/test/resources/indexrssforupdate.xml");
         updateService.update();
         Assert.assertEquals(2, feedsForUsersRepository.count());
@@ -107,29 +104,21 @@ public class UpdateServiceTest {
         TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
         updateService.isUpdateNeeded(feed, tempSyndFeedStorage.getSyndFeed());
         for (SyndEntry se : tempSyndFeedStorage.getSyndFeed().getEntries()) {
-           updateService.convertDate(se.getPublishedDate()).isAfter(feed.getPubDate());
-                FeedItem feedItem = new FeedItem();
-                feedItem.setFields(se, feed);
-                feedItemRepository.save(feedItem);
-                Lists.newArrayList(feedItemRepository.findAll()).size();
+            updateService.convertDate(se.getPublishedDate()).isAfter(feed.getPubDate());
+            FeedItem feedItem = new FeedItem();
+            feedItem.setFields(se, feed);
+            feedItemRepository.save(feedItem);
+            Lists.newArrayList(feedItemRepository.findAll()).size();
         }
-
-            Assert.assertEquals(4,Lists.newArrayList(feedItemRepository.findAll()).size());
-        }
-
-
-
-    @Test
-    @Sql({"/clear-tables.sql","/PopulateTables2.sql"})
-    public void setPubdateTest() throws Exception {
-        Feed feed = feedRepository.findOne(2L);
-        String rssPath = feed.getRssPath();
-        TempSyndFeedStorage storage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
-        String str = "2017-02-06 10:23";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-        feed.setPubDate(updateService.convertDate(storage.getSyndFeed().getPublishedDate()));
-        Assert.assertEquals(dateTime, feed.getPubDate());
+        Assert.assertEquals(4, Lists.newArrayList(feedItemRepository.findAll()).size());
     }
 
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables3.sql"})
+    public void isAfterShouldReturnFalse() throws Exception {
+        Feed feed = feedRepository.findOne(4L);
+        TempSyndFeedStorage storage = new TempSyndFeedStorage("file:src/test/resources/indexrssforupdate.xml");
+        updateService.update();
+        Assert.assertFalse(updateService.convertDate(storage.getSyndFeed().getPublishedDate()).isAfter(feed.getPubDate()));
+    }
 }
