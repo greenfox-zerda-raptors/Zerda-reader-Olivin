@@ -5,9 +5,8 @@ INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_pat
 --INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_path, title) VALUES (4, 'hvg@hvg.hu' , 'hvg.hu RSS', 'HU-hu', 'http://hvg.hu/', '2017-02-02 12:33:39', 'http://hvg.hu/rss','hvg.hu RSS' );
 
 -- user
-INSERT INTO users (id, access_token) VALUES (2,1234);
-INSERT INTO users (id, access_token) VALUES (3,5678);
-
+INSERT INTO users (id, email, password, token) VALUES (2, 'name@example.com', '1234', 'ABCD1234');
+INSERT INTO users (id, email, password, token) VALUES (3, 'anothername@example.com','5678', 'QWERTY9876');
 -- these feeditems should appear
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (9, NULL, 'A tervek szerint novemberben át is adják majd.', ' http://index.hu/belfold/2017/02/06/felmilliardbol_epul_a_szovjet_megszallasi_emlekmu/', '2017-02-06 09:53:00', 'Félmilliárdból épül a szovjet megszállási emlékmű', 2 );
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (10, NULL, 'Räikkönen öregszik, de nem változik.', 'http://index.hu/sport/forma1/2017/02/06/kimit_vakacion_zavarni_olyan_mint_ez_az_interju_lett_vele/', '2017-02-06 09:25:00', 'Kimit vakáción zavarni olyan, mint ez az interjú vele', 2 );

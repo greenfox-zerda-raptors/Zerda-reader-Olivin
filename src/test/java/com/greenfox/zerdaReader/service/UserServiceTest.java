@@ -22,19 +22,52 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class UserServiceTest {
 
     @Autowired
-    UserRepository userRepository;
-    UserService userService;
+    UserService service;
 
+    @Autowired
+    UserRepository repository;
 
     @Test
-    @Sql({"/clear-tables.sql","/Userrepo.sql"})
-    public void getUserTest() throws Exception {
-        User testUser = new User(1234);
-        userRepository.save(testUser);
-        Assert.assertEquals(2,userRepository.findOne(2L).getId());
-
-
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGenerateResponseForSignUpFails() throws Exception {
+        User user = repository.findOneByEmail("name@example.com");
+        String answer = service.generateResponseForSignUp(false, user);
+        Assert.assertEquals("{\"result\": \"fail\", \"message\": \"email address already exists\"}", answer);
     }
 
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGenerateResponseForSignUpSuccess() throws Exception {
+        User user = repository.findOneByEmail("name@example.com");
+        String answer = service.generateResponseForSignUp(true, user);
+        Assert.assertEquals("{\"result\": \"success\", \"token\": \"ABCD1234\", \"id\": 2}", answer);
+    }
 
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfullyAddNewUser() throws Exception {
+        Assert.assertEquals(2, repository.count());
+        service.addNewUser("example@gmail.com", "sajhdjahd");
+        Assert.assertEquals(3, repository.count());
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestIsExistingEmailShouldReturnTrue() throws Exception {
+        Assert.assertTrue(service.isExistingEmail("name@example.com"));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestIsExistingEmailShouldReturnFalse() throws Exception {
+        Assert.assertFalse(service.isExistingEmail("name2@example.com"));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/Userrepo.sql"})
+    public void getUserTest() throws Exception {
+        User testUser = new User("ABCD1234");
+        repository.save(testUser);
+        Assert.assertEquals(2, repository.findOne(2L).getId());
+    }
 }

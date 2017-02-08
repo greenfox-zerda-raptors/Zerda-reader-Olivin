@@ -5,9 +5,8 @@ INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_pat
 INSERT INTO feeds (id, copyright, description, language, link, pub_date, rss_path, title) VALUES (4, 'hvg@hvg.hu' , 'hvg.hu RSS', 'HU-hu', 'http://hvg.hu/', '2017-02-02 12:33:39', 'http://hvg.hu/rss','hvg.hu RSS' );
 
 -- user
-INSERT INTO users (id, access_token) VALUES (2,1234);
-INSERT INTO users (id, access_token) VALUES (3,5678);
-
+INSERT INTO users (id, email, password, token) VALUES (2, 'name@example.com', '1234', 'ABCD1234');
+INSERT INTO users (id, email, password, token) VALUES (3, 'anothername@example.com','5678', 'QWERTY9876');
 -- these feeditems should appear
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (11, NULL, 'A Fülöp-szigetek elnöke még több rohadék drogost akar megöletni, csak a korrupt rendorség helyett a katonákkal.', 'http://index.hu/kulfold/2017/02/02/duterte_a_hadsereget_is_beveti_a_droghaboruban/', '2017-02-02 12:30:00', 'Duterte a hadsereget is beveti a drogháborúban', 2 );
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (12, 'John Smith', 'Anim fugiat consectetur ea ut labore consectetur pariatur commodo ut est exercitation incididunt laboris.', 'http://example.com/test/1486035270', '2017-02-02 12:34:30', 'Lorem ipsum 2017-02-02T11:34:30+00:00', 3 );
