@@ -15,7 +15,6 @@ import java.util.List;
 public class UserFeed {
     private List<UserFeedItem> feed;
 
-
     public UserFeed getUserFeed(User user, int offset, int items) {
         ArrayList<UserFeedItem> allUserFeedItems = new ArrayList<>();
 //        ez azért szar így, mert ha nagyra nő a feeditem egy usernek, mindig le kell kérnünk az egészet, hogy sorba tudjuk rakni idő szerint,
@@ -27,7 +26,7 @@ public class UserFeed {
         List<UserFeedItem> subList;
 //        ez azért kell, mert a sublisf OutOfBounds -ra futhat - meg kell beszélni, hogy ilyenkor mi legyen
         try {
-            subList = allUserFeedItems.subList(offset,items);
+            subList = allUserFeedItems.subList(offset,offset+items);
         }catch (Exception e){
             log.info(e.getMessage());
             subList = allUserFeedItems;
@@ -48,5 +47,4 @@ public class UserFeed {
         userFeed.setFeed(userFeedItems);
         return userFeed;
     }
-
 }

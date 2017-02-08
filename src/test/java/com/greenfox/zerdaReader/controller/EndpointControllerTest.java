@@ -64,32 +64,25 @@ public class EndpointControllerTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByDefalutParams() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/feed"))
+                mockMvc.perform(get("/feed"))
 //                http://reader-api.example/feed/12521?offset=25&items=50
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
 //                      check if the number of feeditems are 50
                 .andExpect(jsonPath("$.feed.*", hasSize(50)))
 //                      check if the 1st feeditem is the 1st in the db
-//                .andExpect(jsonPath("$.feed[0].id", is(1)))
-                .andReturn();
-        log.info("c");
-        String resultcontent = mvcResult.getResponse().getContentAsString();
-  log.info(resultcontent);
+                .andExpect(jsonPath("$.feed[0].id", is(1)));
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByOffset25() throws Exception {
-         mockMvc.perform(get("/feed?offset=25&items=20"))
+         mockMvc.perform(get("/feed?offset=25&items=55"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
 //         check if the number of feeditems are 20
-                .andExpect(jsonPath("$.feed.*", hasSize(20)))
-//         check if the offset feeditem is the the 25
-                 .andExpect(jsonPath("$.feed[0].id", is(25)));
-
-
+                .andExpect(jsonPath("$.feed.*", hasSize(55)))
+//         check if the offset feeditem is the the 26 (we're counting from 0
+                 .andExpect(jsonPath("$.feed[0].id", is(26)));
     }
-
 }
