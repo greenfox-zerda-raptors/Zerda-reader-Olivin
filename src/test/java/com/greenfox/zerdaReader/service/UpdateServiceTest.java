@@ -11,6 +11,7 @@ import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
+import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
 import org.assertj.core.util.Lists;
@@ -46,11 +47,15 @@ public class UpdateServiceTest {
     @Autowired
     private FeedsForUsersRepository feedsForUsersRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
     @Test
     @Sql({"/clear-tables.sql", "/noupdate.sql"})
     public void noUpdateNeededTest() throws Exception {
         feedService.addNewFeed("file:src/test/resources/indexrss.xml");
-        updateService.update();
+       updateService.update();
         String str = "2017-02-06 11:05";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
@@ -121,4 +126,16 @@ public class UpdateServiceTest {
         updateService.update();
         Assert.assertFalse(updateService.convertDate(storage.getSyndFeed().getPublishedDate()).isAfter(feed.getPubDate()));
     }
+
+
+//    @Before
+//    public void setUp(){
+//        OutOfMemoryError outOfMemoryError= new OutOfMemoryError();
+//    }
+//
+//    public void outOfMemoryErrorTest () throws Exception{
+//
+//        Assert.assertEquals()
+//    }
+
 }
