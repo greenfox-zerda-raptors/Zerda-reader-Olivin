@@ -66,7 +66,7 @@ public class UserServiceTest {
     @Test
     @Sql({"/clear-tables.sql", "/Userrepo.sql"})
     public void getUserTest() throws Exception {
-        User testUser = new User("ABCD1234");
+        User testUser = new User ("ABCD1234");
         repository.save(testUser);
         Assert.assertEquals(2, repository.findOne(2L).getId());
     }
