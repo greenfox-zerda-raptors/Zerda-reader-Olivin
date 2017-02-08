@@ -33,17 +33,20 @@ public class FeedsForUsersServiceTest {
     @Autowired
     FeedRepository feedRepository;
 
+    final int DEFAULTOFFSET = 0;
+    final int DEFAULTITEMS = 50;
+
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestPopulateFeedsForUsersForFirstNewSubscription() throws Exception {
         User user = userRepository.findOne(3L);
-        Assert.assertEquals(0, new UserFeed().getUserFeed(user).getFeed().size());
+        Assert.assertEquals(0, new UserFeed().getUserFeed(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
         user.getSubscribedFeeds().add(feedRepository.findOne(2L));
         userRepository.save(user);
         service.populateFeedsForUsers(user);
         userRepository.save(user);
         user = userRepository.findOne(3L);
-        Assert.assertEquals(1, new UserFeed().getUserFeed(user).getFeed().size());
+        Assert.assertEquals(1, new UserFeed().getUserFeed(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test
@@ -55,6 +58,6 @@ public class FeedsForUsersServiceTest {
         service.populateFeedsForUsers(user);
         userRepository.save(user);
         user = userRepository.findOne(2L);
-        Assert.assertEquals(3, new UserFeed().getUserFeed(user).getFeed().size());
+        Assert.assertEquals(3, new UserFeed().getUserFeed(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 }

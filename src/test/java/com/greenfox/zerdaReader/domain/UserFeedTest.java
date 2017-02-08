@@ -21,25 +21,28 @@ public class UserFeedTest {
 
     @Autowired
     UserRepository userRepository;
+    final int DEFAULTOFFSET = 0;
+    final int DEFAULTITEMS = 50;
+
 
     @Test
     public void TestGetUserFeedShouldReturnEmptyListForNewUser() throws Exception {
         User user = new User("123");
-        Assert.assertTrue(new UserFeed().getUserFeed(user).getFeed().size() == 0);
+        Assert.assertTrue(new UserFeed().getUserFeed(user, DEFAULTOFFSET, 0).getFeed().size() == 0);
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestGetUserFeedShouldReturnTwo() throws Exception {
         User user = userRepository.findOne(2L);
-        Assert.assertEquals(2, new UserFeed().getUserFeed(user).getFeed().size());
+        Assert.assertEquals(2, new UserFeed().getUserFeed(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestGetUserFeedForUserShouldReturnEmptyListForUserWithOutSubscription() throws Exception {
         User user = userRepository.findOne(3L);
-        Assert.assertEquals(0, new UserFeed().getUserFeed(user).getFeed().size());
+        Assert.assertEquals(0, new UserFeed().getUserFeed(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
 
