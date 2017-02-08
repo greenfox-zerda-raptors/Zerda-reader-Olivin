@@ -84,7 +84,7 @@ public class EndpointController {
     public UserFeed filterForFeedAndUser(@PathVariable String Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getUser(Long.parseLong(Id));
-        return new UserFeed().getUserFeed(user);
+        return new UserFeed().getUserFeed(user, 0, 100);
     }
 
 //*******************************************************
@@ -92,10 +92,11 @@ public class EndpointController {
 //*******************************************************
 
     @RequestMapping(value = "/feed")
-    public UserFeed allUserFeedItems() {
+    public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
+                                     @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
 //         amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
-        return new UserFeed().getUserFeed(user);
+        return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/feed/{Id}")
@@ -104,4 +105,4 @@ public class EndpointController {
         User user = userService.getFirstUser();
         return new UserFeed().getFilteredUserFeed(user, Id);
     }
-}
+}//                http://reader-api.example/feed/12521?offset=25&items=50
