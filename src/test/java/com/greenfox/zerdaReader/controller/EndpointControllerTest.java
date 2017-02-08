@@ -71,8 +71,9 @@ public class EndpointControllerTest {
 //                      check if the number of feeditems are 50
                 .andExpect(jsonPath("$.feed.*", hasSize(50)))
 //                      check if the 1st feeditem is the 1st in the db
-                .andExpect(jsonPath("$.feed[0].id", is(1)))
+//                .andExpect(jsonPath("$.feed[0].id", is(1)))
                 .andReturn();
+        log.info("c");
         String resultcontent = mvcResult.getResponse().getContentAsString();
   log.info(resultcontent);
     }
