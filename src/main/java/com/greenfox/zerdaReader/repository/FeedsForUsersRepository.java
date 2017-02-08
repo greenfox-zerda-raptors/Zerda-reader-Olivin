@@ -11,5 +11,4 @@ import org.springframework.data.repository.CrudRepository;
 public interface FeedsForUsersRepository extends CrudRepository<com.greenfox.zerdaReader.domain.FeedsForUsers, Long> {
 
     FeedsForUsers findByUserAndFeedItem(User user, FeedItem feedItem);
-
 }
