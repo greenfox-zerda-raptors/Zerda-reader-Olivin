@@ -1,11 +1,14 @@
 package com.greenfox.zerdaReader.service;
 
-import com.greenfox.zerdaReader.domain.*;
+import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.domain.FeedItem;
+import com.greenfox.zerdaReader.domain.FeedsForUsers;
+import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 
 /**
  * Created by zoloe on 2017. 01. 25..
@@ -28,5 +31,13 @@ public class FeedsForUsersService {
             }
         }
         feedsForUsersRepository.save(user.getFeedsForUsers());
+    }
+
+    public Page<FeedsForUsers> listFeedsForUsers (int offset, int items) {
+       return feedsForUsersRepository.findAll(new PageRequest(offset,items));
+    }
+
+    public void convertFeedForUserListToUserFeedItems (Page<FeedsForUsers> list, User user){
+
     }
 }

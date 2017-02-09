@@ -23,8 +23,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "feeds")
-@Setter
 @Getter
+@Setter
 public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,4 +67,6 @@ public class Feed {
     private LocalDateTime convertDate(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
+
+
 }
