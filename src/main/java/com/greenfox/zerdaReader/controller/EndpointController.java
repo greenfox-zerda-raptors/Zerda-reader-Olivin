@@ -6,9 +6,7 @@ import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
-import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.FeedItemService;
-import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -96,7 +94,7 @@ public class EndpointController {
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
 //         amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
-        return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items));
+        return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items)); //ezt fogjuk atirni
     }
 
     @RequestMapping(value = "/feed/{Id}")
