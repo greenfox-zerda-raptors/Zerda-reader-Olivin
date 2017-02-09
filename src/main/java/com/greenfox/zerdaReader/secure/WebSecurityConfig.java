@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 /**
  * Created by Rita on 2017-02-09.
@@ -23,18 +23,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.addFilterBefore(myCustomFilter(), BasicAuthenticationFilter.class);
-        http.addFilterAfter(myCustomFilter(), BasicAuthenticationFilter.class);
+        http.addFilterAfter(myCustomFilter(), FilterSecurityInterceptor.class);
 
         http
                 .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/user/**").permitAll()
-                .antMatchers("/feed/**", "/subscribe/**", "/subscriptions", "/favorites").authenticated()
-                .and()
-                .logout();
+                .authenticationEntryPoint(customAuthenticationEntryPoint);
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/user/**").permitAll()
+//                .and()
+//                .logout();
 
 
     }

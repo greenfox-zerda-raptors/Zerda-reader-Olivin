@@ -28,18 +28,19 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-
-        if (request instanceof HttpServletRequest) {
-            token = ((HttpServletRequest) request).getParameter("token");
-            if (token != null && isValidToken()) {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-                Authentication authentication = new UsernamePasswordAuthenticationToken(service.getEmailByToken(token), token, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else if (token == null) {
-                throw new AuthenticationCredentialsNotFoundException("400");
-            } else if (!isValidToken()) {
-                throw new BadCredentialsException("401");
+        if (!((HttpServletRequest) request).getRequestURI().matches("/user(.*)")) {
+            if (request instanceof HttpServletRequest) {
+                token = ((HttpServletRequest) request).getParameter("token");
+                if (token != null && isValidToken()) {
+                    List<GrantedAuthority> authorities = new ArrayList<>();
+                    authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(service.getEmailByToken(token), token, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else if (token == null) {
+                    throw new AuthenticationCredentialsNotFoundException("400");
+                } else if (!isValidToken()) {
+                    throw new BadCredentialsException("401");
+                }
             }
         }
         chain.doFilter(request, response);
