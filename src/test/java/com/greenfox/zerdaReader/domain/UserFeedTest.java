@@ -11,9 +11,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
+/*
  * Created by zoloe on 2017. 02. 06..
  */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ZerdaReaderApplication.class)
 @DataJpaTest

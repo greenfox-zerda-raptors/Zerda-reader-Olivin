@@ -14,9 +14,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
+/*
  * Created by Rita on 2017-02-02.
  */
+
 //Todo átnevezni a teszteket, hogy tükrözzék hogy mit tesztelnek (átnevezett endpointController szerint kell)
 
 @RunWith(SpringJUnit4ClassRunner.class)

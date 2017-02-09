@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.domain;
 
 import lombok.Data;
 import lombok.extern.java.Log;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,4 +48,18 @@ public class UserFeed {
         userFeed.setFeed(userFeedItems);
         return userFeed;
     }
+
+    public UserFeed getUserFeed2(Page<FeedsForUsers> listofFeedsForUsers) {
+        ArrayList<UserFeedItem> allUserFeedItems = new ArrayList<>();
+        for (FeedsForUsers fi : listofFeedsForUsers) {
+            allUserFeedItems.add(new UserFeedItem(fi));
+        }
+        List<UserFeedItem> subList;
+        subList = allUserFeedItems;
+        allUserFeedItems.sort(Comparator.comparing(UserFeedItem::getCreated));
+        UserFeed userFeed = new UserFeed();
+        userFeed.setFeed(subList);
+        return userFeed;
+    }
+
 }

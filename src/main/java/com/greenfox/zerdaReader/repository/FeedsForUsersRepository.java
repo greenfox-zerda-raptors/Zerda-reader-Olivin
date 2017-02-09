@@ -5,7 +5,6 @@ import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -14,7 +13,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface FeedsForUsersRepository extends CrudRepository<com.greenfox.zerdaReader.domain.FeedsForUsers, Long> {
 
     FeedsForUsers findByUserAndFeedItem(User user, FeedItem feedItem);
-
-    @Query("SELECT feed_item_id FROM feeds_for_users")
     Page<FeedsForUsers>findAll(Pageable pageable);
 }

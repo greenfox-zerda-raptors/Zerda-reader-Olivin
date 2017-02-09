@@ -22,6 +22,10 @@ public class FeedsForUsersService {
         this.feedsForUsersRepository = feedsForUsersRepository;
     }
 
+    public FeedsForUsersService() {
+
+    }
+
     public void populateFeedsForUsers(User user) {
         for (Feed f : user.getSubscribedFeeds()) {
             for (FeedItem fi : f.getEntries()) {
@@ -33,11 +37,8 @@ public class FeedsForUsersService {
         feedsForUsersRepository.save(user.getFeedsForUsers());
     }
 
-    public Page<FeedsForUsers> listFeedsForUsers (int offset, int items) {
+    public Page<FeedsForUsers> getFeedsForUserPage (int offset, int items) {
        return feedsForUsersRepository.findAll(new PageRequest(offset,items));
     }
 
-    public void convertFeedForUserListToUserFeedItems (Page<FeedsForUsers> list, User user){
-
-    }
 }

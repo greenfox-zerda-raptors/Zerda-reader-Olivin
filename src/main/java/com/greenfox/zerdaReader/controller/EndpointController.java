@@ -7,6 +7,7 @@ import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemService;
+import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class EndpointController {
     FeedRepository feedRepository;
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
+    FeedsForUsersService feedsForUsersService;
 
 
     @Autowired
@@ -34,13 +36,15 @@ public class EndpointController {
                               UserRepository userRepository,
                               FeedItemService feedItemService,
                               UserService userService,
-                              FeedRepository feedRepository) {
+                              FeedRepository feedRepository,
+                                FeedsForUsersService feedsForUsersService) {
 
             this.feedItemService = feedItemService;
             this.userService = userService;
             this.feedRepository = feedRepository;
             this.userRepository = userRepository;
             this.feedItemRepository = feedItemRepository;
+        this.feedsForUsersService= feedsForUsersService;
     }
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
@@ -89,13 +93,33 @@ public class EndpointController {
 //*************** Ezek az éles endpointok ***************
 //*******************************************************
 
-    @RequestMapping(value = "/feed")
+/*    @RequestMapping(value = "/feed")
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
 //         amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
         return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items)); //ezt fogjuk atirni
+    }*/
+
+/*    @RequestMapping(value = "/feed")
+    public UserFeed allUserFeedItems(@RequestParam(name = "offset", required = false, defaultValue = "0") String offset,
+                                     @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
+//         amig nincs user auth, addig az elso usert hasznaljuk
+        User user = userService.getFirstUser();
+        return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items)); //ezt fogjuk atirni
+    }*/
+
+    @RequestMapping(value = "/feed2")
+    public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
+                                     @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
+//         amig nincs user auth, addig az elso usert hasznaljuk
+        User user = userService.getFirstUser();
+        return new UserFeed().getUserFeed2(feedsForUsersService.getFeedsForUserPage(Integer.parseInt(offset), Integer.parseInt(items))); //ezt fogjuk atirni
     }
+
+
+
+
 
     @RequestMapping(value = "/feed/{Id}")
     public UserFeed filterForFeed(@PathVariable Integer Id) {
