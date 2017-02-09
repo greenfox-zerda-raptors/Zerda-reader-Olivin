@@ -3,8 +3,6 @@ package com.greenfox.zerdaReader.service;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +37,14 @@ public class UserService {
 
     public boolean isExistingEmail(String email) {
         return userRepository.findOneByEmail(email) != null;
+    }
+
+    public boolean isExistingToken(String token) {
+        return userRepository.findOneByToken(token) != null;
+    }
+
+    public String getEmailByToken(String token) {
+        return userRepository.findOneByToken(token).getEmail();
     }
 
     public String getTokenForUser(String email) {
