@@ -56,9 +56,9 @@ public class UserFeed {
         }
         List<UserFeedItem> subList;
         subList = allUserFeedItems;
-        allUserFeedItems.sort(Comparator.comparing(UserFeedItem::getCreated));
         UserFeed userFeed = new UserFeed();
         userFeed.setFeed(subList);
+        subList.sort(Comparator.comparing(UserFeedItem::getCreated).reversed());
         return userFeed;
     }
 
