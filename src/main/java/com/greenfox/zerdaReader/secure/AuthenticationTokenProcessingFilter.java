@@ -1,6 +1,7 @@
 package com.greenfox.zerdaReader.secure;
 
 import com.greenfox.zerdaReader.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import java.util.List;
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     String token;
+    @Autowired
     UserService service;
 
     public void doFilter(ServletRequest request, ServletResponse response,
