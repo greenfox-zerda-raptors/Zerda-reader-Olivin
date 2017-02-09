@@ -36,4 +36,12 @@ public class UserController {
         }
         return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
+    public ResponseEntity<JsonNode> logIn(@RequestBody String loginRequest) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode request = mapper.readTree(loginRequest);
+        JsonNode answer;
+        return null;
+    }
 }
