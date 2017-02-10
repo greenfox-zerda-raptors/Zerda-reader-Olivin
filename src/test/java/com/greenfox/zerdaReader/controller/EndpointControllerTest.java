@@ -61,7 +61,7 @@ public class EndpointControllerTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByDefalutParams() throws Exception {
-        mockMvc.perform(get("/feed"))
+        mockMvc.perform(get("/feed?token=QWERTY9876"))
 //                http://reader-api.example/feed/12521?offset=25&items=50
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -74,7 +74,7 @@ public class EndpointControllerTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByOffset25() throws Exception {
-        mockMvc.perform(get("/feed?offset=25&items=55"))
+        mockMvc.perform(get("/feed?offset=25&items=55&token=QWERTY9876"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
 //         check if the number of feeditems are 20
