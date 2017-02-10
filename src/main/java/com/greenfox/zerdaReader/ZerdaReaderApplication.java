@@ -8,10 +8,13 @@ import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UpdateService;
+import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @ComponentScan("com.greenfox.zerdaReader")
+
 public class ZerdaReaderApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
@@ -27,7 +31,6 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
     @Autowired
     FeedService feedService;
-
     //needed to initialize user
     @Autowired
     UserRepository userRepository;
@@ -41,6 +44,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     @Autowired
     UpdateService updateService;
 
+
     @Override
     public void run(String... strings) throws Exception {
 //        feedService.addNewFeed("http://index.hu/24ora/rss/");
@@ -49,28 +53,12 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 //        feedService.addNewFeed("http://24.hu/feed/");
         feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30");
 
-        User testUser = new User("1234");
+        User testUser = new User("email", "pw");
+//        User testUser = new User("29384");
         userRepository.save(testUser);
-
-//        testUser = userRepository.findOne(1L);
-//
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(1L));
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(3L));
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(5L));
-//        feedsForUsersService.populateFeedsForUsers(testUser);
-//        userRepository.save(testUser);
-//
-//        testUser = new User(567246);
-//        userRepository.save(testUser);
-//        testUser = userRepository.findOne(2L);
-//
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(2L));
-//        testUser.getSubscribedFeeds().add(feedService.getFeed(4L));
-//        feedsForUsersService.populateFeedsForUsers(testUser);
-//        userRepository.save(testUser);
-
 //        a feedidkat trukkosen kell osszeszedni, ezek kozul elekerjuk az elsot
         Long id = feedRepository.getAllFeedId().get(0);
+
 //        azzal előszedjük a feedet
         Feed feed = feedService.getFeed(id);
 //        hozzáadjuk a tesztuserhez
@@ -87,6 +75,11 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ErrorAttributes errorAttributes() {
+        return new DefaultErrorAttributes(){};
     }
 }
 

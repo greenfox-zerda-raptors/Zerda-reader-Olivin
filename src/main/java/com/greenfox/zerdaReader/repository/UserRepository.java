@@ -14,7 +14,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query("select u.id from User u")
     List<Long> getAllUserId();
 
+    @Query("select u.token from User u")
+    List<String> getAllUserTokens();
+
     User findOneByEmail(String email);
 
     User findOneByToken(String token);
+
 }
