@@ -3,10 +3,10 @@ package com.greenfox.zerdaReader.service;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 /**
  * Created by Rita on 2017-01-23.
@@ -31,9 +31,30 @@ public class UserService {
         }
     }
 
+    public String generateResponseForLogin(String email, String password) {
+        if (isExistingEmail(email) && isMatchingPassword(email, password)) {
+            User user = userRepository.findOneByEmail(email);
+            generateNewToken(user);
+            user = userRepository.save(user);
+            return "{\"result\": \"success\", \"token\": \"" + user.getToken() + "\", \"id\": " + user.getId() + "}";
+        } else {
+            return "{\"result\": \"fail\", \"message\": \"invalid username or password\"}";
+        }
+    }
+
+    public void generateNewToken(User user) {
+        do {
+            user.setToken(UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
+        } while (isExistingToken(user.getToken()));
+
+    }
+
     public User addNewUser(String email, String password) {
         String encryptedPassword = passwordEncoder.encode(password);
         User newUser = new User(email, encryptedPassword);
+        if (isExistingToken(newUser.getToken())) {
+            generateNewToken(newUser);
+        }
         return userRepository.save(newUser);
     }
 
@@ -41,12 +62,21 @@ public class UserService {
         return userRepository.findOneByEmail(email) != null;
     }
 
-    public String getTokenForUser(String email) {
-        return userRepository.findOneByEmail(email).getToken();
+    public boolean isExistingToken(String token) {
+        return userRepository.findOneByToken(token) != null;
     }
 
-    public Long getIDForUser(String email) {
-        return userRepository.findOneByEmail(email).getId();
+    public String getEmailByToken(String token) {
+        return userRepository.findOneByToken(token).getEmail();
+    }
+
+    private boolean isMatchingPassword(String email, String password) {
+        User user = getUserByEmail(email);
+        return passwordEncoder.matches(password, user.getPassword());
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findOneByEmail(email);
     }
 
     public User getUser(Long id) {

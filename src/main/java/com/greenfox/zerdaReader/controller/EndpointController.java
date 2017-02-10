@@ -6,9 +6,7 @@ import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
-import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.FeedItemService;
-import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +36,11 @@ public class EndpointController {
                               UserService userService,
                               FeedRepository feedRepository) {
 
-            this.feedItemService = feedItemService;
-            this.userService = userService;
-            this.feedRepository = feedRepository;
-            this.userRepository = userRepository;
-            this.feedItemRepository = feedItemRepository;
+        this.feedItemService = feedItemService;
+        this.userService = userService;
+        this.feedRepository = feedRepository;
+        this.userRepository = userRepository;
+        this.feedItemRepository = feedItemRepository;
     }
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
@@ -93,7 +91,8 @@ public class EndpointController {
 
     @RequestMapping(value = "/feed")
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
-                                     @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
+                                     @RequestParam(value = "items", required = false, defaultValue = "50") String items,
+                                     @RequestParam(value = "token") String token) {
 //         amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
         return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items));

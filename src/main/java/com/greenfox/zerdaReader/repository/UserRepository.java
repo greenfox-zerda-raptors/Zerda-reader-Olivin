@@ -15,4 +15,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<Long> getAllUserId();
 
     User findOneByEmail(String email);
+
+    User findOneByToken(String token);
 }
