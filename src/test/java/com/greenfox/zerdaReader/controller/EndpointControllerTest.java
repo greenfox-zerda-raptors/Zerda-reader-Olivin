@@ -5,22 +5,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.nio.charset.Charset;
-import java.util.Map;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -66,7 +61,7 @@ public class EndpointControllerTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByDefalutParams() throws Exception {
-                mockMvc.perform(get("/feed?token=QWERTY9876"))
+        mockMvc.perform(get("/feed?token=QWERTY9876"))
 //                http://reader-api.example/feed/12521?offset=25&items=50
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -79,12 +74,12 @@ public class EndpointControllerTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByOffset25() throws Exception {
-         mockMvc.perform(get("/feed?offset=25&items=55&token=QWERTY9876"))
+        mockMvc.perform(get("/feed?offset=25&items=55&token=QWERTY9876"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
 //         check if the number of feeditems are 20
                 .andExpect(jsonPath("$.feed.*", hasSize(55)))
 //         check if the offset feeditem is the the 26 (we're counting from 0
-                 .andExpect(jsonPath("$.feed[0].id", is(26)));
+                .andExpect(jsonPath("$.feed[0].id", is(26)));
     }
 }
