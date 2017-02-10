@@ -41,7 +41,9 @@ public class UserController {
     public ResponseEntity<JsonNode> logIn(@RequestBody String loginRequest) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(loginRequest);
-        JsonNode answer;
-        return null;
+        String email = (request.get("email").textValue());
+        String password = (request.get("password").textValue());
+        JsonNode answer = mapper.readTree(userService.generateResponseForLogin(email, password));
+        return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
 }
