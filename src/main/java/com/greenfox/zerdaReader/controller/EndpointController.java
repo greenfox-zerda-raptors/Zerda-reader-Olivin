@@ -52,6 +52,13 @@ public class EndpointController {
     public List<Long> getUserIds() {
         return userRepository.getAllUserId();
     }
+//    Todo: ezt szedjük azért ki innen
+    //    visszaadja a DB-ből a usereket
+    @RequestMapping(value = "/users")
+    @ResponseBody
+    public List<String> getUserTokens() {
+        return  userRepository.getAllUserTokens();
+    }
 
     //    visszaadja a DB-ből a feedidkat
     @RequestMapping(value = "/feedid")
@@ -104,4 +111,4 @@ public class EndpointController {
         User user = userService.getFirstUser();
         return new UserFeed().getFilteredUserFeed(user, Id);
     }
-}//                http://reader-api.example/feed/12521?offset=25&items=50
+}
