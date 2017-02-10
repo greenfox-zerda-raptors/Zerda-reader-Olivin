@@ -3,6 +3,7 @@ package com.greenfox.zerdaReader.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class CustomErrorController implements ErrorController {
 
     private static final String PATH = "/error";
+    @Autowired
     private ErrorAttributes errorAttributes;
 
     @RequestMapping(value = PATH)
