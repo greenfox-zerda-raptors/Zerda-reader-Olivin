@@ -22,20 +22,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.addFilterBefore(myCustomFilter(), BasicAuthenticationFilter.class);
         http.addFilterAfter(myCustomFilter(), FilterSecurityInterceptor.class);
 
         http
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint);
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/user/**").permitAll()
-//                .and()
-//                .logout();
-
-
     }
 
     @Bean
