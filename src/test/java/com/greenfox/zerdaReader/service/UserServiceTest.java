@@ -28,18 +28,15 @@ public class UserServiceTest {
     UserRepository repository;
 
     @Test
-    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGenerateNewToken() {
-        User user = repository.findOne(2L);
-        String originalToken = user.getToken();
-        service.generateNewToken(user);
-        Assert.assertNotEquals(originalToken, user.getToken());
-    }
-
-    @Test
     public void TestGenerateResponseForLoginSuccessful() {
         User user = service.addNewUser("name@example.com", "1234");
         Assert.assertEquals("{\"result\": \"success\", \"token\": \"" + user.getToken() + "\", \"id\": " + user.getId() + "}", service.generateResponseForLogin("name@example.com", "1234"));
+    }
+
+    @Test
+    public void TestGenerateResponseForLoginUnSuccessful() {
+        User user = service.addNewUser("name@example.com", "1234");
+        Assert.assertEquals("{\"result\": \"fail\", \"message\": \"invalid username or password\"}", service.generateResponseForLogin("name2@example.com", "1234"));
     }
 
     @Test

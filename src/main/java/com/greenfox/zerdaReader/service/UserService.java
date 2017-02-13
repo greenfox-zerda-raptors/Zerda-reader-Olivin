@@ -43,7 +43,7 @@ public class UserService {
         }
     }
 
-    public void generateNewToken(User user) {
+    private void generateNewToken(User user) {
         List<String> tokens;
         do {
             tokens = userRepository.getAllUserTokens();

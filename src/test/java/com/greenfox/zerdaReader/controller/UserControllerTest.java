@@ -92,4 +92,30 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.token", is(userRepository.findOneByEmail("example@gmail.com").getToken())))
                 .andExpect(jsonPath("$.id", is((int) (userRepository.findOneByEmail("example@gmail.com").getId()))));
     }
+
+    @Test
+    @Sql({"/clear-tables.sql"})
+    public void TestUnSuccessfulLoginWithWrongEmail() throws Exception {
+        User newUser = userService.addNewUser("example@gmail.com", "12345");
+        mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\": \"name@gmail.com\", \"password\": \"12345\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("fail")))
+                .andExpect(jsonPath("$.message", is("invalid username or password")));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql"})
+    public void TestUnSuccessfulLoginWithWrongPassword() throws Exception {
+        User newUser = userService.addNewUser("example@gmail.com", "12345");
+        mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\": \"example@gmail.com\", \"password\": \"1234\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("fail")))
+                .andExpect(jsonPath("$.message", is("invalid username or password")));
+    }
 }
