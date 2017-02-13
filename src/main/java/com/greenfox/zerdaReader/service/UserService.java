@@ -66,8 +66,8 @@ public class UserService {
         return userRepository.findOneByToken(token) != null;
     }
 
-    public String getEmailByToken(String token) {
-        return userRepository.findOneByToken(token).getEmail();
+    public User getUserByToken(String token) {
+        return userRepository.findOneByToken(token);
     }
 
     private boolean isMatchingPassword(String email, String password) {

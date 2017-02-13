@@ -1,6 +1,7 @@
 package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
+import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedRepository;
@@ -59,5 +60,13 @@ public class FeedsForUsersServiceTest {
         userRepository.save(user);
         user = userRepository.findOne(2L);
         Assert.assertEquals(3, new UserFeed().getUserFeed(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGetFeedsForUsersByUserAndItem() throws Exception {
+        User user = userRepository.findOne(2L);
+        FeedsForUsers feedsForUsersToFind = service.getFeedsForUsersByUserAndItem(user, 11L);
+        Assert.assertFalse(feedsForUsersToFind.isReadByUser());
     }
 }
