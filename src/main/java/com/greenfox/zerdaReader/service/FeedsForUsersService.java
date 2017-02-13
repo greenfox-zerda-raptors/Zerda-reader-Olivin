@@ -31,11 +31,9 @@ public class FeedsForUsersService {
         feedsForUsersRepository.save(user.getFeedsForUsers());
     }
 
-    public FeedsForUsers getFeedsForUsersByUserAndItem(User user, Long itemId) {
-        return feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
-    }
-
-    public void updateFeedsForUsers(FeedsForUsers feedsForUsers) {
-        feedsForUsersRepository.save(feedsForUsers);
+    public void updateReadStatus(Long itemId, boolean isRead, User user) {
+        FeedsForUsers feedsForUsersToUpdate = feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
+        feedsForUsersToUpdate.setReadByUser(isRead);
+        feedsForUsersRepository.save(feedsForUsersToUpdate);
     }
 }
