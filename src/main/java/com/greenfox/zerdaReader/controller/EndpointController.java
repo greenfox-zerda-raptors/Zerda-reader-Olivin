@@ -135,6 +135,4 @@ public class EndpointController {
         feedsForUsersService.updateReadStatus(itemId, isRead, user);
         return HttpStatus.OK;
     }
-
-
 }

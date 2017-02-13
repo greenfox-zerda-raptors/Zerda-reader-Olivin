@@ -1,10 +1,10 @@
 package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
-import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedRepository;
+import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,6 +33,9 @@ public class FeedsForUsersServiceTest {
 
     @Autowired
     FeedRepository feedRepository;
+
+    @Autowired
+    FeedsForUsersRepository feedsForUsersRepository;
 
     final int DEFAULTOFFSET = 0;
     final int DEFAULTITEMS = 50;
@@ -64,9 +67,19 @@ public class FeedsForUsersServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetFeedsForUsersByUserAndItem() throws Exception {
+    public void TestUpdateReadStatus() throws Exception {
         User user = userRepository.findOne(2L);
-        FeedsForUsers feedsForUsersToFind = service.getFeedsForUsersByUserAndItem(user, 11L);
-        Assert.assertFalse(feedsForUsersToFind.isReadByUser());
+        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
+        service.updateReadStatus(11L, true, user);
+        Assert.assertTrue(feedsForUsersRepository.findOne(2L).isReadByUser());
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestUpdateReadStatusWhenNothingChanges() throws Exception {
+        User user = userRepository.findOne(2L);
+        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
+        service.updateReadStatus(11L, false, user);
+        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
     }
 }
