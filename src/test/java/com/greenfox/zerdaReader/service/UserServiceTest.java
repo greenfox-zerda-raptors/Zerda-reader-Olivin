@@ -30,7 +30,7 @@ public class UserServiceTest {
     @Test
     public void TestGenerateResponseForLoginSuccessful() {
         User user = service.addNewUser("name@example.com", "1234");
-        Assert.assertEquals("{\"result\": \"success\", \"token\": \"" + user.getToken() + "\", \"id\": " + user.getId() + "}", service.generateResponseForLogin("name@example.com", "1234"));
+        Assert.assertNotEquals("{\"result\": \"fail\", \"message\": \"invalid username or password\"}" + user.getId() + "}", service.generateResponseForLogin("name@example.com", "1234"));
     }
 
     @Test
