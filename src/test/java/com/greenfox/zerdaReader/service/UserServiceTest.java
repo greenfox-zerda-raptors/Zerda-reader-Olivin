@@ -29,6 +29,21 @@ public class UserServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGenerateNewToken() {
+        User user = repository.findOne(2L);
+        String originalToken = user.getToken();
+        service.generateNewToken(user);
+        Assert.assertNotEquals(originalToken, user.getToken());
+    }
+
+    @Test
+    public void TestGenerateResponseForLoginSuccessful() {
+        User user = service.addNewUser("name@example.com", "1234");
+        Assert.assertEquals("{\"result\": \"success\", \"token\": \"" + user.getToken() + "\", \"id\": " + user.getId() + "}", service.generateResponseForLogin("name@example.com", "1234"));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestGenerateResponseForSignUpFails() throws Exception {
         User user = repository.findOneByEmail("name@example.com");
         String answer = service.generateResponseForSignUp(false, user);
@@ -66,7 +81,7 @@ public class UserServiceTest {
     @Test
     @Sql({"/clear-tables.sql", "/Userrepo.sql"})
     public void getUserTest() throws Exception {
-        User testUser = new User ("ABCD1234");
+        User testUser = new User("ABCD1234");
         repository.save(testUser);
         Assert.assertEquals(2, repository.findOne(2L).getId());
     }
