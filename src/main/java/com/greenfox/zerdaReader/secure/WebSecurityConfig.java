@@ -33,7 +33,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterAfter(myCustomFilter(), FilterSecurityInterceptor.class);
-//        http.addFilterBefore(corsFilter(), ChannelProcessingFilter.class);
 
         http
                 .cors().and()
@@ -42,44 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(customAuthenticationEntryPoint);
     }
 
-//    @Override
-//    https://spring.io/blog/2015/06/08/cors-support-in-spring-framework
-//    public void addCorsMappings(CorsRegistry registry){
-//        registry.addMapping("/**")
-//                .allowedOrigins("*")
-//                .allowedMethods("PUT", "DELETE", "GET");
-//
-//    }
 
     @Bean
     public AuthenticationTokenProcessingFilter myCustomFilter() {
         return new AuthenticationTokenProcessingFilter();
     }
 
-
-//
-//    @Bean
-//    public org.springframework.web.filter.CorsFilter corsFilter(){
-//        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.setAllowCredentials(true);
-//        corsConfiguration.addAllowedOrigin("*");
-//        corsConfiguration.addAllowedHeader("*");
-//        corsConfiguration.addAllowedMethod("*");
-//        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-//        org.springframework.web.filter.CorsFilter cf = new org.springframework.web.filter.CorsFilter(urlBasedCorsConfigurationSource);
-//        return  cf;
-//
-//    }
-
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-////        configuration.setAllowedOrigins(Arrays.asList("https://example.com"));
-//        configuration.setAllowedOrigins(Arrays.asList("*"));
-//        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
 }
