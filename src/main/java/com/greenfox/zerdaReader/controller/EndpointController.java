@@ -105,10 +105,10 @@ public class EndpointController {
         return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
-    @RequestMapping(value = "/feed/{Id}")
-    public UserFeed filterForFeed(@PathVariable Integer Id) {
-//        amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getFirstUser();
-        return new UserFeed().getFilteredUserFeed(user, Id);
-    }
+//    @RequestMapping(value = "/feed/{Id}")
+//    public UserFeed filterForFeed(@PathVariable Integer Id) {
+////        amig nincs user auth, addig az elso usert hasznaljuk
+//        User user = userService.getFirstUser();
+//        return new UserFeed().getFilteredUserFeed(user, Id);
+//    }
 }

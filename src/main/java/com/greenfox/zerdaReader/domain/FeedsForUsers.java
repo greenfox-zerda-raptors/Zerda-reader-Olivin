@@ -6,8 +6,11 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by zoloe on 2017. 01. 23..
@@ -16,6 +19,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "feeds_for_users")
 public class FeedsForUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
