@@ -1,11 +1,9 @@
 package com.greenfox.zerdaReader.service;
 
-import com.greenfox.zerdaReader.domain.Feed;
-import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.FeedsForUsers;
-import com.greenfox.zerdaReader.domain.User;
+import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
+import com.greenfox.zerdaReader.repository.UserFeedItemRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
@@ -33,11 +31,13 @@ public class UpdateService {
 
     FeedItemRepository feedItemRepository;
     FeedRepository feedRepository;
+    UserFeedItemRepository userFeedItemRepository;
 
     @Autowired
-    public UpdateService(FeedItemRepository feedItemRepository, FeedRepository feedRepository) {
+    public UpdateService(FeedItemRepository feedItemRepository, FeedRepository feedRepository, UserFeedItemRepository userFeedItemRepository) {
         this.feedRepository = feedRepository;
         this.feedItemRepository = feedItemRepository;
+        this.userFeedItemRepository = userFeedItemRepository;
     }
 
     @Scheduled(fixedRate = 60000)
@@ -45,6 +45,7 @@ public class UpdateService {
         log.info("update started");
         ArrayList<FeedItem> feedItemsList = new ArrayList<FeedItem>();
         ArrayList<Feed> feedsList = new ArrayList<Feed>();
+        ArrayList<UserFeedItem> userFeedList = new ArrayList<>();
         try {
             for (long i : feedRepository.getAllFeedId()) {
                 Feed feed = feedRepository.findOne(i);
@@ -72,6 +73,7 @@ public class UpdateService {
         }
         feedItemRepository.save(feedItemsList);
         feedRepository.save(feedsList);
+        userFeedItemRepository.save(userFeedList);
         log.info("update stopped");
     }
 

@@ -3,11 +3,13 @@ package com.greenfox.zerdaReader.controller;
 import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.domain.UserFeed;
+import com.greenfox.zerdaReader.domain.UserFeedItem;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
+import com.greenfox.zerdaReader.service.UserFeedItemService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,7 @@ public class EndpointController {
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
     FeedsForUsersService feedsForUsersService;
+    UserFeedItemService userFeedItemService;
 
 
     @Autowired
@@ -37,7 +40,8 @@ public class EndpointController {
                               FeedItemService feedItemService,
                               UserService userService,
                               FeedRepository feedRepository,
-                                FeedsForUsersService feedsForUsersService) {
+                              FeedsForUsersService feedsForUsersService,
+                               UserFeedItemService userFeedItemService) {
 
             this.feedItemService = feedItemService;
             this.userService = userService;
@@ -45,6 +49,7 @@ public class EndpointController {
             this.userRepository = userRepository;
             this.feedItemRepository = feedItemRepository;
         this.feedsForUsersService= feedsForUsersService;
+        this.userFeedItemService = userFeedItemService;
     }
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
@@ -110,11 +115,10 @@ public class EndpointController {
     }*/
 
     @RequestMapping(value = "/feed2")
-    public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
-                                     @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
+    public List<UserFeedItem> allUserFeedItems() {
 //         amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
-        return new UserFeed().getUserFeed2(feedsForUsersService.getFeedsForUserPage(Integer.parseInt(offset), Integer.parseInt(items))); //ezt fogjuk atirni
+        return userFeedItemService.getUserFeed3(user);
     }
 
 

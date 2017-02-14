@@ -1,20 +1,30 @@
 package com.greenfox.zerdaReader.domain;
 
-import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.FeedsForUsers;
-import com.greenfox.zerdaReader.domain.User;
-import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
 import java.time.ZoneId;
 import java.util.Date;
 
 /**
  * Created by zoloe on 2017. 01. 24..
  */
-@Data
+
+@Entity
+@Table(name="user_feed_item_view")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserFeedItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long idForTable;
+    //ez a feed item id-ja
     private long id;
     private String title;
     private String description;
@@ -26,7 +36,10 @@ public class UserFeedItem {
     private String url;
 
 
+
+
     public UserFeedItem(FeedsForUsers feedsForUsers) {
+        this.idForTable=idForTable;
         this.id = feedsForUsers.getFeedItem().getId();
         this.title = feedsForUsers.getFeedItem().getTitle();
         this.description = feedsForUsers.getFeedItem().getDescription();
@@ -37,4 +50,6 @@ public class UserFeedItem {
         this.opened = feedsForUsers.isReadByUser();
         this.url = feedsForUsers.getFeedItem().getLink();
     }
+
+
 }

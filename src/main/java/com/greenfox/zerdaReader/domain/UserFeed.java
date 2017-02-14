@@ -62,4 +62,12 @@ public class UserFeed {
         return userFeed;
     }
 
+//    public void feedItemListWithPaginationOptimized () {
+//        Query query = UserFeedItem.createQuery("From Foo");
+//        EntityManagerFactory em ;
+//
+//
+//
+//    }
+
 }

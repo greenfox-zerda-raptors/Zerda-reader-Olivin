@@ -6,8 +6,6 @@ import com.greenfox.zerdaReader.domain.FeedsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,8 +35,8 @@ public class FeedsForUsersService {
         feedsForUsersRepository.save(user.getFeedsForUsers());
     }
 
-    public Page<FeedsForUsers> getFeedsForUserPage (int offset, int items) {
-       return feedsForUsersRepository.findAll(new PageRequest(offset,items));
-    }
+//    public Page<FeedsForUsers> getFeedsForUserPage (int offset, int items) {
+//       return feedsForUsersRepository.findAll(new PageRequest(offset,items));
+//    }
 
 }
