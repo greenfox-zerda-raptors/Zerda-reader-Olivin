@@ -11,7 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,19 +30,25 @@ import java.util.Collection;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+
 
 /**
  * Created by zoloe on 2017. 02. 14..
  */
 
-@RunWith(SpringRunner.class)
+
+@RunWith(SpringJUnit4ClassRunner.class)
+
+//@RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZerdaReaderApplication.class)
 @WebAppConfiguration
 @DataJpaTest
 @EnableWebMvc
+@ContextConfiguration
 public class WebSecurityCorsTest {
 
 
@@ -49,18 +57,19 @@ public class WebSecurityCorsTest {
             Charset.forName("utf8"));
 
 //    private MockMvc mockMvc;
-
-
-
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(SpringSecurityCoreVersion).build();
+    private MockMvc mockMvc;
 
-//    @Before
-//    public void setup() throws Exception {
-//        this.mockMvc = webAppContextSetup(webApplicationContext).apply(spri)build();
-//    }
+    @Before
+    public void setup() {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .apply(springSecurity())
+                .build();
+    }
+
 
     @Test
     public void TestIfCorsHeaderIsPresent() throws Exception {
