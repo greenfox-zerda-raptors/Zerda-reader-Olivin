@@ -15,10 +15,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @SpringBootApplication
 @ComponentScan("com.greenfox.zerdaReader")
@@ -43,6 +46,8 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     FeedsForUsersService feedsForUsersService;
     @Autowired
     UpdateService updateService;
+    @Autowired
+    UserService userService;
 
 
     @Override
@@ -52,10 +57,9 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 //        feedService.addNewFeed("http://hvg.hu/rss");
 //        feedService.addNewFeed("http://24.hu/feed/");
         feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30");
-
-        User testUser = new User("email", "pw");
-//        User testUser = new User("29384");
-        userRepository.save(testUser);
+        long lastUserId = userRepository.count();
+        lastUserId++;
+        User testUser = userService.addNewUser("email" + lastUserId, "pw" + lastUserId);
 //        a feedidkat trukkosen kell osszeszedni, ezek kozul elekerjuk az elsot
         Long id = feedRepository.getAllFeedId().get(0);
 

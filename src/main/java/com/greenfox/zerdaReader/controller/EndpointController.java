@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Created by zoloe on 2017. 01. 18..
  */
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class EndpointController {
     private final AtomicLong counter = new AtomicLong();
