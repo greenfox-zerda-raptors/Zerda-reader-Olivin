@@ -130,4 +130,22 @@ public class EndpointControllerTest {
 
     }
 
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulSubscriptionToExistingFeed() throws Exception {
+        // get a user token
+        // get an mvc + post json
+        String token = "ABCD1234";
+        mockMvc.perform(post("/subscribe?token=" + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"feed\": \"http://hvg.hu/rss\"}"));
+
+// make subscription
+
+    }
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulSubscriptionToBrandnewFeed() throws Exception {
+
+    }
 }

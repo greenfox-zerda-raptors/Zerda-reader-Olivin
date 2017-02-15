@@ -131,6 +131,22 @@ public class EndpointController {
         boolean isRead = request.get("opened").asBoolean();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         feedsForUsersService.updateReadStatus(itemId, isRead, user);
+
         return HttpStatus.OK;
     }
+
+
+    @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.POST)
+    public HttpStatus subscribeToFeed() throws IOException {
+
+
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode request = mapper.readTree(openedStatus);
+//        boolean isRead = request.get("opened").asBoolean();
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        feedsForUsersService.updateReadStatus(itemId, isRead, user);
+//
+        return HttpStatus.OK;
+    }
+
 }
