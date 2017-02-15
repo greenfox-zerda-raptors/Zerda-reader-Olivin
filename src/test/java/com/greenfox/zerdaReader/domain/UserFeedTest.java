@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.domain;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.repository.UserRepository;
+import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,11 @@ public class UserFeedTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    FeedsForUsersService service;
+
+
     final int DEFAULTOFFSET = 0;
     final int DEFAULTITEMS = 50;
 
@@ -28,21 +34,21 @@ public class UserFeedTest {
     @Test
     public void TestGetUserFeedShouldReturnEmptyListForNewUser() throws Exception {
         User user = new User("123");
-        Assert.assertTrue(new UserFeed().getUserFeed(user, DEFAULTOFFSET, 0).getFeed().size() == 0);
+        Assert.assertTrue(service.getFeedsForusersList(user, DEFAULTOFFSET, 0).getFeed().size() == 0);
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestGetUserFeedShouldReturnTwo() throws Exception {
         User user = userRepository.findOne(2L);
-        Assert.assertEquals(2, new UserFeed().getUserFeed(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(2, service.getFeedsForusersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestGetUserFeedForUserShouldReturnEmptyListForUserWithOutSubscription() throws Exception {
         User user = userRepository.findOne(3L);
-        Assert.assertEquals(0, new UserFeed().getUserFeed(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(0, service.getFeedsForusersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
 
