@@ -133,4 +133,9 @@ public class EndpointController {
         feedsForUsersService.updateReadStatus(itemId, isRead, user);
         return HttpStatus.OK;
     }
+
+    @RequestMapping(value = "/subscriptions", method = RequestMethod.GET)
+    public UserFeed getSubscriptions(@RequestParam(value = "token") String token) {
+        return null;
+    }
 }

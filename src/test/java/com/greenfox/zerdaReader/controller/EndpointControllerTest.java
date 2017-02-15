@@ -130,4 +130,25 @@ public class EndpointControllerTest {
 
     }
 
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulGetSubscriptions() throws Exception {
+        mockMvc.perform(get("/subscriptions?token=ABCD1234"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$.[0].name", is("Index - 24óra")))
+                .andExpect(jsonPath("$.[0].id", is(2)))
+                .andExpect(jsonPath("$.[1].name", is("Lorem ipsum feed for an interval of 30 seconds")))
+                .andExpect(jsonPath("$.[1].id", is(3)));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulGetSubscriptionsShouldReturnEmptyList() throws Exception {
+        mockMvc.perform(get("/subscriptions?token=QWERTY9876"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
 }
