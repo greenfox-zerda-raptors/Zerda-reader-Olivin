@@ -5,21 +5,17 @@ import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
-import com.greenfox.zerdaReader.secure.AuthenticationTokenProcessingFilter;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
@@ -32,7 +28,6 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 
 
 /**
@@ -66,15 +61,9 @@ public class EndpointControllerTest {
     @Autowired
     FeedsForUsersService feedsForUsersService;
 
-    @Autowired
-    private AuthenticationTokenProcessingFilter myCustomFilter;
-
     @Before
     public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext)
-                .apply(springSecurity())
-                .addFilters(myCustomFilter)
-                .build();
+        this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
@@ -130,37 +119,5 @@ public class EndpointControllerTest {
                 .content("{\"opened\": 1}"))
                 .andExpect(status().isOk());
 
-    }
-
-    @Test
-    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestMarkAsReadWithoutToken() throws Exception {
-        User newUser = userService.addNewUser("example@gmail.com", "12345");
-        Feed feed = feedRepository.findOne(2L);
-        newUser.getSubscribedFeeds().add(feed);
-        newUser = userRepository.save(newUser);
-        feedsForUsersService.populateFeedsForUsers(newUser);
-        userRepository.save(newUser);
-        mockMvc.perform(put("/feed/11")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"opened\": 1}"))
-                .andExpect(status().is(400))
-                .andExpect(jsonPath("$.error", is("No authentication token is provided, please refer to the API specification")));
-    }
-
-    @Test
-    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestMarkAsReadWithBadToken() throws Exception {
-        User newUser = userService.addNewUser("example@gmail.com", "12345");
-        Feed feed = feedRepository.findOne(2L);
-        newUser.getSubscribedFeeds().add(feed);
-        newUser = userRepository.save(newUser);
-        feedsForUsersService.populateFeedsForUsers(newUser);
-        userRepository.save(newUser);
-        mockMvc.perform(put("/feed/11?token=ahjhfajh")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"opened\": 1}"))
-                .andExpect(status().is(401))
-        .andExpect(jsonPath("$.error", is("No authentication token is provided, please refer to the API specification")));
     }
 }
