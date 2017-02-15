@@ -1,5 +1,7 @@
 package com.greenfox.zerdaReader.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.domain.UserFeed;
@@ -7,10 +9,13 @@ import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemService;
+import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -27,6 +32,7 @@ public class EndpointController {
     FeedRepository feedRepository;
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
+    FeedsForUsersService feedsForUsersService;
 
 
     @Autowired
@@ -34,13 +40,15 @@ public class EndpointController {
                               UserRepository userRepository,
                               FeedItemService feedItemService,
                               UserService userService,
-                              FeedRepository feedRepository) {
+                              FeedRepository feedRepository,
+                              FeedsForUsersService feedsForUsersService) {
 
         this.feedItemService = feedItemService;
         this.userService = userService;
         this.feedRepository = feedRepository;
         this.userRepository = userRepository;
         this.feedItemRepository = feedItemRepository;
+        this.feedsForUsersService = feedsForUsersService;
     }
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
@@ -52,12 +60,13 @@ public class EndpointController {
     public List<Long> getUserIds() {
         return userRepository.getAllUserId();
     }
-//    Todo: ezt szedjük azért ki innen
+
+    //    Todo: ezt szedjük azért ki innen
     //    visszaadja a DB-ből a usereket
     @RequestMapping(value = "/users")
     @ResponseBody
     public List<String> getUserTokens() {
-        return  userRepository.getAllUserTokens();
+        return userRepository.getAllUserTokens();
     }
 
     //    visszaadja a DB-ből a feedidkat
@@ -105,10 +114,25 @@ public class EndpointController {
         return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
-    @RequestMapping(value = "/feed/{Id}")
+    @RequestMapping(value = "/feed/{Id}", method = RequestMethod.GET)
     public UserFeed filterForFeed(@PathVariable Integer Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
         return new UserFeed().getFilteredUserFeed(user, Id);
+    }
+
+    @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
+    public HttpStatus markAsRead(@PathVariable Long itemId,
+                                 @RequestParam(value = "token") String token,
+                                 @RequestBody String openedStatus) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode request = mapper.readTree(openedStatus);
+        boolean isRead = request.get("opened").asBoolean();
+//        //Authentication is null, Spring Security is not working as it should
+//        //TODO: Security configuration needs to be checked
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getUserByToken(token);
+        feedsForUsersService.updateReadStatus(itemId, isRead, user);
+        return HttpStatus.OK;
     }
 }
