@@ -101,13 +101,12 @@ public class EndpointControllerTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByOffset25() throws Exception {
-        mockMvc.perform(get("/feed?offset=25&items=55&token=QWERTY9876"))
+        mockMvc.perform(get("/feed?offset=2&items=20&token=QWERTY9876"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-//         check if the number of feeditems are 20
-                .andExpect(jsonPath("$.feed.*", hasSize(55)))
-//         check if the offset feeditem is the the 26 (we're counting from 0
-                .andExpect(jsonPath("$.feed[0].id", is(25)));
+                .andExpect(jsonPath("$.feed.*", hasSize(20)))
+               .andExpect(jsonPath("$.feed[0].id", is(80)));
+
     }
 
     @Test
