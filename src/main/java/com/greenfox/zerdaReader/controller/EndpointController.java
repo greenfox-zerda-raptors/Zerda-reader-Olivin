@@ -10,9 +10,11 @@ import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
+import com.greenfox.zerdaReader.service.SubscriptionService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +36,7 @@ public class EndpointController {
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
     FeedsForUsersService feedsForUsersService;
+    SubscriptionService subscriptionService;
 
 
     @Autowired
@@ -42,7 +45,8 @@ public class EndpointController {
                               FeedItemService feedItemService,
                               UserService userService,
                               FeedRepository feedRepository,
-                              FeedsForUsersService feedsForUsersService) {
+                              FeedsForUsersService feedsForUsersService,
+                              SubscriptionService subscriptionService) {
 
         this.feedItemService = feedItemService;
         this.userService = userService;
@@ -50,6 +54,7 @@ public class EndpointController {
         this.userRepository = userRepository;
         this.feedItemRepository = feedItemRepository;
         this.feedsForUsersService = feedsForUsersService;
+        this.subscriptionService = subscriptionService;
     }
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
@@ -137,16 +142,12 @@ public class EndpointController {
 
 
     @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.POST)
-    public HttpStatus subscribeToFeed() throws IOException {
-
-
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonNode request = mapper.readTree(openedStatus);
-//        boolean isRead = request.get("opened").asBoolean();
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        feedsForUsersService.updateReadStatus(itemId, isRead, user);
-//
-        return HttpStatus.OK;
+    public ResponseEntity<JsonNode> subscribeToFeed(@RequestParam(value = "token") String token, @RequestBody String subscriptionRequest) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode request = mapper.readTree(subscriptionRequest);
+        Long id = (request.get("id").longValue());
+        JsonNode answer = mapper.readTree(subscriptionService.generateResponseForLogin(id));
+        return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
 
 }
