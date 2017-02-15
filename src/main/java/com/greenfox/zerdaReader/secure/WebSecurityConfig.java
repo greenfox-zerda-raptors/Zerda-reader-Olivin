@@ -21,10 +21,8 @@ import java.util.Arrays;
 /**
  * Created by Rita on 2017-02-09.
  */
-//http://stackoverflow.com/questions/40418441/spring-security-cors-filter
-//@Configuration
+
 @EnableWebSecurity
-//@ComponentScan("com.greenfox.zerdaReader")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -40,7 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint);
     }
-
 
     @Bean
     public AuthenticationTokenProcessingFilter myCustomFilter() {
