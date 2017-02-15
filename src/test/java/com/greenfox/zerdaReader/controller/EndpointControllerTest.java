@@ -134,18 +134,40 @@ public class EndpointControllerTest {
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestSuccessfulSubscriptionToExistingFeed() throws Exception {
         // get a user token
+        String token = "ABCD1234";
         // get an mvc + post json
+        mockMvc.perform(post("/subscribe?token=" + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"feed\": \"http://hvg.hu/rss\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("subscribed")))
+                .andExpect(jsonPath("$.id", is("4")));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestFailedSubscriptionToFeed() throws Exception {
         String token = "ABCD1234";
         mockMvc.perform(post("/subscribe?token=" + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"feed\": \"http://hvg.hu/rss\"}"));
-
-// make subscription
-
+                .content("{\"feed\": \"http://hvg.h\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("fail")));
     }
+
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestSuccessfulSubscriptionToBrandnewFeed() throws Exception {
-
+        String token = "ABCD1234";
+        mockMvc.perform(post("/subscribe?token=" + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"feed\": \"http://lorem-rss.herokuapp.com/feed?unit=second&interval=30\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("fail")));
     }
+
+//    if exception is raised, for example URL is malformed or the URL is 404 or not an RSS
 }
