@@ -10,10 +10,7 @@ import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -114,10 +111,13 @@ public class EndpointController {
         return feedsForUsersService.getFeedsForusersList(user,Integer.parseInt(offset),Integer.parseInt(items));
     }
 
-//    @RequestMapping(value = "/feed/{Id}")
-//    public UserFeed filterForFeed(@PathVariable Integer Id) {
-////        amig nincs user auth, addig az elso usert hasznaljuk
-//        User user = userService.getFirstUser();
-//        return new UserFeed().getFilteredUserFeed(user, Id);
-//    }
+    @RequestMapping(value = "/feed/{Id}")
+    public UserFeed filterForFeed(@PathVariable Long Id,
+                                  @RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
+                                  @RequestParam(value = "items", required = false, defaultValue = "50") String items,
+                                  @RequestParam(value = "token") String token) {
+//        amig nincs user auth, addig az elso usert hasznaljuk
+        User user = userService.getFirstUser();
+        return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset),Integer.parseInt(items));
+    }
 }

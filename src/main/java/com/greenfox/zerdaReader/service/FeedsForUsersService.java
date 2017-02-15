@@ -39,4 +39,14 @@ public class FeedsForUsersService {
 
     }
 
+    public UserFeed getFilteredUserFeed(User user, Long feed_id, int offset, int items) {
+        Page<FeedsForUsers> allUserFeedItems;
+
+        allUserFeedItems=feedsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
+        UserFeed nextFeed = new UserFeed(allUserFeedItems);
+        return nextFeed;
+    }
+
+//
+
 }
