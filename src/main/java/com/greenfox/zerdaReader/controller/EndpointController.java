@@ -13,6 +13,7 @@ import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -128,10 +129,7 @@ public class EndpointController {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(openedStatus);
         boolean isRead = request.get("opened").asBoolean();
-//        //Authentication is null, Spring Security is not working as it should
-//        //TODO: Security configuration needs to be checked
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.getUserByToken(token);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         feedsForUsersService.updateReadStatus(itemId, isRead, user);
         return HttpStatus.OK;
     }
