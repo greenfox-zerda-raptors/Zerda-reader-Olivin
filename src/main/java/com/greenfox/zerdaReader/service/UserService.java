@@ -89,6 +89,10 @@ public class UserService {
         return userRepository.findOne(userRepository.getAllUserId().get(0));
     }
 
+    public User getThaUser(){
+        return userRepository.findOne(1L);
+    }
+
     public User getUserById(Long id) {
         return userRepository.findOne(id);
     }

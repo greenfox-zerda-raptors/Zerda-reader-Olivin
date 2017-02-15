@@ -1,20 +1,23 @@
 package com.greenfox.zerdaReader.domain;
 
-import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.FeedsForUsers;
-import com.greenfox.zerdaReader.domain.User;
-import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
 /**
  * Created by zoloe on 2017. 01. 24..
  */
-@Data
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UserFeedItem {
+
     private long id;
     private String title;
     private String description;
@@ -24,6 +27,7 @@ public class UserFeedItem {
     private boolean favorite;
     private boolean opened;
     private String url;
+
 
 
     public UserFeedItem(FeedsForUsers feedsForUsers) {
@@ -37,4 +41,6 @@ public class UserFeedItem {
         this.opened = feedsForUsers.isReadByUser();
         this.url = feedsForUsers.getFeedItem().getLink();
     }
+
+
 }
