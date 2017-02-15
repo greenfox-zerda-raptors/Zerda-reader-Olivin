@@ -24,4 +24,11 @@ public interface FeedsForUsersRepository extends CrudRepository<com.greenfox.zer
 
     @Query("select fu from FeedsForUsers fu where fu.user =?1 and  fu.feedItem.feed.id =?2 order by fu.feedItem.pubDate desc ")
     Page<FeedsForUsers> findAllFeedsForUsersForAuserSortedByDateAndId(User user,Long id, Pageable pageable);
+
+
+    @Query("select ffu from FeedsForUsers ffu where ffu.user = ?1 and ffu.feedItem.id = ?2")
+    FeedsForUsers findByUserAndFeedItemID(User user, Long itemID);
 }
+
+
+

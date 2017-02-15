@@ -22,7 +22,7 @@ public class FeedsForUsersService {
     public void populateFeedsForUsers(User user) {
         for (Feed f : user.getSubscribedFeeds()) {
             for (FeedItem fi : f.getEntries()) {
-                    if (feedsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
+                if (feedsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
                     user.getFeedsForUsers().add(new FeedsForUsers(user, fi));
                 }
             }
@@ -38,8 +38,14 @@ public class FeedsForUsersService {
     }
     public UserFeed getFilteredUserFeed(User user, Long feed_id,int offset, int items) {
         Page<FeedsForUsers> userFeedItems;
-        userFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAuserSortedByDateAndId(user,feed_id,new PageRequest(offset, items));
+        userFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAuserSortedByDateAndId(user, feed_id, new PageRequest(offset, items));
         UserFeed nextFeedWithID = new UserFeed(userFeedItems);
         return nextFeedWithID;
+    }
+
+    public void updateReadStatus(Long itemId, boolean isRead, User user) {
+        FeedsForUsers feedsForUsersToUpdate = feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
+        feedsForUsersToUpdate.setReadByUser(isRead);
+        feedsForUsersRepository.save(feedsForUsersToUpdate);
     }
 }

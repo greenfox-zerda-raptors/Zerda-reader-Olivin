@@ -1,5 +1,7 @@
 package com.greenfox.zerdaReader.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.domain.UserFeed;
@@ -10,16 +12,18 @@ import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by zoloe on 2017. 01. 18..
  */
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class EndpointController {
     private final AtomicLong counter = new AtomicLong();
@@ -104,7 +108,6 @@ public class EndpointController {
 //*******************************************************
 //*************** Ezek az éles endpointok ***************
 //*******************************************************
-
     @RequestMapping(value = "/feed")
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
@@ -121,4 +124,18 @@ public class EndpointController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset), Integer.parseInt(items));
     }
+
+        @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
+        public HttpStatus markAsRead (@PathVariable Long itemId,
+                @RequestParam(value = "token") String token,
+                @RequestBody String openedStatus) throws IOException {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode request = mapper.readTree(openedStatus);
+            boolean isRead = request.get("opened").asBoolean();
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            feedsForUsersService.updateReadStatus(itemId, isRead, user);
+            return HttpStatus.OK;
+     }
 }
+
+

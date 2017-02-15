@@ -28,6 +28,18 @@ public class UserServiceTest {
     UserRepository repository;
 
     @Test
+    public void TestGenerateResponseForLoginSuccessful() {
+        User user = service.addNewUser("name@example.com", "1234");
+        Assert.assertNotEquals("{\"result\": \"fail\", \"message\": \"invalid username or password\"}" + user.getId() + "}", service.generateResponseForLogin("name@example.com", "1234"));
+    }
+
+    @Test
+    public void TestGenerateResponseForLoginUnSuccessful() {
+        User user = service.addNewUser("name@example.com", "1234");
+        Assert.assertEquals("{\"result\": \"fail\", \"message\": \"invalid username or password\"}", service.generateResponseForLogin("name2@example.com", "1234"));
+    }
+
+    @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestGenerateResponseForSignUpFails() throws Exception {
         User user = repository.findOneByEmail("name@example.com");
@@ -66,7 +78,7 @@ public class UserServiceTest {
     @Test
     @Sql({"/clear-tables.sql", "/Userrepo.sql"})
     public void getUserTest() throws Exception {
-        User testUser = new User ("ABCD1234");
+        User testUser = new User("ABCD1234");
         repository.save(testUser);
         Assert.assertEquals(2, repository.findOne(2L).getId());
     }
