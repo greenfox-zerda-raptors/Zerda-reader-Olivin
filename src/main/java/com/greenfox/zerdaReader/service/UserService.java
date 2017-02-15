@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -42,11 +43,12 @@ public class UserService {
         }
     }
 
-    public void generateNewToken(User user) {
+    private void generateNewToken(User user) {
+        List<String> tokens;
         do {
+            tokens = userRepository.getAllUserTokens();
             user.setToken(UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
-        } while (isExistingToken(user.getToken()));
-
+        } while (tokens.contains(user.getToken()));
     }
 
     public User addNewUser(String email, String password) {
@@ -66,8 +68,8 @@ public class UserService {
         return userRepository.findOneByToken(token) != null;
     }
 
-    public String getEmailByToken(String token) {
-        return userRepository.findOneByToken(token).getEmail();
+    public User getUserByToken(String token) {
+        return userRepository.findOneByToken(token);
     }
 
     private boolean isMatchingPassword(String email, String password) {

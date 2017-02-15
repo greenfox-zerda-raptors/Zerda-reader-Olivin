@@ -36,7 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint);
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/feed/**", "/subscribe/**", "/subscriptions", "/favorites").authenticated()
+                .antMatchers("/user/**").permitAll();
     }
 
     @Bean

@@ -42,7 +42,6 @@ dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.2.1.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.2.1.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.1.RELEASE'
-
 }
 
 task stage(dependsOn: ['build', 'clean'])

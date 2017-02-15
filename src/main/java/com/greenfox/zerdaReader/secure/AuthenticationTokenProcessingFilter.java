@@ -34,7 +34,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
                 if (token != null && isValidToken()) {
                     List<GrantedAuthority> authorities = new ArrayList<>();
                     authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(service.getEmailByToken(token), token, authorities);
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(service.getUserByToken(token), token, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else if (token == null) {
                     throw new AuthenticationCredentialsNotFoundException("400");
