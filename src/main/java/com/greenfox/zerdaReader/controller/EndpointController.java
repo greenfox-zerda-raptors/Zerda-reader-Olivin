@@ -2,9 +2,7 @@ package com.greenfox.zerdaReader.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.User;
-import com.greenfox.zerdaReader.domain.UserFeed;
+import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
@@ -135,7 +133,9 @@ public class EndpointController {
     }
 
     @RequestMapping(value = "/subscriptions", method = RequestMethod.GET)
-    public UserFeed getSubscriptions(@RequestParam(value = "token") String token) {
-        return null;
+    public List<SubscribedFeed> getSubscriptions(@RequestParam(value = "token") String token) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Subscriptions subscriptions = new Subscriptions(user.getSubscribedFeeds());
+        return subscriptions.getSubscribedFeedList();
     }
 }
