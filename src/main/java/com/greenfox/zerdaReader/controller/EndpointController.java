@@ -10,10 +10,8 @@ import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -40,7 +38,7 @@ public class EndpointController {
                               FeedItemService feedItemService,
                               UserService userService,
                               FeedRepository feedRepository,
-                                FeedsForUsersService feedsForUsersService) {
+                              FeedsForUsersService feedsForUsersService) {
 
         this.feedItemService = feedItemService;
         this.userService = userService;
@@ -49,6 +47,7 @@ public class EndpointController {
         this.feedItemRepository = feedItemRepository;
         this.feedsForUsersService = feedsForUsersService;
     }
+
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
 //*******************************************************
@@ -59,12 +58,13 @@ public class EndpointController {
     public List<Long> getUserIds() {
         return userRepository.getAllUserId();
     }
-//    Todo: ezt szedjük azért ki innen
+
+    //    Todo: ezt szedjük azért ki innen
     //    visszaadja a DB-ből a usereket
     @RequestMapping(value = "/users")
     @ResponseBody
     public List<String> getUserTokens() {
-        return  userRepository.getAllUserTokens();
+        return userRepository.getAllUserTokens();
     }
 
     //    visszaadja a DB-ből a feedidkat
@@ -109,15 +109,16 @@ public class EndpointController {
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                      @RequestParam(value = "token") String token) {
-//         amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getFirstUser();
-        return feedsForUsersService.getFeedsForusersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return feedsForUsersService.getFeedsForusersList(user, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
-//    @RequestMapping(value = "/feed/{Id}")
-//    public UserFeed filterForFeed(@PathVariable Integer Id) {
-////        amig nincs user auth, addig az elso usert hasznaljuk
-//        User user = userService.getFirstUser();
-//        return new UserFeed().getFilteredUserFeed(user, Id);
-//    }
+    @RequestMapping(value = "/feed/{Id}")
+    public UserFeed filterForFeed(@PathVariable Long Id,
+                                  @RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
+                                  @RequestParam(value = "items", required = false, defaultValue = "50") String items,
+                                  @RequestParam(value = "token") String token) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset), Integer.parseInt(items));
+    }
 }

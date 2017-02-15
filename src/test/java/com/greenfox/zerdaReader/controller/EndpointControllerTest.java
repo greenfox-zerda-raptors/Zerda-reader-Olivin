@@ -68,7 +68,7 @@ public class EndpointControllerTest {
 //                      check if the number of feeditems are 50
                 .andExpect(jsonPath("$.feed.*", hasSize(50)))
 //                      check if the 1st feeditem is the 1st in the db
-                .andExpect(jsonPath("$.feed[0].id", is(1)));
+                .andExpect(jsonPath("$.feed[0].id", is(120)));
     }
 
     @Test
@@ -80,6 +80,6 @@ public class EndpointControllerTest {
 //         check if the number of feeditems are 20
                 .andExpect(jsonPath("$.feed.*", hasSize(55)))
 //         check if the offset feeditem is the the 26 (we're counting from 0
-                .andExpect(jsonPath("$.feed[0].id", is(26)));
+                .andExpect(jsonPath("$.feed[0].id", is(25)));
     }
 }
