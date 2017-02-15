@@ -1,6 +1,12 @@
 package com.greenfox.zerdaReader.controller;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
+import com.greenfox.zerdaReader.domain.Feed;
+import com.greenfox.zerdaReader.domain.User;
+import com.greenfox.zerdaReader.repository.FeedRepository;
+import com.greenfox.zerdaReader.repository.UserRepository;
+import com.greenfox.zerdaReader.service.FeedsForUsersService;
+import com.greenfox.zerdaReader.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,8 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
@@ -19,15 +26,17 @@ import java.nio.charset.Charset;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
+
 
 
 /**
  * Created by zoloe on 2017. 02. 03..
  */
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ZerdaReaderApplication.class)
 @WebAppConfiguration
 @DataJpaTest
@@ -43,9 +52,27 @@ public class EndpointControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    FeedRepository feedRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    FeedsForUsersService feedsForUsersService;
+
+    @Autowired
+    FilterChainProxy filterChainProxy;
+
     @Before
     public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = webAppContextSetup(webApplicationContext)
+                .apply(springSecurity())
+                .addFilters(filterChainProxy)
+                .build();
     }
 
     @Test
@@ -82,4 +109,25 @@ public class EndpointControllerTest {
 //         check if the offset feeditem is the the 26 (we're counting from 0
                 .andExpect(jsonPath("$.feed[0].id", is(26)));
     }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulMarkAsRead() throws Exception {
+        User newUser = userService.addNewUser("example@gmail.com", "12345");
+        Feed feed = feedRepository.findOne(2L);
+        newUser.getSubscribedFeeds().add(feed);
+        newUser = userRepository.save(newUser);
+        feedsForUsersService.populateFeedsForUsers(newUser);
+        userRepository.save(newUser);
+        mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\": \"example@gmail.com\", \"password\": \"12345\"}"));
+        String token = newUser.getToken();
+        mockMvc.perform(put("/feed/11?token=" + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"opened\": 1}"))
+                .andExpect(status().isOk());
+
+    }
+
 }

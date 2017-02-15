@@ -8,7 +8,6 @@ import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedService;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UpdateService;
-import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @SpringBootApplication
 @ComponentScan("com.greenfox.zerdaReader")
@@ -45,6 +45,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     UpdateService updateService;
 
 
+
     @Override
     public void run(String... strings) throws Exception {
 //        feedService.addNewFeed("http://index.hu/24ora/rss/");
@@ -53,10 +54,10 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 //        feedService.addNewFeed("http://24.hu/feed/");
         feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30");
 
-        User testUser = new User("email", "pw");
-//        User testUser = new User("29384");
-        userRepository.save(testUser);
 //        a feedidkat trukkosen kell osszeszedni, ezek kozul elekerjuk az elsot
+        User testUser = new User("email", "arsitenrastie");
+        userRepository.save(testUser);
+
         Long id = feedRepository.getAllFeedId().get(0);
 
 //        azzal előszedjük a feedet
