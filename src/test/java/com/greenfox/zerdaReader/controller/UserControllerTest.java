@@ -1,7 +1,9 @@
 package com.greenfox.zerdaReader.controller;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
+import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.UserRepository;
+import com.greenfox.zerdaReader.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +45,9 @@ public class UserControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
     @Before
@@ -72,5 +77,45 @@ public class UserControllerTest {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.result", is("fail")))
                 .andExpect(jsonPath("$.message", is("email address already exists")));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql"})
+    public void TestSuccessfulLogin() throws Exception {
+        User newUser = userService.addNewUser("example@gmail.com", "12345");
+        mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\": \"example@gmail.com\", \"password\": \"12345\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("success")))
+                .andExpect(jsonPath("$.token", is(userRepository.findOneByEmail("example@gmail.com").getToken())))
+                .andExpect(jsonPath("$.id", is((int) (userRepository.findOneByEmail("example@gmail.com").getId()))));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql"})
+    public void TestUnSuccessfulLoginWithWrongEmail() throws Exception {
+        User newUser = userService.addNewUser("example@gmail.com", "12345");
+        mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\": \"name@gmail.com\", \"password\": \"12345\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("fail")))
+                .andExpect(jsonPath("$.message", is("invalid username or password")));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql"})
+    public void TestUnSuccessfulLoginWithWrongPassword() throws Exception {
+        User newUser = userService.addNewUser("example@gmail.com", "12345");
+        mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\": \"example@gmail.com\", \"password\": \"1234\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.result", is("fail")))
+                .andExpect(jsonPath("$.message", is("invalid username or password")));
     }
 }
