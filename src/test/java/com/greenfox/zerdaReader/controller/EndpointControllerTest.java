@@ -151,4 +151,20 @@ public class EndpointControllerTest {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(0)));
     }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGetSubscriptionsWithInvalidToken() throws Exception {
+        mockMvc.perform(get("/subscriptions?token=QWERTY987"))
+                .andExpect(status().is(401))
+                .andExpect(status().reason("The provided authentication token is not valid."));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGetSubscriptionsWithoutToken() throws Exception {
+        mockMvc.perform(get("/subscriptions"))
+                .andExpect(status().is(400))
+                .andExpect(status().reason("No authentication token is provided, please refer to the API specification"));
+    }
 }
