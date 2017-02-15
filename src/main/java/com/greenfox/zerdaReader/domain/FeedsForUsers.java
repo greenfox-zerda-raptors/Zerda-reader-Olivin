@@ -6,16 +6,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * Created by zoloe on 2017. 01. 23..
  */
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

@@ -7,9 +7,13 @@ import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemService;
+import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,6 +31,7 @@ public class EndpointController {
     FeedRepository feedRepository;
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
+    FeedsForUsersService feedsForUsersService;
 
 
     @Autowired
@@ -34,13 +39,15 @@ public class EndpointController {
                               UserRepository userRepository,
                               FeedItemService feedItemService,
                               UserService userService,
-                              FeedRepository feedRepository) {
+                              FeedRepository feedRepository,
+                                FeedsForUsersService feedsForUsersService) {
 
         this.feedItemService = feedItemService;
         this.userService = userService;
         this.feedRepository = feedRepository;
         this.userRepository = userRepository;
         this.feedItemRepository = feedItemRepository;
+        this.feedsForUsersService = feedsForUsersService;
     }
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
@@ -85,12 +92,14 @@ public class EndpointController {
     }
 
     //      visszaadja egy beadott user feedjét
+/*
     @RequestMapping(value = "/feed/user/{Id}")
     public UserFeed filterForFeedAndUser(@PathVariable String Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getUser(Long.parseLong(Id));
         return new UserFeed().getUserFeed(user, 0, 100);
     }
+*/
 
 //*******************************************************
 //*************** Ezek az éles endpointok ***************
@@ -102,7 +111,7 @@ public class EndpointController {
                                      @RequestParam(value = "token") String token) {
 //         amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getFirstUser();
-        return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items));
+        return feedsForUsersService.getFeedsForusersList(user,Integer.parseInt(offset),Integer.parseInt(items));
     }
 
 //    @RequestMapping(value = "/feed/{Id}")
