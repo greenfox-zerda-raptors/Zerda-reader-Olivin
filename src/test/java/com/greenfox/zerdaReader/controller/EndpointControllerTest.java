@@ -167,4 +167,26 @@ public class EndpointControllerTest {
                 .andExpect(status().is(400))
                 .andExpect(status().reason("No authentication token is provided, please refer to the API specification"));
     }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulMarkAsFavorite() throws Exception {
+        mockMvc.perform(post("/favorites?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"item_id\": 11}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.response", is("success")));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestMarkAsFavoriteCalledWithInvalidId() throws Exception {
+        mockMvc.perform(post("/favorites?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"item_id\": 22}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.response", is("invalid item id")));
+    }
 }
