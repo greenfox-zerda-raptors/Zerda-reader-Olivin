@@ -113,7 +113,7 @@ public class EndpointController {
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                      @RequestParam(value = "token") String token) {
 //         amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getFirstUser();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return feedsForUsersService.getFeedsForusersList(user,Integer.parseInt(offset),Integer.parseInt(items));
     }
 
@@ -123,7 +123,7 @@ public class EndpointController {
                                   @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                   @RequestParam(value = "token") String token) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getFirstUser();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset),Integer.parseInt(items));
     }
 
