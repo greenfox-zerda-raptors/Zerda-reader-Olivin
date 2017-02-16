@@ -12,7 +12,6 @@ import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +41,7 @@ public class EndpointController {
                               FeedItemService feedItemService,
                               UserService userService,
                               FeedRepository feedRepository,
-                                FeedsForUsersService feedsForUsersService) {
+                              FeedsForUsersService feedsForUsersService) {
 
         this.feedItemService = feedItemService;
         this.userService = userService;
@@ -122,7 +121,7 @@ public class EndpointController {
                                   @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                   @RequestParam(value = "token") String token) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset),Integer.parseInt(items));
+        return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
@@ -142,6 +141,14 @@ public class EndpointController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Subscriptions subscriptions = new Subscriptions(user.getSubscribedFeeds());
         return subscriptions.getSubscribedFeedList();
+    }
+
+    @RequestMapping(value = "/favorites", method = RequestMethod.GET)
+    public UserFeed listFavoriteFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
+                                          @RequestParam(value = "items", required = false, defaultValue = "50") String items,
+                                          @RequestParam(value = "token") String token) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return feedsForUsersService.getUserFeedWithFavoritesOnly(user, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/favorites", method = RequestMethod.POST)

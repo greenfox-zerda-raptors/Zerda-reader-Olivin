@@ -172,6 +172,15 @@ public class EndpointControllerTest {
     }
 
     @Test
+    @Sql ({"/clear-tables.sql", "/favorite.sql"})
+    public void TestFavoritedFeedListDisplay() throws Exception {
+        mockMvc.perform(get("/favorites?token=ABCD1234"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.feed[0].id", is(12)));
+    }
+
+    @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestSuccessfulMarkAsFavorite() throws Exception {
         mockMvc.perform(post("/favorites?token=ABCD1234")
