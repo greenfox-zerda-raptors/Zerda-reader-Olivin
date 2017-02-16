@@ -40,7 +40,7 @@ public class EndpointController {
                               FeedItemService feedItemService,
                               UserService userService,
                               FeedRepository feedRepository,
-                              FeedsForUsersService feedsForUsersService) {
+                                FeedsForUsersService feedsForUsersService) {
 
         this.feedItemService = feedItemService;
         this.userService = userService;
@@ -93,12 +93,14 @@ public class EndpointController {
     }
 
     //      visszaadja egy beadott user feedjét
+/*
     @RequestMapping(value = "/feed/user/{Id}")
     public UserFeed filterForFeedAndUser(@PathVariable String Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getUser(Long.parseLong(Id));
         return new UserFeed().getUserFeed(user, 0, 100);
     }
+*/
 
 //*******************************************************
 //*************** Ezek az éles endpointok ***************
@@ -109,15 +111,18 @@ public class EndpointController {
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                      @RequestParam(value = "token") String token) {
 //         amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getFirstUser();
-        return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return feedsForUsersService.getFeedsForusersList(user,Integer.parseInt(offset),Integer.parseInt(items));
     }
 
-    @RequestMapping(value = "/feed/{Id}", method = RequestMethod.GET)
-    public UserFeed filterForFeed(@PathVariable Integer Id) {
+    @RequestMapping(value = "/feed/{Id}")
+    public UserFeed filterForFeed(@PathVariable Long Id,
+                                  @RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
+                                  @RequestParam(value = "items", required = false, defaultValue = "50") String items,
+                                  @RequestParam(value = "token") String token) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getFirstUser();
-        return new UserFeed().getFilteredUserFeed(user, Id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset),Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
