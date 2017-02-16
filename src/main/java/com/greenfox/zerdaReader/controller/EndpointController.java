@@ -2,9 +2,8 @@ package com.greenfox.zerdaReader.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.User;
-import com.greenfox.zerdaReader.domain.UserFeed;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
@@ -100,12 +99,14 @@ public class EndpointController {
     }
 
     //      visszaadja egy beadott user feedjét
+/*
     @RequestMapping(value = "/feed/user/{Id}")
     public UserFeed filterForFeedAndUser(@PathVariable String Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
         User user = userService.getUserById(Long.parseLong(Id));
         return new UserFeed().getUserFeed(user, 0, 100);
     }
+*/
 
 //*******************************************************
 //*************** Ezek az éles endpointok ***************
@@ -115,16 +116,17 @@ public class EndpointController {
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                      @RequestParam(value = "token") String token) {
-//         amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getFirstUser();
-        return new UserFeed().getUserFeed(user, Integer.parseInt(offset), Integer.parseInt(items));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return feedsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
     }
 
-    @RequestMapping(value = "/feed/{Id}", method = RequestMethod.GET)
-    public UserFeed filterForFeed(@PathVariable Integer Id) {
-//        amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getFirstUser();
-        return new UserFeed().getFilteredUserFeed(user, Id);
+    @RequestMapping(value = "/feed/{Id}")
+    public UserFeed filterForFeed(@PathVariable Long Id,
+                                  @RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
+                                  @RequestParam(value = "items", required = false, defaultValue = "50") String items,
+                                  @RequestParam(value = "token") String token) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
@@ -139,6 +141,38 @@ public class EndpointController {
         feedsForUsersService.updateReadStatus(itemId, isRead, user);
 
         return HttpStatus.OK;
+    }
+
+    @RequestMapping(value = "/subscriptions", method = RequestMethod.GET)
+    public List<SubscribedFeed> getSubscriptions(@RequestParam(value = "token") String token) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Subscriptions subscriptions = new Subscriptions(user.getSubscribedFeeds());
+        return subscriptions.getSubscribedFeedList();
+    }
+
+    @RequestMapping(value = "/favorites", method = RequestMethod.GET)
+    public UserFeed listFavoriteFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
+                                          @RequestParam(value = "items", required = false, defaultValue = "50") String items,
+                                          @RequestParam(value = "token") String token) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return feedsForUsersService.getUserFeedWithFavoritesOnly(user, Integer.parseInt(offset), Integer.parseInt(items));
+    }
+
+    @RequestMapping(value = "/favorites", method = RequestMethod.POST)
+    public ObjectNode markAsFavorite(@RequestParam(value = "token") String token,
+                                     @RequestBody String itemIdOfItemToChange) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode request = mapper.readTree(itemIdOfItemToChange);
+        ObjectNode response = mapper.createObjectNode();
+        long itemId = request.get("item_id").asLong();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            feedsForUsersService.markAsFavorite(itemId, user);
+            response.put("response", "success");
+        } catch (NullPointerException e) {
+            response.put("response", "invalid item id");
+        }
+        return response;
     }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.POST)

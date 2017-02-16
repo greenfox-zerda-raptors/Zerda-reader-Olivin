@@ -12,10 +12,10 @@ import javax.persistence.*;
 /**
  * Created by zoloe on 2017. 01. 23..
  */
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "feeds_for_users")
 public class FeedsForUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
