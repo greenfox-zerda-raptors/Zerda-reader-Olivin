@@ -15,55 +15,52 @@ import java.io.IOException;
 public class SubscriptionService {
 
     UserRepository userRepository;
+    UserService userService;
     FeedService feedService;
 
     @Autowired
-    public SubscriptionService(UserRepository userRepository, FeedService feedService) {
+    public SubscriptionService(UserRepository userRepository, UserService userService, FeedService feedService) {
         this.userRepository = userRepository;
+        this.userService = userService;
         this.feedService = feedService;
     }
 
-    public String generateResponseForSubsciption(String url){
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Feed feed = feedService.findFeedByUrl(url);
-
-        String response;
-        // to brandnew feed
-
-        if (feed == null){
-            Long newFeedId = -1L;
+    public String trySubscribingToFeedAndReturn(String url){
+//            ha mar benne van a feed a DB-ben
+        if (isUrlAlreadyParsed(url)) {
+//            iratkoztassuk fel ra
+            subscribeToAlreadyParsedFeed(url);
+//            ha meg nincs benne (azaz teljesen uj url)
+        }else{
             try {
-                newFeedId = getIdForBrandNewFeed(url);
-            } catch (Exception e){
-                return "{\"result\":\"fail\"}";
-            }
-
-            if (newFeedId > -1L ){
-                response = "{\"result\":\"subscribed\",\"id\":" + newFeedId + "}";
-            }
-            // if its not a valid feed
-            else {
-                //    if exception is raised, for example URL is malformed or the URL is 404 or not an RSS
-//                response = "{\"result\":\"fail\",\"message\":\"The URL provided is not valid.\"}";
-                response = "{\"result\":\"fail\"}";
+//                adjuk hozza az uj feedet a feedjeinkhez, es iratkoztassuk fol ra
+                subscribeToBrandNewFeed(url);
+            } catch (Exception e) {
+//                ha nem sikerult, terjen vissza a hibauzenettel (    if exception is raised, for example URL is malformed or the URL is 404 or not an RSS)
+                return "{\"result\":\"fail\",\"message\":\"The URL provided is not valid.\"}";
             }
         }
-        // to existing feed
-        else {
-            user.getSubscribedFeeds().add(feed);
-            userRepository.save(user);
-            Long newFeedId = feed.getId();
-            response = "{\"result\":\"subscribed\",\"id\":" + newFeedId + "}";
-        }
-        return response;
+        return  "{\"result\":\"subscribed\",\"id\":" + getFeedIdByUrl(url) + "}";
     }
 
-    private Long getIdForBrandNewFeed(String url) throws IOException, FeedException {
-        feedService.addNewFeed(url);
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        user.getSubscribedFeeds().add(feedService.findFeedByUrl(url));
-        userRepository.save(user);
+    private void subscribeToAlreadyParsedFeed(String url){
+        User user = userService.getLoggedInUser();
+        Feed feed = feedService.getFeedByUrl(url);
+        user.getSubscribedFeeds().add(feed);
+        userService.saveUser(user);
+    }
 
-        return feedService.findFeedByUrl(url).getId();
+    private boolean isUrlAlreadyParsed(String url){
+        return (feedService.getFeedByUrl(url) != null);
+    }
+
+    private long getFeedIdByUrl(String url){
+        return feedService.getFeedByUrl(url).getId();
+    }
+
+
+    private void subscribeToBrandNewFeed(String url) throws IOException, FeedException {
+        feedService.addNewFeed(url);
+        subscribeToAlreadyParsedFeed(url);
     }
 }

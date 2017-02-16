@@ -3,6 +3,7 @@ package com.greenfox.zerdaReader.service;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -81,7 +82,7 @@ public class UserService {
         return userRepository.findOneByEmail(email);
     }
 
-    public User getUser(Long id) {
+    public User getUserById(Long id) {
         return userRepository.findOne(id);
     }
 
@@ -89,7 +90,9 @@ public class UserService {
         return userRepository.findOne(userRepository.getAllUserId().get(0));
     }
 
-    public User getUserById(Long id) {
-        return userRepository.findOne(id);
+    public User getLoggedInUser(){return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 }

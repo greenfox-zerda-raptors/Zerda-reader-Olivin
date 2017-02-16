@@ -167,7 +167,7 @@ public class EndpointControllerTest {
         String token = "ABCD1234";
         mockMvc.perform(post("/subscribe?token=" + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"feed\": \"https://444.hu/feed\"}"))
+                .content("{\"feed\": \"http://lorem-rss.herokuapp.com/feed\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.result", is("subscribed")))

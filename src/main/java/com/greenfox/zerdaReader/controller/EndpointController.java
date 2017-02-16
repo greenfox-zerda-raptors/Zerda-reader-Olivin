@@ -103,7 +103,7 @@ public class EndpointController {
     @RequestMapping(value = "/feed/user/{Id}")
     public UserFeed filterForFeedAndUser(@PathVariable String Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getUser(Long.parseLong(Id));
+        User user = userService.getUserById(Long.parseLong(Id));
         return new UserFeed().getUserFeed(user, 0, 100);
     }
 
@@ -146,7 +146,7 @@ public class EndpointController {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(subscriptionRequest);
         String url = (request.get("feed").asText());
-        JsonNode answer = mapper.readTree(subscriptionService.generateResponseForSubsciption(url));
+        JsonNode answer = mapper.readTree(subscriptionService.trySubscribingToFeedAndReturn(url));
         return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
 

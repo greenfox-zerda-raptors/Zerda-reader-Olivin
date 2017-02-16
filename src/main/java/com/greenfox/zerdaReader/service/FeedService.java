@@ -43,7 +43,7 @@ public class FeedService {
         return feedRepo.findOne(id);
     }
 
-    public Feed findFeedByUrl(String url){
+    public Feed getFeedByUrl(String url){
         return feedRepo.findOneByRssPath(url);
     }
 
