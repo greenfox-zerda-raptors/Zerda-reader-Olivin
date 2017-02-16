@@ -20,9 +20,9 @@ public class UserFeed {
 
     private List<UserFeedItem> feed;
 
-    public UserFeed(Page<FeedsForUsers> rawFeed) {
+    public UserFeed(Page<FeedItemsForUsers> rawFeed) {
         this.feed = new ArrayList<>();
-        for (FeedsForUsers fi : rawFeed) {
+        for (FeedItemsForUsers fi : rawFeed) {
             feed.add(new UserFeedItem(fi));
         }
     }

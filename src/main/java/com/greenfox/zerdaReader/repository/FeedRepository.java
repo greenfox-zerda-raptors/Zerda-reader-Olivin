@@ -16,5 +16,7 @@ public interface FeedRepository extends CrudRepository<Feed, Long> {
 
     @Query("select f.id from Feed f")
     List<Long> getAllFeedId();
+
+    List<Long> getAllFeedIdWhereUserIs(User user);
 }
 

@@ -35,12 +35,12 @@ public class User {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonBackReference
-    private List<FeedsForUsers> feedsForUsers;
+    private List<FeedItemsForUsers> feedItemsForUsers;
 
     public User(String token) {
         this.token = token;
         subscribedFeeds = new ArrayList<>();
-        feedsForUsers = new ArrayList<>();
+        feedItemsForUsers = new ArrayList<>();
     }
 
     public User(String email, String encryptedPassword) {
@@ -48,7 +48,7 @@ public class User {
         this.password = encryptedPassword;
         token = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
         subscribedFeeds = new ArrayList<>();
-        feedsForUsers = new ArrayList<>();
+        feedItemsForUsers = new ArrayList<>();
     }
 }
 

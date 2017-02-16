@@ -37,7 +37,7 @@ public class FeedItem {
     @JsonBackReference
     private Feed feed;
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feedItem")
-    private List<FeedsForUsers> feedsForUsers;
+    private List<FeedItemsForUsers> feedItemsForUsers;
 
     public void setFields(SyndEntry entry, Feed feed) {
         setTitle(entry.getTitle());
@@ -48,11 +48,11 @@ public class FeedItem {
         setFeed(feed);
     }
 
-    public void addNewFeedsForUsers(FeedsForUsers feedsForUser) {
-        if (feedsForUsers == null) {
-            feedsForUsers = new ArrayList<>();
+    public void addNewFeedItemsForUsers(FeedItemsForUsers feedsForUser) {
+        if (feedItemsForUsers == null) {
+            feedItemsForUsers = new ArrayList<>();
         }
-        feedsForUsers.add(feedsForUser);
+        feedItemsForUsers.add(feedsForUser);
     }
 
     public long getId() {
@@ -115,11 +115,11 @@ public class FeedItem {
     }
 
     @JsonIgnore
-    public List<FeedsForUsers> getFeedsForUsers() {
-        return feedsForUsers;
+    public List<FeedItemsForUsers> getFeedItemsForUsers() {
+        return feedItemsForUsers;
     }
 
-    public void setFeedsForUsers(List<FeedsForUsers> feedsForUsers) {
-        this.feedsForUsers = feedsForUsers;
+    public void setFeedItemsForUsers(List<FeedItemsForUsers> feedItemsForUsers) {
+        this.feedItemsForUsers = feedItemsForUsers;
     }
 }

@@ -28,15 +28,15 @@ public class UserFeedItem {
     private boolean opened;
     private String url;
 
-    public UserFeedItem(FeedsForUsers feedsForUsers) {
-        this.id = feedsForUsers.getFeedItem().getId();
-        this.title = feedsForUsers.getFeedItem().getTitle();
-        this.description = feedsForUsers.getFeedItem().getDescription();
-        this.created = new Date(feedsForUsers.getFeedItem().getPubDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        this.feed_name = feedsForUsers.getFeedItem().getFeed().getTitle();
-        this.feed_id = feedsForUsers.getFeedItem().getFeed().getId();
-        this.favorite = feedsForUsers.isStarred();
-        this.opened = feedsForUsers.isReadByUser();
-        this.url = feedsForUsers.getFeedItem().getLink();
+    public UserFeedItem(FeedItemsForUsers feedItemsForUsers) {
+        this.id = feedItemsForUsers.getFeedItem().getId();
+        this.title = feedItemsForUsers.getFeedItem().getTitle();
+        this.description = feedItemsForUsers.getFeedItem().getDescription();
+        this.created = new Date(feedItemsForUsers.getFeedItem().getPubDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        this.feed_name = feedItemsForUsers.getFeedItem().getFeed().getTitle();
+        this.feed_id = feedItemsForUsers.getFeedItem().getFeed().getId();
+        this.favorite = feedItemsForUsers.isStarred();
+        this.opened = feedItemsForUsers.isReadByUser();
+        this.url = feedItemsForUsers.getFeedItem().getLink();
     }
 }

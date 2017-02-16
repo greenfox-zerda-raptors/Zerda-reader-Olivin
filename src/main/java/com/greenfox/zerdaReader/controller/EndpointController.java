@@ -8,7 +8,7 @@ import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemService;
-import com.greenfox.zerdaReader.service.FeedsForUsersService;
+import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
 import com.greenfox.zerdaReader.service.SubscriptionService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class EndpointController {
     FeedRepository feedRepository;
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
-    FeedsForUsersService feedsForUsersService;
+    FeedItemsForUsersService feedsForUsersService;
     SubscriptionService subscriptionService;
 
 
@@ -44,7 +44,7 @@ public class EndpointController {
                               FeedItemService feedItemService,
                               UserService userService,
                               FeedRepository feedRepository,
-                              FeedsForUsersService feedsForUsersService,
+                              FeedItemsForUsersService feedsForUsersService,
                               SubscriptionService subscriptionService) {
 
         this.feedItemService = feedItemService;

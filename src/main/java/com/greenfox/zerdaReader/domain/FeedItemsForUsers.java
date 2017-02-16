@@ -15,8 +15,8 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "feeds_for_users")
-public class FeedsForUsers {
+@Table(name = "feed_items_for_users")
+public class FeedItemsForUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
@@ -30,7 +30,7 @@ public class FeedsForUsers {
     @JoinColumn(name = "feedItem_id")
     private FeedItem feedItem;
 
-    public FeedsForUsers(User user, FeedItem feedItem) {
+    public FeedItemsForUsers(User user, FeedItem feedItem) {
         this.user = user;
         this.feedItem = feedItem;
         starred = false;

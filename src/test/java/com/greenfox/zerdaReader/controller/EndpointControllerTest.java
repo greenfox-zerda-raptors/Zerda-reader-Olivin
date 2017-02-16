@@ -5,7 +5,7 @@ import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
-import com.greenfox.zerdaReader.service.FeedsForUsersService;
+import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -64,7 +64,7 @@ public class EndpointControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private FeedsForUsersService feedsForUsersService;
+    private FeedItemsForUsersService feedsForUsersService;
 
     @Autowired
     private   FilterChainProxy filterChainProxy;
@@ -97,7 +97,7 @@ public class EndpointControllerTest {
 //                      check if the number of feeditems are 50
                 .andExpect(jsonPath("$.feed.*", hasSize(50)))
 //                      check if the 1st feeditem is the 1st in the db
-                .andExpect(jsonPath("$.feed[0].id", is(120)));
+                .andExpect(jsonPath("$.feed[0].id", is(85)));
     }
 
     // Ezt miert kell ignorni?

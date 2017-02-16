@@ -47,4 +47,7 @@ public class FeedService {
         return feedRepo.findOneByRssPath(url);
     }
 
+    public void saveFeed(Feed feed) {
+        feedRepo.save(feed);
+    }
 }

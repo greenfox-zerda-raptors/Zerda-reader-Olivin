@@ -1,9 +1,9 @@
 package com.greenfox.zerdaReader.domain;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
-import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
+import com.greenfox.zerdaReader.repository.FeedItemsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
-import com.greenfox.zerdaReader.service.FeedsForUsersService;
+import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,10 +26,10 @@ public class UserFeedTest {
     UserRepository userRepository;
 
     @Autowired
-    FeedsForUsersService service;
+    FeedItemsForUsersService service;
 
     @Autowired
-    FeedsForUsersRepository repo;
+    FeedItemsForUsersRepository repo;
 
     final int DEFAULTOFFSET = 0;
     final int DEFAULTITEMS = 50;

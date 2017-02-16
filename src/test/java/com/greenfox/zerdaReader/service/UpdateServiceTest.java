@@ -9,8 +9,8 @@ import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
+import com.greenfox.zerdaReader.repository.FeedItemsForUsersRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
-import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -45,7 +45,7 @@ public class UpdateServiceTest {
     private UpdateService updateService;
 
     @Autowired
-    private FeedsForUsersRepository feedsForUsersRepository;
+    private FeedItemsForUsersRepository feedItemsForUsersRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -80,7 +80,7 @@ public class UpdateServiceTest {
     public void feedForUsersTablepopulated() throws Exception {
         feedService.addNewFeed("file:src/test/resources/indexrssforupdate.xml");
         updateService.update();
-        Assert.assertEquals(2, feedsForUsersRepository.count());
+        Assert.assertEquals(2, feedItemsForUsersRepository.count());
     }
 
     @Test
@@ -126,6 +126,27 @@ public class UpdateServiceTest {
         updateService.update();
         Assert.assertFalse(updateService.convertDate(storage.getSyndFeed().getPublishedDate()).isAfter(feed.getPubDate()));
     }
+
+    //    TODO: updateFeedForUserByUrl test with logged in user
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestNumberOfUpdatedFeedItemsForUserByUrl() throws Exception {
+        Feed feed = feedRepository.findOne(2L);
+        TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
+        updateService.isUpdateNeeded(feed, tempSyndFeedStorage.getSyndFeed());
+        for (SyndEntry se : tempSyndFeedStorage.getSyndFeed().getEntries()) {
+            updateService.convertDate(se.getPublishedDate()).isAfter(feed.getPubDate());
+            FeedItem feedItem = new FeedItem();
+            feedItem.setFields(se, feed);
+            feedItemRepository.save(feedItem);
+            Lists.newArrayList(feedItemRepository.findAll()).size();
+        }
+        Assert.assertEquals(4, Lists.newArrayList(feedItemRepository.findAll()).size());
+    }
+
+
+
+
 
 
 //    @Before
