@@ -44,13 +44,13 @@ public class FeedsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestPopulateFeedsForUsersForFirstNewSubscription() throws Exception {
         User user = userRepository.findOne(3L);
-        Assert.assertEquals(0, service.getFeedsForusersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(0, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
         user.getSubscribedFeeds().add(feedRepository.findOne(2L));
         userRepository.save(user);
         service.populateFeedsForUsers(user);
         userRepository.save(user);
         user = userRepository.findOne(3L);
-        Assert.assertEquals(1, service.getFeedsForusersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(1, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class FeedsForUsersServiceTest {
         service.populateFeedsForUsers(user);
         userRepository.save(user);
         user = userRepository.findOne(2L);
-        Assert.assertEquals(3, service.getFeedsForusersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(3, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test
@@ -81,5 +81,23 @@ public class FeedsForUsersServiceTest {
         Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
         service.updateReadStatus(11L, false, user);
         Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestUpdateMarkAsFavorite() throws Exception {
+        User user = userRepository.findOne(2L);
+        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isStarred());
+        service.markAsFavorite(11L, user);
+        Assert.assertTrue(feedsForUsersRepository.findOne(2L).isStarred());
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestMarkAsFavoriteWhenItHasAlreadyBeenMarked() throws Exception {
+        User user = userRepository.findOne(2L);
+        Assert.assertTrue(feedsForUsersRepository.findOne(3L).isStarred());
+        service.markAsFavorite(12L, user);
+        Assert.assertTrue(feedsForUsersRepository.findOne(3L).isStarred());
     }
 }

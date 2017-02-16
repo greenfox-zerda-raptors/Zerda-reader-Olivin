@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
@@ -11,6 +12,7 @@ import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -110,9 +112,8 @@ public class EndpointController {
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                      @RequestParam(value = "token") String token) {
-//         amig nincs user auth, addig az elso usert hasznaljuk
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return feedsForUsersService.getFeedsForusersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        return feedsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/feed/{Id}")
@@ -120,7 +121,6 @@ public class EndpointController {
                                   @RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                   @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                   @RequestParam(value = "token") String token) {
-//        amig nincs user auth, addig az elso usert hasznaljuk
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset),Integer.parseInt(items));
     }
@@ -142,5 +142,22 @@ public class EndpointController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Subscriptions subscriptions = new Subscriptions(user.getSubscribedFeeds());
         return subscriptions.getSubscribedFeedList();
+    }
+
+    @RequestMapping(value = "/favorites", method = RequestMethod.POST)
+    public ObjectNode markAsFavorite(@RequestParam(value = "token") String token,
+                                     @RequestBody String itemIdOfItemToChange) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode request = mapper.readTree(itemIdOfItemToChange);
+        ObjectNode response = mapper.createObjectNode();
+        long itemId = request.get("item_id").asLong();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            feedsForUsersService.markAsFavorite(itemId, user);
+            response.put("response", "success");
+        } catch (NullPointerException e) {
+            response.put("response", "invalid item id");
+        }
+        return response;
     }
 }

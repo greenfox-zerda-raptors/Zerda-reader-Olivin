@@ -30,29 +30,28 @@ public class FeedsForUsersService {
         feedsForUsersRepository.save(user.getFeedsForUsers());
     }
 
-    public UserFeed getFeedsForusersList(User user, int offset, int items) {
+    public UserFeed getFeedsForUsersList(User user, int offset, int items) {
         Page<FeedsForUsers> allUserFeedItems;
         allUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAuserSortedByDate(user, new PageRequest(offset, items));
         UserFeed nextFeed = new UserFeed(allUserFeedItems);
         return nextFeed;
-
-
     }
 
     public UserFeed getFilteredUserFeed(User user, Long feed_id, int offset, int items) {
-        Page<FeedsForUsers> allUserFeedItems;
-
-        allUserFeedItems=feedsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
+        Page<FeedsForUsers> allUserFeedItems = feedsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
         UserFeed nextFeed = new UserFeed(allUserFeedItems);
         return nextFeed;
     }
 
-//
-
-
     public void updateReadStatus(Long itemId, boolean isRead, User user) {
         FeedsForUsers feedsForUsersToUpdate = feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
         feedsForUsersToUpdate.setReadByUser(isRead);
+        feedsForUsersRepository.save(feedsForUsersToUpdate);
+    }
+
+    public void markAsFavorite(Long itemId, User user) {
+        FeedsForUsers feedsForUsersToUpdate = feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
+        feedsForUsersToUpdate.setStarred(true);
         feedsForUsersRepository.save(feedsForUsersToUpdate);
     }
 }
