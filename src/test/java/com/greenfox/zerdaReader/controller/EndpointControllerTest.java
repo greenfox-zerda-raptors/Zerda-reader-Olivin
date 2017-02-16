@@ -19,6 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -136,13 +137,16 @@ public class EndpointControllerTest {
         // get a user token
         String token = "ABCD1234";
         // get an mvc + post json
-        mockMvc.perform(post("/subscribe?token=" + token)
+//        MvcResult result =
+                mockMvc.perform(post("/subscribe?token=" + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"feed\": \"http://hvg.hu/rss\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.result", is("subscribed")))
-                .andExpect(jsonPath("$.id", is("4")));
+                .andExpect(jsonPath("$.id", is(4)));
+//                .andReturn();
+//        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
@@ -163,10 +167,12 @@ public class EndpointControllerTest {
         String token = "ABCD1234";
         mockMvc.perform(post("/subscribe?token=" + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"feed\": \"http://lorem-rss.herokuapp.com/feed?unit=second&interval=30\"}"))
+                .content("{\"feed\": \"https://444.hu/feed\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.result", is("fail")));
+                .andExpect(jsonPath("$.result", is("subscribed")))
+                .andExpect(jsonPath("$.id", is(5)));
+
     }
 
 //    if exception is raised, for example URL is malformed or the URL is 404 or not an RSS

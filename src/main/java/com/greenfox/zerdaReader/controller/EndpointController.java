@@ -129,6 +129,7 @@ public class EndpointController {
 
     @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
     public HttpStatus markAsRead(@PathVariable Long itemId,
+//                                 itt a token miért kell itt?
                                  @RequestParam(value = "token") String token,
                                  @RequestBody String openedStatus) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -140,13 +141,12 @@ public class EndpointController {
         return HttpStatus.OK;
     }
 
-
-    @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
     public ResponseEntity<JsonNode> subscribeToFeed(@RequestParam(value = "token") String token, @RequestBody String subscriptionRequest) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(subscriptionRequest);
-        Long id = (request.get("id").longValue());
-        JsonNode answer = mapper.readTree(subscriptionService.generateResponseForLogin(id));
+        String url = (request.get("feed").asText());
+        JsonNode answer = mapper.readTree(subscriptionService.generateResponseForSubsciption(url));
         return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
 
