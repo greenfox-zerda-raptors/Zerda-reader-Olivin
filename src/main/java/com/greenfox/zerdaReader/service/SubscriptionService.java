@@ -1,16 +1,11 @@
 package com.greenfox.zerdaReader.service;
-
 import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.User;
-import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.rometools.rome.io.FeedException;
-import jdk.nashorn.internal.ir.IfNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.Null;
 import java.io.IOException;
 
 /**
@@ -40,7 +35,7 @@ public class SubscriptionService {
             try {
                 newFeedId = getIdForBrandNewFeed(url);
             } catch (Exception e){
-                return "{\"result\":\"insideTry\"}";
+                return "{\"result\":\"fail\"}";
             }
 
             if (newFeedId > -1L ){
@@ -50,7 +45,7 @@ public class SubscriptionService {
             else {
                 //    if exception is raised, for example URL is malformed or the URL is 404 or not an RSS
 //                response = "{\"result\":\"fail\",\"message\":\"The URL provided is not valid.\"}";
-                response = "{\"result\":\"inElse\"}";
+                response = "{\"result\":\"fail\"}";
             }
         }
         // to existing feed
