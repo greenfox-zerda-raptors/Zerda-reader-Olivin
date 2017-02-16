@@ -82,4 +82,22 @@ public class FeedsForUsersServiceTest {
         service.updateReadStatus(11L, false, user);
         Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
     }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestUpdateMarkAsFavorite() throws Exception {
+        User user = userRepository.findOne(2L);
+        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isStarred());
+        service.markAsFavorite(11L, user);
+        Assert.assertTrue(feedsForUsersRepository.findOne(2L).isStarred());
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestMarkAsFavoriteWhenItHasAlreadyBeenMarked() throws Exception {
+        User user = userRepository.findOne(2L);
+        Assert.assertTrue(feedsForUsersRepository.findOne(3L).isStarred());
+        service.markAsFavorite(12L, user);
+        Assert.assertTrue(feedsForUsersRepository.findOne(3L).isStarred());
+    }
 }
