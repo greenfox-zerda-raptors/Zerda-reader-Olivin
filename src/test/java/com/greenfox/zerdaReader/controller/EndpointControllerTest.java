@@ -130,4 +130,41 @@ public class EndpointControllerTest {
 
     }
 
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulGetSubscriptions() throws Exception {
+        mockMvc.perform(get("/subscriptions?token=ABCD1234"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$.[0].name", is("Index - 24óra")))
+                .andExpect(jsonPath("$.[0].id", is(2)))
+                .andExpect(jsonPath("$.[1].name", is("Lorem ipsum feed for an interval of 30 seconds")))
+                .andExpect(jsonPath("$.[1].id", is(3)));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulGetSubscriptionsShouldReturnEmptyList() throws Exception {
+        mockMvc.perform(get("/subscriptions?token=QWERTY9876"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGetSubscriptionsWithInvalidToken() throws Exception {
+        mockMvc.perform(get("/subscriptions?token=QWERTY987"))
+                .andExpect(status().is(401))
+                .andExpect(status().reason("The provided authentication token is not valid."));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestGetSubscriptionsWithoutToken() throws Exception {
+        mockMvc.perform(get("/subscriptions"))
+                .andExpect(status().is(400))
+                .andExpect(status().reason("No authentication token is provided, please refer to the API specification"));
+    }
 }
