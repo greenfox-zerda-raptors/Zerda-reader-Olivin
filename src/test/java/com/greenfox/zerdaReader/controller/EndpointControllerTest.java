@@ -170,4 +170,13 @@ public class EndpointControllerTest {
                 .andExpect(status().is(400))
                 .andExpect(status().reason("No authentication token is provided, please refer to the API specification"));
     }
+
+    @Test
+    @Sql ({"/clear-tables.sql", "/favorite.sql"})
+    public void TestFavoritedFeedListDisplay() throws Exception {
+        mockMvc.perform(get("/favorites?token=ABCD1234"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.feed[0].id", is(12)));
+    }
 }

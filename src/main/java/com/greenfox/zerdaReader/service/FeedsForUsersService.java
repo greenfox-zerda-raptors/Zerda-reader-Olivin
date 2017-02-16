@@ -22,7 +22,7 @@ public class FeedsForUsersService {
     public void populateFeedsForUsers(User user) {
         for (Feed f : user.getSubscribedFeeds()) {
             for (FeedItem fi : f.getEntries()) {
-                    if (feedsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
+                if (feedsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
                     user.getFeedsForUsers().add(new FeedsForUsers(user, fi));
                 }
             }
@@ -42,12 +42,10 @@ public class FeedsForUsersService {
     public UserFeed getFilteredUserFeed(User user, Long feed_id, int offset, int items) {
         Page<FeedsForUsers> allUserFeedItems;
 
-        allUserFeedItems=feedsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
+        allUserFeedItems = feedsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
         UserFeed nextFeed = new UserFeed(allUserFeedItems);
         return nextFeed;
     }
-
-//
 
 
     public void updateReadStatus(Long itemId, boolean isRead, User user) {
@@ -55,4 +53,13 @@ public class FeedsForUsersService {
         feedsForUsersToUpdate.setReadByUser(isRead);
         feedsForUsersRepository.save(feedsForUsersToUpdate);
     }
+
+    public UserFeed getUserFeedWithFavoritesOnly(User user, int offset, int items) {
+        Page<FeedsForUsers> allUserFeedItems;
+        allUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAuserSortedByDateAndByFavorites(user, new PageRequest(offset, items));
+        UserFeed nextFeed = new UserFeed(allUserFeedItems);
+        return nextFeed;
+    }
 }
+
+
