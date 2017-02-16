@@ -36,4 +36,10 @@ public class FeedsForUsersService {
         feedsForUsersToUpdate.setReadByUser(isRead);
         feedsForUsersRepository.save(feedsForUsersToUpdate);
     }
+
+    public void markAsFavorite(Long itemId, User user) {
+        FeedsForUsers feedsForUsersToUpdate = feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
+        feedsForUsersToUpdate.setStarred(true);
+        feedsForUsersRepository.save(feedsForUsersToUpdate);
+    }
 }
