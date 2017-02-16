@@ -57,16 +57,16 @@ public class EndpointControllerTest {
     private UserService userService;
 
     @Autowired
-    FeedRepository feedRepository;
+    private FeedRepository feedRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    FeedsForUsersService feedsForUsersService;
+    private FeedsForUsersService feedsForUsersService;
 
     @Autowired
-    FilterChainProxy filterChainProxy;
+    private   FilterChainProxy filterChainProxy;
 
     @Before
     public void setup() throws Exception {
@@ -75,16 +75,16 @@ public class EndpointControllerTest {
                 .addFilters(filterChainProxy)
                 .build();
     }
-
-    @Test
-    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void testExample() throws Exception {
-        mockMvc.perform(get("/userid"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$.[0]", is(2)));
-    }
+// Example test is commented out to reduce testing time
+//    @Test
+//    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+//    public void testExample() throws Exception {
+//        mockMvc.perform(get("/userid"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(contentType))
+//                .andExpect(jsonPath("$", hasSize(2)))
+//                .andExpect(jsonPath("$.[0]", is(2)));
+//    }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
@@ -128,12 +128,11 @@ public class EndpointControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"opened\": 1}"))
                 .andExpect(status().isOk());
-
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulSubscriptionToExistingFeed() throws Exception {
+    public void testSuccessfulSubscriptionToExistingFeed() throws Exception {
         // get a user token
         String token = "ABCD1234";
         // get an mvc + post json
@@ -151,7 +150,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestFailedSubscriptionToFeed() throws Exception {
+    public void testFailedSubscriptionToFeed() throws Exception {
         String token = "ABCD1234";
         mockMvc.perform(post("/subscribe?token=" + token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -163,7 +162,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulSubscriptionToBrandnewFeed() throws Exception {
+    public void testSuccessfulSubscriptionToBrandnewFeed() throws Exception {
         String token = "ABCD1234";
         mockMvc.perform(post("/subscribe?token=" + token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -174,6 +173,4 @@ public class EndpointControllerTest {
                 .andExpect(jsonPath("$.id", is(5)));
 
     }
-
-//    if exception is raised, for example URL is malformed or the URL is 404 or not an RSS
 }
