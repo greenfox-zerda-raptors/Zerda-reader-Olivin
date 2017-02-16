@@ -179,4 +179,26 @@ public class EndpointControllerTest {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.feed[0].id", is(12)));
     }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestSuccessfulMarkAsFavorite() throws Exception {
+        mockMvc.perform(post("/favorites?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"item_id\": 11}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.response", is("success")));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestMarkAsFavoriteCalledWithInvalidId() throws Exception {
+        mockMvc.perform(post("/favorites?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"item_id\": 22}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.response", is("invalid item id")));
+    }
 }

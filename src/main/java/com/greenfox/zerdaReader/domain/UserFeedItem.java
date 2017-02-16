@@ -28,8 +28,6 @@ public class UserFeedItem {
     private boolean opened;
     private String url;
 
-
-
     public UserFeedItem(FeedsForUsers feedsForUsers) {
         this.id = feedsForUsers.getFeedItem().getId();
         this.title = feedsForUsers.getFeedItem().getTitle();
@@ -41,6 +39,4 @@ public class UserFeedItem {
         this.opened = feedsForUsers.isReadByUser();
         this.url = feedsForUsers.getFeedItem().getLink();
     }
-
-
 }

@@ -12,9 +12,9 @@ import java.util.List;
 /**
  * Created by zoloe on 2017. 01. 25..
  */
-@Getter
 @Setter
 @NoArgsConstructor
+@Getter
 @Log
 public class UserFeed {
 
