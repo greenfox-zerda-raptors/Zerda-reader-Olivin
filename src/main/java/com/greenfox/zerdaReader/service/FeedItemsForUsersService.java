@@ -19,7 +19,7 @@ public class FeedItemsForUsersService {
         this.feedItemsForUsersRepository = feedItemsForUsersRepository;
     }
 
-    public void populateFeedsForUsers(User user) {
+    public void populateFeedItemsForUser(User user) {
         for (Feed f : user.getSubscribedFeeds()) {
             for (FeedItem fi : f.getEntries()) {
                     if (feedItemsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
@@ -29,6 +29,21 @@ public class FeedItemsForUsersService {
         }
         feedItemsForUsersRepository.save(user.getFeedItemsForUsers());
     }
+
+    public void populateFeedItemsForOneFeedAndUser(User user, Feed feed) {
+            for (FeedItem fi : feed.getEntries()) {
+                    if (feedItemsForUsersRepository.findByUserAndFeedItem(user, fi) == null) {
+                    user.getFeedItemsForUsers().add(new FeedItemsForUsers(user, fi));
+                }
+            }
+        feedItemsForUsersRepository.save(user.getFeedItemsForUsers());
+    }
+
+
+
+
+
+
 
     public UserFeed getFeedsForUsersList(User user, int offset, int items) {
         Page<FeedItemsForUsers> allUserFeedItems;

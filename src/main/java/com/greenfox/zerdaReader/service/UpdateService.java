@@ -33,13 +33,11 @@ public class UpdateService {
 
     FeedItemRepository feedItemRepository;
     FeedRepository feedRepository;
-    UserService userService;
 
     @Autowired
-    public UpdateService(FeedItemRepository feedItemRepository, FeedRepository feedRepository, UserService userService) {
+    public UpdateService(FeedItemRepository feedItemRepository, FeedRepository feedRepository) {
         this.feedItemRepository = feedItemRepository;
         this.feedRepository = feedRepository;
-        this.userService = userService;
     }
 
     @Scheduled(fixedRate = 60000)

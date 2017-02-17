@@ -48,11 +48,11 @@ public class FeedItem {
         setFeed(feed);
     }
 
-    public void addNewFeedItemsForUsers(FeedItemsForUsers feedsForUser) {
+    public void addNewFeedItemsForUsers(FeedItemsForUsers feedItemForUser) {
         if (feedItemsForUsers == null) {
             feedItemsForUsers = new ArrayList<>();
         }
-        feedItemsForUsers.add(feedsForUser);
+        feedItemsForUsers.add(feedItemForUser);
     }
 
     public long getId() {

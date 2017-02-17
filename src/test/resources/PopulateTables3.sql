@@ -19,5 +19,5 @@ INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id)
 -- INSERT INTO subscribed_users (subscribed_users_id, subscribed_feeds_id) VALUES (2, 3);
 
 -- -- Feeds for users
--- INSERT INTO feeds_for_users (id, read_by_user, starred, feed_item_id, user_id) VALUES (2, 0, 0, 11, 2);
--- INSERT INTO feeds_for_users (id, read_by_user, starred, feed_item_id, user_id) VALUES (3, 0, 0, 12, 2);
+-- INSERT INTO feed_items_for_users (id, read_by_user, starred, feed_item_id, user_id) VALUES (2, 0, 0, 11, 2);
+-- INSERT INTO feed_items_for_users (id, read_by_user, starred, feed_item_id, user_id) VALUES (3, 0, 0, 12, 2);

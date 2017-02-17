@@ -47,7 +47,7 @@ public class FeedItemsForUsersServiceTest {
         Assert.assertEquals(0, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
         user.getSubscribedFeeds().add(feedRepository.findOne(2L));
         userRepository.save(user);
-        service.populateFeedsForUsers(user);
+        service.populateFeedItemsForUser(user);
         userRepository.save(user);
         user = userRepository.findOne(3L);
         Assert.assertEquals(1, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
@@ -59,7 +59,7 @@ public class FeedItemsForUsersServiceTest {
         User user = userRepository.findOne(2L);
         user.getSubscribedFeeds().add(feedRepository.findOne(4L));
         userRepository.save(user);
-        service.populateFeedsForUsers(user);
+        service.populateFeedItemsForUser(user);
         userRepository.save(user);
         user = userRepository.findOne(2L);
         Assert.assertEquals(3, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());

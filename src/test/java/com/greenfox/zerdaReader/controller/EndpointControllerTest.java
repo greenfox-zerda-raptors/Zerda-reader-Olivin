@@ -122,7 +122,7 @@ public class EndpointControllerTest {
         Feed feed = feedRepository.findOne(2L);
         newUser.getSubscribedFeeds().add(feed);
         newUser = userRepository.save(newUser);
-        feedsForUsersService.populateFeedsForUsers(newUser);
+        feedsForUsersService.populateFeedItemsForUser(newUser);
         userRepository.save(newUser);
         mockMvc.perform(post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
