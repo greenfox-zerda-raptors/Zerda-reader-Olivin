@@ -18,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterAfter(myCustomFilter(), FilterSecurityInterceptor.class);
+        http.addFilterBefore(myCustomFilter(), FilterSecurityInterceptor.class);
 
         http
                 .cors().and()
@@ -27,8 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-//                authenticated nem jo valamiert
-//                .antMatchers("/feed/**", "/subscribe/**", "/subscriptions", "/favorites").authenticated()
+                .antMatchers("/feed/**", "/subscribe/**", "/subscriptions", "/favorites").authenticated()
                 .antMatchers("/user/**").permitAll()
         ;
     }
