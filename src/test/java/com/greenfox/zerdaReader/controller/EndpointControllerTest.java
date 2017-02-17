@@ -7,6 +7,7 @@ import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,5 +129,37 @@ public class EndpointControllerTest {
                 .andExpect(status().isOk());
 
     }
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestEndpointBasicFuctions() throws Exception {
+        User user;
+        user = userRepository.findOne(2L);
+        feedsForUsersService.deleteFeedFromRepo(user, 3L);
+        user.getSubscribedFeeds().remove(3L);
+        mockMvc.perform(delete("/subscribe/3?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"result\": \"success\"}"))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestFeedItemisDeletedFromFFU() throws Exception{
+        User user;
+        user = userRepository.findOne(2L);
+        feedsForUsersService.deleteFeedFromRepo(user, 3L);
+        user.getSubscribedFeeds().remove(3L);
+        userRepository.save(user);
+        Assert.assertEquals(1,user.getSubscribedFeeds().size());
+        Assert.assertEquals(1,feedsForUsersService.allllFeedsForUsers().size());
+    }
+
 
 }
+
+
+
+
+
+

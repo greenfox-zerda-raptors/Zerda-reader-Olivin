@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+
 /**
  * Created by zoloe on 2017. 01. 25..
  */
@@ -47,5 +50,20 @@ public class FeedsForUsersService {
         FeedsForUsers feedsForUsersToUpdate = feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
         feedsForUsersToUpdate.setReadByUser(isRead);
         feedsForUsersRepository.save(feedsForUsersToUpdate);
+    }
+
+    public void deleteFeedFromRepo(User user, Long id){
+        feedsForUsersRepository.deleteByFeedId(user,id);
+    }
+    public boolean getThatFeed(User user, Long id){
+        return feedsForUsersRepository.findAllById(id) != null;
+    }
+
+    public String generateResponseForDeletion(boolean b) {
+            return "{\"result\": \"success\"}";
+    }
+
+    public List<FeedsForUsers> allllFeedsForUsers(){
+        return feedsForUsersRepository.findAll();
     }
 }

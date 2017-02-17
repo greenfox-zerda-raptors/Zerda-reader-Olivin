@@ -13,7 +13,9 @@ import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -59,6 +61,7 @@ public class EndpointController {
     //    visszaadja a DB-ből a useridkat
     @RequestMapping(value = "/userid")
     @ResponseBody
+    @Transactional
     public List<Long> getUserIds() {
         return userRepository.getAllUserId();
     }
@@ -105,7 +108,7 @@ public class EndpointController {
     }
 */
 
-//*******************************************************
+    //*******************************************************
 //*************** Ezek az éles endpointok ***************
 //*******************************************************
     @RequestMapping(value = "/feed")
@@ -125,17 +128,31 @@ public class EndpointController {
         return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
-        @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
-        public HttpStatus markAsRead (@PathVariable Long itemId,
-                @RequestParam(value = "token") String token,
-                @RequestBody String openedStatus) throws IOException {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode request = mapper.readTree(openedStatus);
-            boolean isRead = request.get("opened").asBoolean();
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            feedsForUsersService.updateReadStatus(itemId, isRead, user);
-            return HttpStatus.OK;
-     }
+    @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
+    public HttpStatus markAsRead(@PathVariable Long itemId,
+                                 @RequestParam(value = "token") String token,
+                                 @RequestBody String openedStatus) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode request = mapper.readTree(openedStatus);
+        boolean isRead = request.get("opened").asBoolean();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        feedsForUsersService.updateReadStatus(itemId, isRead, user);
+        return HttpStatus.OK;
+    }
+
+    @Transactional
+    @RequestMapping(value = "/subscribe/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<JsonNode> unSubscribe(@PathVariable Long id,
+                                                @RequestParam(value = "token") String token) throws IOException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode answer;
+        feedsForUsersService.deleteFeedFromRepo(user, id);
+        user.getSubscribedFeeds().remove(id);
+        userRepository.save(user);
+        answer = mapper.readTree(feedsForUsersService.generateResponseForDeletion(true));
+        return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
+    }
 }
 
 

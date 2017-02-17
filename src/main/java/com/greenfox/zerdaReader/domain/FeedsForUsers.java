@@ -76,5 +76,6 @@ public class FeedsForUsers {
     public void setFeedItem(FeedItem feedItem) {
         this.feedItem = feedItem;
     }
+
 }
 

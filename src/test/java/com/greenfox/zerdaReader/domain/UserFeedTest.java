@@ -41,7 +41,7 @@ public class UserFeedTest {
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestGetUserFeedShouldReturnTwo() throws Exception {
         User user = userRepository.findOne(2L);
-        Assert.assertEquals(2, service.getFeedsForusersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(2, service.getFeedsForusersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed(). size());
     }
 
     @Test
