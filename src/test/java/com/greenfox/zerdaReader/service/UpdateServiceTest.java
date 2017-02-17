@@ -47,9 +47,6 @@ public class UpdateServiceTest {
     @Autowired
     private FeedsForUsersRepository feedsForUsersRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
 
     @Test
     @Sql({"/clear-tables.sql", "/noupdate.sql"})
@@ -61,7 +58,6 @@ public class UpdateServiceTest {
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
         Assert.assertEquals(dateTime, feedRepository.findOneByRssPath("file:src/test/resources/indexrss.xml").getPubDate());
     }
-
 
     @Test
     @Sql({"/clear-tables.sql"})
@@ -96,7 +92,7 @@ public class UpdateServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestUpdateNeededTrue() throws Exception {
+    public void testUpdateNeededTrue() throws Exception {
         Feed feed = feedRepository.findOne(2L);
         TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
         Assert.assertTrue(updateService.isUpdateNeeded(feed, tempSyndFeedStorage.getSyndFeed()));
@@ -104,7 +100,7 @@ public class UpdateServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestNumberOfUpdatedFeedItems() throws Exception {
+    public void testNumberOfUpdatedFeedItems() throws Exception {
         Feed feed = feedRepository.findOne(2L);
         TempSyndFeedStorage tempSyndFeedStorage = new TempSyndFeedStorage("file:src/test/resources/index.xml");
         updateService.isUpdateNeeded(feed, tempSyndFeedStorage.getSyndFeed());
@@ -126,16 +122,4 @@ public class UpdateServiceTest {
         updateService.update();
         Assert.assertFalse(updateService.convertDate(storage.getSyndFeed().getPublishedDate()).isAfter(feed.getPubDate()));
     }
-
-
-//    @Before
-//    public void setUp(){
-//        OutOfMemoryError outOfMemoryError= new OutOfMemoryError();
-//    }
-//
-//    public void outOfMemoryErrorTest () throws Exception{
-//
-//        Assert.assertEquals()
-//    }
-
 }

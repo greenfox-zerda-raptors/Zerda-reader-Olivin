@@ -115,7 +115,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulMarkAsRead() throws Exception {
+    public void testSuccessfulMarkAsRead() throws Exception {
         User newUser = userService.addNewUser("example@gmail.com", "12345");
         Feed feed = feedRepository.findOne(2L);
         newUser.getSubscribedFeeds().add(feed);
@@ -135,7 +135,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulGetSubscriptions() throws Exception {
+    public void testSuccessfulGetSubscriptions() throws Exception {
         mockMvc.perform(get("/subscriptions?token=ABCD1234"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -148,7 +148,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulGetSubscriptionsShouldReturnEmptyList() throws Exception {
+    public void testSuccessfulGetSubscriptionsShouldReturnEmptyList() throws Exception {
         mockMvc.perform(get("/subscriptions?token=QWERTY9876"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -157,7 +157,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetSubscriptionsWithInvalidToken() throws Exception {
+    public void testGetSubscriptionsWithInvalidToken() throws Exception {
         mockMvc.perform(get("/subscriptions?token=QWERTY987"))
                 .andExpect(status().is(401))
                 .andExpect(status().reason("The provided authentication token is not valid."));
@@ -165,7 +165,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetSubscriptionsWithoutToken() throws Exception {
+    public void testGetSubscriptionsWithoutToken() throws Exception {
         mockMvc.perform(get("/subscriptions"))
                 .andExpect(status().is(400))
                 .andExpect(status().reason("No authentication token is provided, please refer to the API specification"));
@@ -173,7 +173,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql ({"/clear-tables.sql", "/favorite.sql"})
-    public void TestFavoritedFeedListDisplay() throws Exception {
+    public void testFavoritedFeedListDisplay() throws Exception {
         mockMvc.perform(get("/favorites?token=ABCD1234"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -182,7 +182,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulMarkAsFavorite() throws Exception {
+    public void testSuccessfulMarkAsFavorite() throws Exception {
         mockMvc.perform(post("/favorites?token=ABCD1234")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"item_id\": 11}"))
@@ -193,7 +193,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestMarkAsFavoriteCalledWithInvalidId() throws Exception {
+    public void testMarkAsFavoriteCalledWithInvalidId() throws Exception {
         mockMvc.perform(post("/favorites?token=ABCD1234")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"item_id\": 22}"))

@@ -42,7 +42,7 @@ public class FeedsForUsersServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestPopulateFeedsForUsersForFirstNewSubscription() throws Exception {
+    public void testPopulateFeedsForUsersForFirstNewSubscription() throws Exception {
         User user = userRepository.findOne(3L);
         Assert.assertEquals(0, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
         user.getSubscribedFeeds().add(feedRepository.findOne(2L));
@@ -55,7 +55,7 @@ public class FeedsForUsersServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestPopulateFeedsForUsersHavingSubscribedFeeds() throws Exception {
+    public void testPopulateFeedsForUsersHavingSubscribedFeeds() throws Exception {
         User user = userRepository.findOne(2L);
         user.getSubscribedFeeds().add(feedRepository.findOne(4L));
         userRepository.save(user);
@@ -67,7 +67,7 @@ public class FeedsForUsersServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestUpdateReadStatus() throws Exception {
+    public void testUpdateReadStatus() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
         service.updateReadStatus(11L, true, user);
@@ -76,7 +76,7 @@ public class FeedsForUsersServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestUpdateReadStatusWhenNothingChanges() throws Exception {
+    public void testUpdateReadStatusWhenNothingChanges() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
         service.updateReadStatus(11L, false, user);
@@ -85,7 +85,7 @@ public class FeedsForUsersServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestUpdateMarkAsFavorite() throws Exception {
+    public void testUpdateMarkAsFavorite() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertFalse(feedsForUsersRepository.findOne(2L).isStarred());
         service.markAsFavorite(11L, user);
@@ -94,7 +94,7 @@ public class FeedsForUsersServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestMarkAsFavoriteWhenItHasAlreadyBeenMarked() throws Exception {
+    public void testMarkAsFavoriteWhenItHasAlreadyBeenMarked() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertTrue(feedsForUsersRepository.findOne(3L).isStarred());
         service.markAsFavorite(12L, user);

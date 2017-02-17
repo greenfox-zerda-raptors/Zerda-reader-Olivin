@@ -56,7 +56,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void TestSuccessfulSignUp() throws Exception {
+    public void testSuccessfulSignUp() throws Exception {
         mockMvc.perform(post("/user/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\": \"example@gmail.com\", \"password\": \"12345\"}"))
@@ -69,7 +69,7 @@ public class UserControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestUnsuccessfulSignUp() throws Exception {
+    public void testUnsuccessfulSignUp() throws Exception {
         mockMvc.perform(post("/user/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\": \"name@example.com\", \"password\": \"12345\"}"))
@@ -81,7 +81,7 @@ public class UserControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql"})
-    public void TestSuccessfulLogin() throws Exception {
+    public void testSuccessfulLogin() throws Exception {
         User newUser = userService.addNewUser("example@gmail.com", "12345");
         mockMvc.perform(post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -95,7 +95,7 @@ public class UserControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql"})
-    public void TestUnSuccessfulLoginWithWrongEmail() throws Exception {
+    public void testUnSuccessfulLoginWithWrongEmail() throws Exception {
         User newUser = userService.addNewUser("example@gmail.com", "12345");
         mockMvc.perform(post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +108,7 @@ public class UserControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql"})
-    public void TestUnSuccessfulLoginWithWrongPassword() throws Exception {
+    public void testUnSuccessfulLoginWithWrongPassword() throws Exception {
         User newUser = userService.addNewUser("example@gmail.com", "12345");
         mockMvc.perform(post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)

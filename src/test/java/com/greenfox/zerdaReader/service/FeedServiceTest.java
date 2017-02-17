@@ -28,7 +28,7 @@ public class FeedServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestAddNewFeedWithPathNotYetInDb() throws Exception {
+    public void testAddNewFeedWithPathNotYetInDb() throws Exception {
         long initialNumOfFeeds = feedService.feedRepo.count();
         long initialNumOfFeedItems = feedItemRepository.count();
         feedService.addNewFeed("http://lorem-rss.herokuapp.com/feed?unit=second&amp;interval=60");
@@ -38,7 +38,7 @@ public class FeedServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestAddNewFeedWithPathAlreadyInDb() throws Exception {
+    public void testAddNewFeedWithPathAlreadyInDb() throws Exception {
         long initialNumOfFeeds = feedService.feedRepo.count();
         long initialNumOfFeedItems = feedItemRepository.count();
         Assert.assertEquals(3, initialNumOfFeeds);
