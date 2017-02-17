@@ -131,7 +131,6 @@ public class EndpointController {
 
     @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
     public HttpStatus markAsRead(@PathVariable Long itemId,
-//                                 itt a token miért kell itt?
                                  @RequestParam(value = "token") String token,
                                  @RequestBody String openedStatus) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -183,5 +182,4 @@ public class EndpointController {
         JsonNode answer = mapper.readTree(subscriptionService.trySubscribingToFeedAndReturn(url));
         return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
-
 }
