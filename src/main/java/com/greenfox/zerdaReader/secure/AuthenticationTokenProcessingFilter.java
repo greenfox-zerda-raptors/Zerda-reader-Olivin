@@ -1,6 +1,7 @@
 package com.greenfox.zerdaReader.secure;
 
 import com.greenfox.zerdaReader.service.UserService;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     String token;
@@ -29,25 +31,28 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
-
+        log.info("break01 / inside myFilter");
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
-
+        log.info("break02 / res,req set");
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            log.info("break03 / inside options if to set cors preflight");
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
             response.setHeader("Access-Control-Max-Age", "3600");
             response.setHeader("Access-Control-Allow-Headers", "x-requested-with, authorization,content-type");
             response.setStatus(HttpServletResponse.SC_OK);
         }
-
+        log.info("break05 / before /user matcher if");
         if (!request.getRequestURI().matches("/user(.*)")) {
             token = request.getParameter("token");
+            log.info("break06 / got token");
             if (token != null && isValidToken()) {
                 List<GrantedAuthority> authorities = new ArrayList<>();
                 authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 Authentication authentication = new UsernamePasswordAuthenticationToken(service.getUserByToken(token), token, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.info("break08 / security context set");
             } else if (token == null) {
                 throw new AuthenticationCredentialsNotFoundException("400");
             } else if (!isValidToken()) {
@@ -55,6 +60,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             }
         }
         chain.doFilter(request, response);
+        log.info("doFilter req,resp / exit filter");
     }
 
     private boolean isValidToken() {

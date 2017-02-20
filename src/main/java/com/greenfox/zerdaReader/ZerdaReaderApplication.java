@@ -68,7 +68,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 //        mentünk mindkét oldalon
         feedRepository.save(feed);
         userRepository.save(testUser);
-
+        feedsForUsersService.populateFeedsForUsers(testUser);
         updateService.update();
     }
 
