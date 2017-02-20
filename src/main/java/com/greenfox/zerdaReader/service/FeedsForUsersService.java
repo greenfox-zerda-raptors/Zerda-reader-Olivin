@@ -3,7 +3,6 @@ package com.greenfox.zerdaReader.service;
 import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
