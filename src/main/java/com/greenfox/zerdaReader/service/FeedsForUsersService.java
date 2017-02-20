@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.util.List;
  * Created by zoloe on 2017. 01. 25..
  */
 @Component
+@Log
 public class FeedsForUsersService {
     FeedsForUsersRepository feedsForUsersRepository;
 
@@ -32,6 +34,7 @@ public class FeedsForUsersService {
     }
 
     public UserFeed getFeedsForUsersList(User user, int offset, int items) {
+        log.info("break3 / in feedsforusers service, getfeedsforuserslist");
         List<FeedsForUsers> allUserFeedItems;
         if (offset % items == 0) {
             allUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDate(user, new PageRequest(offset / items, items));
@@ -40,6 +43,7 @@ public class FeedsForUsersService {
             allUserFeedItems = tempList.subList(offset, tempList.size());
         }
         UserFeed nextFeed = new UserFeed(allUserFeedItems);
+        log.info("break4 / got list, ready to return to controller");
         return nextFeed;
     }
 
