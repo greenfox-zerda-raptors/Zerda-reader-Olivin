@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by zoloe on 2017. 01. 25..
  */
@@ -31,18 +33,26 @@ public class FeedsForUsersService {
     }
 
     public UserFeed getFeedsForUsersList(User user, int offset, int items) {
-        Page<FeedsForUsers> allUserFeedItems;
-        allUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAuserSortedByDate(user, new PageRequest(offset, items));
+        List<FeedsForUsers> allUserFeedItems;
+        if (offset%items == 0) {
+            allUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDate(user, new PageRequest(offset/items, items));
+        } else {
+            List<FeedsForUsers> tempList = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDate(user, new PageRequest(0, offset+items));
+            allUserFeedItems = tempList.subList(offset-1, tempList.size()-1);
+        }
         UserFeed nextFeed = new UserFeed(allUserFeedItems);
         return nextFeed;
     }
 
-    public UserFeed getFilteredUserFeed(User user, Long feed_id, int offset, int items) {
-//        Page<FeedsForUsers> allUserFeedItems;
-//
-//        allUserFeedItems = feedsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
-        Page<FeedsForUsers> allUserFeedItems = feedsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
-        UserFeed nextFeed = new UserFeed(allUserFeedItems);
+    public UserFeed getFilteredUserFeed(User user, Long feedId, int offset, int items) {
+        List<FeedsForUsers> filteredUserFeedItems;
+        if (offset%items == 0) {
+            filteredUserFeedItems = feedsForUsersRepository.findAllFeedItemsByUserByFeedIdSortedByDate(user, feedId, new PageRequest(offset/items, items));
+        } else {
+            List<FeedsForUsers> tempList = feedsForUsersRepository.findAllFeedItemsByUserByFeedIdSortedByDate(user, feedId, new PageRequest(0, offset+items));
+            filteredUserFeedItems = tempList.subList(offset-1, tempList.size()-1);
+        }
+        UserFeed nextFeed = new UserFeed(filteredUserFeedItems);
         return nextFeed;
     }
 
@@ -54,9 +64,14 @@ public class FeedsForUsersService {
     }
 
     public UserFeed getUserFeedWithFavoritesOnly(User user, int offset, int items) {
-        Page<FeedsForUsers> allUserFeedItems;
-        allUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAuserSortedByDateAndByFavorites(user, new PageRequest(offset, items));
-        UserFeed nextFeed = new UserFeed(allUserFeedItems);
+        List<FeedsForUsers> favoritedUserFeedItems;
+        if (offset%items == 0) {
+            favoritedUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDateAndByFavorites(user, new PageRequest(offset/items, items));
+        } else {
+            List<FeedsForUsers> tempList = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDateAndByFavorites(user, new PageRequest(0, offset+items));
+            favoritedUserFeedItems = tempList.subList(offset-1, tempList.size()-1);
+        }
+        UserFeed nextFeed = new UserFeed(favoritedUserFeedItems);
         return nextFeed;
     }
 

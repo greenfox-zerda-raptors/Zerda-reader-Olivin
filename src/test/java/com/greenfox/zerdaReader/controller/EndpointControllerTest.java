@@ -98,8 +98,7 @@ public class EndpointControllerTest {
 //                      check if the 1st feeditem is the 1st in the db
                 .andExpect(jsonPath("$.feed[0].id", is(120)));
     }
-
-    @Ignore
+    
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByOffset2() throws Exception {
@@ -110,7 +109,7 @@ public class EndpointControllerTest {
 //         check if the number of feeditems are 20
                 .andExpect(jsonPath("$.feed.*", hasSize(10)))
 //         check if the offset feeditem is the the 26 (we're counting from 0
-                .andExpect(jsonPath("$.feed[0].id", is(99)));
+                .andExpect(jsonPath("$.feed[0].id", is(119)));
     }
 
     @Test
