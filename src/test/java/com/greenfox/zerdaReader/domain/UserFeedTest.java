@@ -34,12 +34,11 @@ public class UserFeedTest {
     final int DEFAULTOFFSET = 0;
     final int DEFAULTITEMS = 50;
 
-    //TODO ezt meg kell fixalni majd a subscriptionnel
-    @Ignore
     @Test
     public void testGetUserFeedShouldReturnEmptyListForNewUser() throws Exception {
-        User user = new User("123");
-        Assert.assertEquals(0,service.getFeedsForUsersList(user,DEFAULTOFFSET,120).getFeed().size()==0);
+        User user = new User("email@gmail.com", "1234");
+        userRepository.save(user);
+        Assert.assertEquals(0,service.getFeedsForUsersList(user,DEFAULTOFFSET,120).getFeed().size());
     }
 
     @Test

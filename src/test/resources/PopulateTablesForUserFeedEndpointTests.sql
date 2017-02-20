@@ -1,5 +1,6 @@
 -- Feeds that the user is subscribed t
 INSERT INTO feeds (id,copyright, description, language, link, pub_date, rss_path, title) VALUES (1, 'Michael Bertolacci, licensed under a Creative Commons Attribution 3.0 Unported License.', 'This is a constantly updating lorem ipsum feed', null, 'http://example.com/', '2017-02-07 16:17:00', 'http://lorem-rss.herokuapp.com/feed?unit=second&interval=30', 'Lorem ipsum feed for an interval of 30 seconds');
+INSERT INTO feeds (id,copyright, description, language, link, pub_date, rss_path, title) VALUES (2, 'Michael Bertolacci, licensed under a Creative Commons Attribution 3.0 Unported License.', 'This is a constantly updating lorem ipsum feed', null, 'http://example.com/', '2017-02-07 16:17:00', 'http://lorem-rss.herokuapp.com/feed?unit=second&interval=60', 'Lorem ipsum feed for an interval of 60 seconds');
 
 -- user
 INSERT INTO users (id, email, password, token) VALUES (1, 'anothername@example.com','5678', 'QWERTY9876');
@@ -118,7 +119,7 @@ INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id)
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (111,'John Smith','Enim aliquip ex veniam sunt et.','http://example.com/test/1486045620','2017-02-02 15:27:00','Lorem ipsum 2017-02-02T14:27:00+00:00', 1);
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (112,'John Smith','Enim consequat esse sit voluptate velit minim officia sit labore qui nulla magna cillum proident.','http://example.com/test/1486045650','2017-02-02 15:27:30','Lorem ipsum 2017-02-02T14:27:30+00:00', 1);
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (113,'John Smith','Eiusmod minim mollit aliquip magna proident in voluptate sunt enim non laborum.','http://example.com/test/1486045680','2017-02-02 15:28:00','Lorem ipsum 2017-02-02T14:28:00+00:00', 1);
-INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (114,'John Smith','Mollit labore quis esse veniam.','http://example.com/test/1486045710','2017-02-02 15:28:30','Lorem ipsum 2017-02-02T14:28:30+00:00', 1);
+INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (114,'John Smith','Mollit labore quis esse veniam.','http://example.com/test/1486045710','2017-02-02 15:28:30','Lorem ipsum 2017-02-02T14:28:30+00:00', 2);
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (115,'John Smith','Officia mollit tempor do tempor dolor velit tempor eu commodo proident do ea veniam.','http://example.com/test/1486045740','2017-02-02 15:29:00','Lorem ipsum 2017-02-02T14:29:00+00:00', 1);
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (116,'John Smith','Elit in enim laborum nulla voluptate dolor laboris.','http://example.com/test/1486045770','2017-02-02 15:29:30','Lorem ipsum 2017-02-02T14:29:30+00:00', 1);
 INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id) VALUES (117,'John Smith','Sit qui qui consectetur ea voluptate sint in amet.','http://example.com/test/1486045800','2017-02-02 15:30:00','Lorem ipsum 2017-02-02T14:30:00+00:00', 1);
@@ -128,6 +129,7 @@ INSERT INTO feed_items (id, author, description, link, pub_date, title, feed_id)
 
 -- Subscribed users
 INSERT INTO subscribed_users (subscribed_users_id, subscribed_feeds_id) VALUES (1, 1);
+INSERT INTO subscribed_users (subscribed_users_id, subscribed_feeds_id) VALUES (1, 2);
 
 -- Feeds for users
 INSERT INTO feeds_for_users (read_by_user, starred, feed_item_id, user_id) VALUES (false, false, 1, 1);
@@ -248,5 +250,5 @@ INSERT INTO feeds_for_users (read_by_user, starred, feed_item_id, user_id) VALUE
 INSERT INTO feeds_for_users (read_by_user, starred, feed_item_id, user_id) VALUES (false, false, 116, 1);
 INSERT INTO feeds_for_users (read_by_user, starred, feed_item_id, user_id) VALUES (false, false, 117, 1);
 INSERT INTO feeds_for_users (read_by_user, starred, feed_item_id, user_id) VALUES (false, false, 118, 1);
-INSERT INTO feeds_for_users (read_by_user, starred, feed_item_id, user_id) VALUES (false, false, 119, 1);
+INSERT INTO feeds_for_users (read_by_user, starred, feed_item_id, user_id) VALUES (false, true, 119, 1);
 INSERT INTO feeds_for_users (read_by_user, starred, feed_item_id, user_id) VALUES (false, false, 120, 1);

@@ -37,7 +37,7 @@ public class FeedsForUsersService {
             allUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDate(user, new PageRequest(offset / items, items));
         } else {
             List<FeedsForUsers> tempList = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDate(user, new PageRequest(0, offset + items));
-            allUserFeedItems = tempList.subList(offset - 1, tempList.size() - 1);
+            allUserFeedItems = tempList.subList(offset, tempList.size());
         }
         UserFeed nextFeed = new UserFeed(allUserFeedItems);
         return nextFeed;
@@ -49,7 +49,7 @@ public class FeedsForUsersService {
             filteredUserFeedItems = feedsForUsersRepository.findAllFeedItemsByUserByFeedIdSortedByDate(user, feedId, new PageRequest(offset / items, items));
         } else {
             List<FeedsForUsers> tempList = feedsForUsersRepository.findAllFeedItemsByUserByFeedIdSortedByDate(user, feedId, new PageRequest(0, offset + items));
-            filteredUserFeedItems = tempList.subList(offset - 1, tempList.size() - 1);
+            filteredUserFeedItems = tempList.subList(offset, tempList.size());
         }
         UserFeed nextFeed = new UserFeed(filteredUserFeedItems);
         return nextFeed;
@@ -68,7 +68,7 @@ public class FeedsForUsersService {
             favoritedUserFeedItems = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDateAndByFavorites(user, new PageRequest(offset / items, items));
         } else {
             List<FeedsForUsers> tempList = feedsForUsersRepository.findAllFeedsForUsersForAUserSortedByDateAndByFavorites(user, new PageRequest(0, offset + items));
-            favoritedUserFeedItems = tempList.subList(offset - 1, tempList.size() - 1);
+            favoritedUserFeedItems = tempList.subList(offset, tempList.size());
         }
         UserFeed nextFeed = new UserFeed(favoritedUserFeedItems);
         return nextFeed;

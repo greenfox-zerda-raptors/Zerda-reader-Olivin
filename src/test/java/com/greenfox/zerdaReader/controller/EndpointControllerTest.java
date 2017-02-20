@@ -106,7 +106,7 @@ public class EndpointControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.feed.*", hasSize(10)))
-                .andExpect(jsonPath("$.feed[0].id", is(119)));
+                .andExpect(jsonPath("$.feed[0].id", is(118)));
     }
 
     @Test
