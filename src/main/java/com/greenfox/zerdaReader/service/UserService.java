@@ -89,7 +89,7 @@ public class UserService {
         return userRepository.findOne(userRepository.getAllUserId().get(0));
     }
 
-    public User getThaUser(){
+    public User getThaUser() {
         return userRepository.findOne(1L);
     }
 

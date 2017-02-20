@@ -112,7 +112,7 @@ public class EndpointController {
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                      @RequestParam(value = "token") String token) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return feedsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        return feedsForUsersService.getFeedsForUsersList(user, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/feed/{Id}")

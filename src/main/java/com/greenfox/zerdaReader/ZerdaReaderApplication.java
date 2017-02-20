@@ -45,7 +45,6 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     UpdateService updateService;
 
 
-
     @Override
     public void run(String... strings) throws Exception {
 //        feedService.addNewFeed("http://index.hu/24ora/rss/");
@@ -80,7 +79,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 
     @Bean
     public ErrorAttributes errorAttributes() {
-        return new DefaultErrorAttributes(){};
+        return new DefaultErrorAttributes() {};
     }
 }
 

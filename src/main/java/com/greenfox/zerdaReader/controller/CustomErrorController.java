@@ -30,7 +30,7 @@ public class CustomErrorController implements ErrorController {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode errorMessage = mapper.createObjectNode();
         errorMessage.put("error", (String) getErrorAttributes(request).get("message"));
-        return new ResponseEntity<JsonNode>(errorMessage, HttpStatus.valueOf(response.getStatus()));
+        return new ResponseEntity<>(errorMessage, HttpStatus.valueOf(response.getStatus()));
     }
 
     @Override
