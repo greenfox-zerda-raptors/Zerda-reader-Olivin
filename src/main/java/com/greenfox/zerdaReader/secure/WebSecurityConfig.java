@@ -17,9 +17,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+    @Autowired
+    AuthenticationTokenProcessingFilter authenticationTokenProcessingFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(myCustomFilter(), FilterSecurityInterceptor.class);
+        http.addFilterBefore(authenticationTokenProcessingFilter, FilterSecurityInterceptor.class);
 
         http
                 .cors().and()
@@ -33,9 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         ;
     }
 
-    @Bean
-    public AuthenticationTokenProcessingFilter myCustomFilter() {
-        return new AuthenticationTokenProcessingFilter();
-    }
+//    @Bean
+//    public AuthenticationTokenProcessingFilter myCustomFilter() {
+//        return new AuthenticationTokenProcessingFilter();
+//    }
 
 }

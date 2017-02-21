@@ -2,6 +2,7 @@ package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.UserRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.UUID;
  * Created by Rita on 2017-01-23.
  */
 @Component
+@Log
 public class UserService {
 
     UserRepository userRepository;
@@ -69,6 +71,7 @@ public class UserService {
     }
 
     public User getUserByToken(String token) {
+        log.info("break06c / inside getuserbytoken");
         return userRepository.findOneByToken(token);
     }
 

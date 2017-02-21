@@ -59,7 +59,6 @@ public class FeedsForUsersService {
         return nextFeed;
     }
 
-
     public void updateReadStatus(Long itemId, boolean isRead, User user) {
         FeedsForUsers feedsForUsersToUpdate = feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
         feedsForUsersToUpdate.setReadByUser(isRead);
