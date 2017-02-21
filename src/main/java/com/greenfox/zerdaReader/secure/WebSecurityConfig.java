@@ -35,10 +35,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").permitAll()
         ;
     }
-
-//    @Bean
-//    public AuthenticationTokenProcessingFilter myCustomFilter() {
-//        return new AuthenticationTokenProcessingFilter();
-//    }
-
 }
