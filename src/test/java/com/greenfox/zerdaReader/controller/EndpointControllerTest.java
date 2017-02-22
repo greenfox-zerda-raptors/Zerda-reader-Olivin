@@ -22,13 +22,17 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 import java.nio.charset.Charset;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
+
+
 
 /**
  * Created by zoloe on 2017. 02. 03..
@@ -92,32 +96,27 @@ public class EndpointControllerTest {
 //                      check if the number of feeditems are 50
                 .andExpect(jsonPath("$.feed.*", hasSize(50)))
 //                      check if the 1st feeditem is the 1st in the db
-                .andExpect(jsonPath("$.feed[0].id", is(85)));
+                .andExpect(jsonPath("$.feed[0].id", is(120)));
     }
 
-    // Ezt miert kell ignorni?
-    @Ignore
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testUserFeedPaginationByOffset2() throws Exception {
-        //the offset means a page of 50 items so it needs to be max 2 in case of ptfufet sql
         mockMvc.perform(get("/feed?offset=2&items=10&token=QWERTY9876"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-//         check if the number of feeditems are 20
                 .andExpect(jsonPath("$.feed.*", hasSize(10)))
-//         check if the offset feeditem is the the 26 (we're counting from 0
-                .andExpect(jsonPath("$.feed[0].id", is(99)));
+                .andExpect(jsonPath("$.feed[0].id", is(118)));
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulMarkAsRead() throws Exception {
+    public void testSuccessfulMarkAsRead() throws Exception {
         User newUser = userService.addNewUser("example@gmail.com", "12345");
         Feed feed = feedRepository.findOne(2L);
         newUser.getSubscribedFeeds().add(feed);
         newUser = userRepository.save(newUser);
-        feedsForUsersService.populateFeedItemsForUser(newUser);
+        feedsForUsersService.populateFeedsForUsers(newUser);
         userRepository.save(newUser);
         mockMvc.perform(post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -149,7 +148,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulGetSubscriptions() throws Exception {
+    public void testSuccessfulGetSubscriptions() throws Exception {
         mockMvc.perform(get("/subscriptions?token=ABCD1234"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -162,7 +161,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulGetSubscriptionsShouldReturnEmptyList() throws Exception {
+    public void testSuccessfulGetSubscriptionsShouldReturnEmptyList() throws Exception {
         mockMvc.perform(get("/subscriptions?token=QWERTY9876"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -171,7 +170,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetSubscriptionsWithInvalidToken() throws Exception {
+    public void testGetSubscriptionsWithInvalidToken() throws Exception {
         mockMvc.perform(get("/subscriptions?token=QWERTY987"))
                 .andExpect(status().is(401))
                 .andExpect(status().reason("The provided authentication token is not valid."));
@@ -179,7 +178,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetSubscriptionsWithoutToken() throws Exception {
+    public void testGetSubscriptionsWithoutToken() throws Exception {
         mockMvc.perform(get("/subscriptions"))
                 .andExpect(status().is(400))
                 .andExpect(status().reason("No authentication token is provided, please refer to the API specification"));
@@ -187,7 +186,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql ({"/clear-tables.sql", "/favorite.sql"})
-    public void TestFavoritedFeedListDisplay() throws Exception {
+    public void testFavoritedFeedListDisplay() throws Exception {
         mockMvc.perform(get("/favorites?token=ABCD1234"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -196,7 +195,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfulMarkAsFavorite() throws Exception {
+    public void testSuccessfulMarkAsFavorite() throws Exception {
         mockMvc.perform(post("/favorites?token=ABCD1234")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"item_id\": 11}"))
@@ -207,7 +206,7 @@ public class EndpointControllerTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestMarkAsFavoriteCalledWithInvalidId() throws Exception {
+    public void testMarkAsFavoriteCalledWithInvalidId() throws Exception {
         mockMvc.perform(post("/favorites?token=ABCD1234")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"item_id\": 22}"))

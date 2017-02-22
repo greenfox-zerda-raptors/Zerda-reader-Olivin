@@ -66,7 +66,7 @@ public class UpdateService {
                 }
             }
         } catch (OutOfMemoryError error) {
-            log.info("OutOfMemoryError"+ "\n" + error.getMessage()+ "\n" +error.getStackTrace());
+            log.info("OutOfMemoryError" + "\n" + error.getMessage() + "\n" + error.getStackTrace());
             log.info("Exiting without saving");
             return;
         }

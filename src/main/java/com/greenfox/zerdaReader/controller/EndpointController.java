@@ -11,6 +11,7 @@ import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
 import com.greenfox.zerdaReader.service.SubscriptionService;
 import com.greenfox.zerdaReader.service.UserService;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@Log
 public class EndpointController {
     private final AtomicLong counter = new AtomicLong();
 
@@ -116,8 +118,13 @@ public class EndpointController {
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                      @RequestParam(value = "token") String token) {
+        log.info("break1 / inside controller/feed");
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return feedsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        log.info("break2 / got user from ApplContext");
+        UserFeed myUserFeed = feedsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        log.info("break5 / got user feed list, ready to return it");
+
+        return myUserFeed;
     }
 
     @RequestMapping(value = "/feed/{Id}")

@@ -11,7 +11,6 @@ import com.greenfox.zerdaReader.domain.FeedItem;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedItemsForUsersRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
-import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.utility.TempSyndFeedStorage;
 import com.rometools.rome.feed.synd.SyndEntry;
 import org.assertj.core.util.Lists;
@@ -46,9 +45,6 @@ public class UpdateServiceTest {
 
     @Autowired
     private FeedItemsForUsersRepository feedItemsForUsersRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
 
     @Test

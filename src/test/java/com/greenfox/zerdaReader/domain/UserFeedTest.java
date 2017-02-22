@@ -34,24 +34,23 @@ public class UserFeedTest {
     final int DEFAULTOFFSET = 0;
     final int DEFAULTITEMS = 50;
 
-    //TODO ezt meg kell fixalni majd a subscriptionnel
-    @Ignore
     @Test
-    public void TestGetUserFeedShouldReturnEmptyListForNewUser() throws Exception {
-        User user = new User("123");
-        Assert.assertEquals(0,service.getFeedsForUsersList(user,DEFAULTOFFSET,120).getFeed().size()==0);
+    public void testGetUserFeedShouldReturnEmptyListForNewUser() throws Exception {
+        User user = new User("email@gmail.com", "1234");
+        userRepository.save(user);
+        Assert.assertEquals(0,service.getFeedsForUsersList(user,DEFAULTOFFSET,120).getFeed().size());
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetUserFeedShouldReturnTwo() throws Exception {
+    public void testGetUserFeedShouldReturnTwo() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertEquals(2, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGetUserFeedForUserShouldReturnEmptyListForUserWithOutSubscription() throws Exception {
+    public void testGetUserFeedForUserShouldReturnEmptyListForUserWithOutSubscription() throws Exception {
         User user = userRepository.findOne(3L);
         Assert.assertEquals(0, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }

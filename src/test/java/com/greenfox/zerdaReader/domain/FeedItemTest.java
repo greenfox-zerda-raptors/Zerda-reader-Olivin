@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class FeedItemTest {
 
     @Test
-    public void TestAddNewFeedsForUsersForIfBranch() throws Exception {
+    public void testAddNewFeedsForUsersForIfBranch() throws Exception {
         FeedItem item = new FeedItem();
         FeedItemsForUsers userItem = new FeedItemsForUsers();
         item.addNewFeedItemsForUsers(userItem);
@@ -19,7 +19,7 @@ public class FeedItemTest {
     }
 
     @Test
-    public void TestAddNewFeedsForUsersWithoutIfBranch() throws Exception {
+    public void testAddNewFeedsForUsersWithoutIfBranch() throws Exception {
         FeedItem item = new FeedItem();
         item.setFeedItemsForUsers(new ArrayList<>());
         FeedItemsForUsers userItem = new FeedItemsForUsers();
