@@ -3,11 +3,11 @@ package com.greenfox.zerdaReader.controller;
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.User;
+import com.greenfox.zerdaReader.repository.FeedItemsForUsersRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
-import org.apache.catalina.Server;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,14 +24,13 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.nio.charset.Charset;
-import java.sql.SQLException;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 
 
 
@@ -68,6 +67,9 @@ public class EndpointControllerTest {
 
     @Autowired
     private   FilterChainProxy filterChainProxy;
+
+    @Autowired
+    FeedItemsForUsersRepository feedItemsForUsersRepository;
 
     @Before
     public void setup() throws Exception {
@@ -227,5 +229,26 @@ public class EndpointControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.result", is("subscribed")));
+    }
+
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestRemoveFavoriteGivesSuccessMessage() throws Exception {
+        mockMvc.perform(delete("/feed?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"item_id\": 12}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is("success")));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestRemoveFavoriteLeavesErrorMessage() throws Exception {
+        mockMvc.perform(delete("/feed?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"item_id\": 1112}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is("error message")));
     }
 }
