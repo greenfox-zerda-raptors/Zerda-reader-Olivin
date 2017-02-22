@@ -52,3 +52,10 @@ build.mustRunAfter clean
 project.gradle.projectsEvaluated {
     applicationDefaultJvmArgs = ["-Dspring.profiles.active=${project.gradle.startParameter.systemPropertiesArgs['spring.profiles.active']}"]
 }
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+
+}

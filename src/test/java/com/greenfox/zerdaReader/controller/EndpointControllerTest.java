@@ -7,6 +7,7 @@ import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
+import org.apache.catalina.Server;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.nio.charset.Charset;
+import java.sql.SQLException;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
