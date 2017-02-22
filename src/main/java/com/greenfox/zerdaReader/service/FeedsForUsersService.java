@@ -65,6 +65,15 @@ public class FeedsForUsersService {
         feedsForUsersToUpdate.setStarred(true);
         feedsForUsersRepository.save(feedsForUsersToUpdate);
     }
+
+    public void removeFavorite(Long itemId, User user) {
+        FeedsForUsers feedsForUsersToUpdate = feedsForUsersRepository.findByUserAndFeedItemID(user, itemId);
+        feedsForUsersToUpdate.setStarred(false);
+        feedsForUsersRepository.save(feedsForUsersToUpdate);
+
+    }
+
+
 }
 
 

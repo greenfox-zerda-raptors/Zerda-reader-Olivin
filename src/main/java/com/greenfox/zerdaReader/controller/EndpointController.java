@@ -167,4 +167,20 @@ public class EndpointController {
         }
         return response;
     }
+
+    @RequestMapping(value = "/feed", method = RequestMethod.DELETE)
+    public ObjectNode removeFavorite (@RequestBody String itemIdOfItemToChange) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode request = mapper.readTree(itemIdOfItemToChange);
+        ObjectNode response = mapper.createObjectNode();
+        long itemId = request.get("item_id").asLong();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            feedsForUsersService.removeFavorite(itemId, user);
+            response.put("response", "success");
+        } catch (NullPointerException e) {
+            response.put("response", "error message");
+        }
+        return response;
+    }
 }

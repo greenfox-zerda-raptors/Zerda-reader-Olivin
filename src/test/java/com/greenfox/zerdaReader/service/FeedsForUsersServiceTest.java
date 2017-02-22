@@ -50,7 +50,7 @@ public class FeedsForUsersServiceTest {
         service.populateFeedsForUsers(user);
         userRepository.save(user);
         user = userRepository.findOne(3L);
-        Assert.assertEquals(1, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(2, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test

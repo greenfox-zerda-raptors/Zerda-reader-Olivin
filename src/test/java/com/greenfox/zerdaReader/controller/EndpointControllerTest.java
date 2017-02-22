@@ -4,6 +4,7 @@ import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedRepository;
+import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
@@ -27,10 +28,10 @@ import java.nio.charset.Charset;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 
 
 
@@ -67,6 +68,9 @@ public class EndpointControllerTest {
 
     @Autowired
     FilterChainProxy filterChainProxy;
+
+    @Autowired
+    FeedsForUsersRepository feedsForUsersRepository;
 
     @Before
     public void setup() throws Exception {
@@ -172,7 +176,7 @@ public class EndpointControllerTest {
     }
 
     @Test
-    @Sql ({"/clear-tables.sql", "/favorite.sql"})
+    @Sql({"/clear-tables.sql", "/favorite.sql"})
     public void TestFavoritedFeedListDisplay() throws Exception {
         mockMvc.perform(get("/favorites?token=ABCD1234"))
                 .andExpect(status().isOk())
@@ -200,5 +204,26 @@ public class EndpointControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.response", is("invalid item id")));
+    }
+
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestRemoveFavoriteGivesSuccessMessage() throws Exception {
+        mockMvc.perform(delete("/feed?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"item_id\": 12}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is("success")));
+    }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestRemoveFavoriteLeavesErrorMessage() throws Exception {
+        mockMvc.perform(delete("/feed?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"item_id\": 1112}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.response", is("error message")));
     }
 }

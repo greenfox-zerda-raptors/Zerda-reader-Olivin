@@ -26,5 +26,6 @@ public interface FeedsForUsersRepository extends CrudRepository<com.greenfox.zer
 
     @Query("select fu from FeedsForUsers fu where fu.user = ?1 and fu.starred = TRUE order by fu.feedItem.pubDate desc")
     Page<FeedsForUsers>findAllFeedsForUsersForAuserSortedByDateAndByFavorites(User user, Pageable pageable);
+
 }
 
