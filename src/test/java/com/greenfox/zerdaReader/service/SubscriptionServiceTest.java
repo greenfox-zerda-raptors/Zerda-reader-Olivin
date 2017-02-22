@@ -1,20 +1,17 @@
 package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
-import com.greenfox.zerdaReader.domain.FeedItemsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedItemsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,12 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
@@ -75,8 +67,8 @@ public class SubscriptionServiceTest {
         Assert.assertEquals(0, testUser.getFeedItemsForUsers().size());
         subscriptionService.trySubscribingToFeedAndReturn("http://lorem-rss.herokuapp.com/feed?unit=second&interval=30", testUser);
         Assert.assertEquals(1, testUser.getSubscribedFeeds().size());
-        Assert.assertEquals(13, feedItemsForUsersRepository.count());
-        Assert.assertEquals(11, feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDate(testUser, new PageRequest(0, 50)).size());
+        Assert.assertEquals(12, feedItemsForUsersRepository.count());
+        Assert.assertEquals(10, feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDate(testUser, new PageRequest(0, 50)).size());
     }
 
     @Test
