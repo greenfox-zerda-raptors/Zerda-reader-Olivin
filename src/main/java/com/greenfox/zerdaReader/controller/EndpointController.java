@@ -36,7 +36,7 @@ public class EndpointController {
     FeedRepository feedRepository;
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
-    FeedItemsForUsersService feedsForUsersService;
+    FeedItemsForUsersService feedItemsForUsersService;
     SubscriptionService subscriptionService;
 
 
@@ -54,7 +54,7 @@ public class EndpointController {
         this.feedRepository = feedRepository;
         this.userRepository = userRepository;
         this.feedItemRepository = feedItemRepository;
-        this.feedsForUsersService = feedsForUsersService;
+        this.feedItemsForUsersService = feedsForUsersService;
         this.subscriptionService = subscriptionService;
     }
 //*******************************************************
@@ -121,7 +121,7 @@ public class EndpointController {
         log.info("break1 / inside controller/feed");
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         log.info("break2 / got user from ApplContext");
-        UserFeed myUserFeed = feedsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        UserFeed myUserFeed = feedItemsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
         log.info("break5 / got user feed list, ready to return it");
 
         return myUserFeed;
@@ -133,7 +133,7 @@ public class EndpointController {
                                   @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                   @RequestParam(value = "token") String token) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return feedsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset), Integer.parseInt(items));
+        return feedItemsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
@@ -144,7 +144,7 @@ public class EndpointController {
         JsonNode request = mapper.readTree(openedStatus);
         boolean isRead = request.get("opened").asBoolean();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        feedsForUsersService.updateReadStatus(itemId, isRead, user);
+        feedItemsForUsersService.updateReadStatus(itemId, isRead, user);
 
         return HttpStatus.OK;
     }
@@ -160,7 +160,7 @@ public class EndpointController {
                                           @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                           @RequestParam(value = "token") String token) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return feedsForUsersService.getUserFeedWithFavoritesOnly(user, Integer.parseInt(offset), Integer.parseInt(items));
+        return feedItemsForUsersService.getUserFeedWithFavoritesOnly(user, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/favorites", method = RequestMethod.POST)
@@ -172,7 +172,7 @@ public class EndpointController {
         long itemId = request.get("item_id").asLong();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
-            feedsForUsersService.markAsFavorite(itemId, user);
+            feedItemsForUsersService.markAsFavorite(itemId, user);
             response.put("response", "success");
         } catch (NullPointerException e) {
             response.put("response", "invalid item id");
@@ -188,7 +188,7 @@ public class EndpointController {
         long itemId = request.get("item_id").asLong();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
-            feedsForUsersService.removeFavorite(itemId, user);
+            feedItemsForUsersService.removeFavorite(itemId, user);
             response.put("response", "success");
         } catch (NullPointerException e) {
             response.put("response", "error message");
@@ -205,4 +205,6 @@ public class EndpointController {
         JsonNode answer = mapper.readTree(subscriptionService.trySubscribingToFeedAndReturn(url, user));
         return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
+
+
 }
