@@ -40,7 +40,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
     @Autowired
     FeedItemsForUsersRepository feedItemsForUsersRepository;
     @Autowired
-    FeedItemsForUsersService feedsForUsersService;
+    FeedItemsForUsersService feedsItemsForUsersService;
     @Autowired
     UpdateService updateService;
 
@@ -69,7 +69,7 @@ public class ZerdaReaderApplication implements CommandLineRunner {
 //        mentünk mindkét oldalon
         feedRepository.save(feed);
         userRepository.save(testUser);
-        feedsForUsersService.populateFeedsForUsers(testUser);
+        feedsItemsForUsersService.populateFeedItemsForUser(testUser);
         updateService.update();
     }
 

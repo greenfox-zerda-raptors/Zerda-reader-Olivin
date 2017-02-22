@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by zoloe on 2017. 01. 25..
  */
@@ -40,13 +42,8 @@ public class FeedItemsForUsersService {
     }
 
 
-
-
-
-
-
     public UserFeed getFeedsForUsersList(User user, int offset, int items) {
-        Page<FeedItemsForUsers> allUserFeedItems;
+        List<FeedItemsForUsers> allUserFeedItems;
         allUserFeedItems = feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDate(user, new PageRequest(offset, items));
         UserFeed nextFeed = new UserFeed(allUserFeedItems);
         return nextFeed;
