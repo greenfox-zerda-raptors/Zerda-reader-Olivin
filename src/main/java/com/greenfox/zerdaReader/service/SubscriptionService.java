@@ -26,16 +26,16 @@ public class SubscriptionService {
         this.feedItemsForUsersService = feedItemsForUsersService;
     }
 
-    public String trySubscribingToFeedAndReturn(String url){
+    public String trySubscribingToFeedAndReturn(String url, User user){
 //            probaljuk meg hozzaadni a feedet a DB-hez (ha mar nalunk van, nem adodik hozza, le van kezelve
         try {
             feedService.addNewFeed(url);
 //            iratkoztassuk fol ra a usert
-            subscribeLoggedInUserToFeed(url);
+            subscribeLoggedInUserToFeed(url, user);
 //            adjuk hozzá a (z esetleg már nálunk lévő) userfeeditemeket a userhez
-            feedItemsForUsersService.populateFeedItemsForOneFeedAndUser(userService.getLoggedInUser(),feedService.getFeedByUrl(url));
+            feedItemsForUsersService.populateFeedItemsForOneFeedAndUser(user,feedService.getFeedByUrl(url));
 //            frissitsuk be a frissen hozzaadott feedet, hogy a user ebbol biztosan ujat kapjon, amikor lekeri
-            updateService.updateFeedForUserByUrl(url, userService.getLoggedInUser());
+            updateService.updateFeedForUserByUrl(url, user);
 //            terjunk vissza az id-val
             return  "{\"result\": \"subscribed\",\"id\": " + getFeedIdByUrl(url) + "}";
         } catch (Exception e) {
@@ -44,8 +44,7 @@ public class SubscriptionService {
         }
     }
 
-    private void subscribeLoggedInUserToFeed(String url) throws IOException, FeedException{
-        User user = userService.getLoggedInUser();
+    private void subscribeLoggedInUserToFeed(String url, User user) throws IOException, FeedException{
         Feed feed = feedService.getFeedByUrl(url);
         user.getSubscribedFeeds().add(feed);
         userService.saveUser(user);

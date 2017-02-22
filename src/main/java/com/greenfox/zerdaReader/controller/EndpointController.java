@@ -186,7 +186,8 @@ public class EndpointController {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(subscriptionRequest);
         String url = (request.get("feed").asText());
-        JsonNode answer = mapper.readTree(subscriptionService.trySubscribingToFeedAndReturn(url));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        JsonNode answer = mapper.readTree(subscriptionService.trySubscribingToFeedAndReturn(url, user));
         return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
 }

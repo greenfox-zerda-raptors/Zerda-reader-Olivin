@@ -84,7 +84,7 @@ public class UpdateService {
     }
 
     public void updateFeedForUserByUrl(String url, User user) throws IOException, FeedException{
-        log.info("update for feed:" + url + "started");
+        log.info("update for feed: " + url + " started");
         ArrayList<FeedItem> feedItemsList = new ArrayList<FeedItem>();
         ArrayList<Feed> feedsList = new ArrayList<Feed>();
         try {
