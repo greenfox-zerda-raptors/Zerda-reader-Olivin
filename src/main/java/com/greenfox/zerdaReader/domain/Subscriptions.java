@@ -10,12 +10,12 @@ import java.util.List;
  */
 @Getter
 public class Subscriptions {
-    List<SubscribedFeed> subscribedFeedList;
+    List<SubscribedFeed> subscriptions;
 
     public Subscriptions(List<Feed> feeds) {
-        subscribedFeedList = new ArrayList<>();
+        subscriptions = new ArrayList<>();
         for (Feed feed : feeds) {
-            subscribedFeedList.add(new SubscribedFeed(feed.getTitle(), feed.getId()));
+            subscriptions.add(new SubscribedFeed(feed.getTitle(), feed.getId()));
         }
     }
 }

@@ -2,7 +2,7 @@ package com.greenfox.zerdaReader.service;
 
 import com.greenfox.zerdaReader.domain.Feed;
 import com.greenfox.zerdaReader.domain.FeedItem;
-import com.greenfox.zerdaReader.domain.FeedsForUsers;
+import com.greenfox.zerdaReader.domain.FeedItemsForUsers;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
@@ -36,11 +36,11 @@ public class UpdateService {
 
     @Autowired
     public UpdateService(FeedItemRepository feedItemRepository, FeedRepository feedRepository) {
-        this.feedRepository = feedRepository;
         this.feedItemRepository = feedItemRepository;
+        this.feedRepository = feedRepository;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 120000)
     public void update() throws IOException, FeedException {
         log.info("update started");
         ArrayList<FeedItem> feedItemsList = new ArrayList<FeedItem>();
@@ -56,7 +56,7 @@ public class UpdateService {
                             FeedItem feedItem = new FeedItem();
                             feedItem.setFields(se, feed);
                             for (User user : feed.getSubscribedUsers()) {
-                                feedItem.addNewFeedsForUsers(new FeedsForUsers(user, feedItem));
+                                feedItem.addNewFeedItemsForUsers(new FeedItemsForUsers(user, feedItem));
                                 feedItemsList.add(feedItem);
                             }
                         }
@@ -66,7 +66,7 @@ public class UpdateService {
                 }
             }
         } catch (OutOfMemoryError error) {
-            log.info("OutOfMemoryError"+ "\n" + error.getMessage()+ "\n" +error.getStackTrace());
+            log.info("OutOfMemoryError" + "\n" + error.getMessage() + "\n" + error.getStackTrace());
             log.info("Exiting without saving");
             return;
         }
@@ -82,4 +82,34 @@ public class UpdateService {
     public boolean isUpdateNeeded(Feed feed, SyndFeed syndFeed) {
         return !LocalDateTime.ofInstant(syndFeed.getPublishedDate().toInstant(), ZoneId.systemDefault()).isEqual(feed.getPubDate());
     }
+
+    public void updateFeedForUserByUrl(String url, User user) throws IOException, FeedException{
+        log.info("update for feed: " + url + " started");
+        ArrayList<FeedItem> feedItemsList = new ArrayList<FeedItem>();
+        ArrayList<Feed> feedsList = new ArrayList<Feed>();
+        try {
+                Feed feed = feedRepository.findOneByRssPath(url);
+                TempSyndFeedStorage storage = new TempSyndFeedStorage(url);
+                if (isUpdateNeeded(feed, storage.getSyndFeed())) {
+                    for (SyndEntry se : storage.getSyndFeed().getEntries()) {
+                        if (convertDate(se.getPublishedDate()).isAfter(feed.getPubDate())) {
+                            FeedItem feedItem = new FeedItem();
+                            feedItem.setFields(se, feed);
+                                feedItem.addNewFeedItemsForUsers(new FeedItemsForUsers(user, feedItem));
+                                feedItemsList.add(feedItem);
+                        }
+                    }
+                    feed.setPubDate(convertDate(storage.getSyndFeed().getPublishedDate()));
+                    feedsList.add(feed);
+                }
+        } catch (OutOfMemoryError error) {
+            log.info("OutOfMemoryError"+ "\n" + error.getMessage()+ "\n" +error.getStackTrace());
+            log.info("Exiting without saving");
+            return;
+        }
+        feedItemRepository.save(feedItemsList);
+        feedRepository.save(feedsList);
+        log.info("update stopped");
+    }
 }
+

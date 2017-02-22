@@ -28,20 +28,20 @@ public class UserServiceTest {
     UserRepository repository;
 
     @Test
-    public void TestGenerateResponseForLoginSuccessful() {
+    public void testGenerateResponseForLoginSuccessful() {
         User user = service.addNewUser("name@example.com", "1234");
         Assert.assertNotEquals("{\"result\": \"fail\", \"message\": \"invalid username or password\"}" + user.getId() + "}", service.generateResponseForLogin("name@example.com", "1234"));
     }
 
     @Test
-    public void TestGenerateResponseForLoginUnSuccessful() {
+    public void testGenerateResponseForLoginUnSuccessful() {
         User user = service.addNewUser("name@example.com", "1234");
         Assert.assertEquals("{\"result\": \"fail\", \"message\": \"invalid username or password\"}", service.generateResponseForLogin("name2@example.com", "1234"));
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGenerateResponseForSignUpFails() throws Exception {
+    public void testGenerateResponseForSignUpFails() throws Exception {
         User user = repository.findOneByEmail("name@example.com");
         String answer = service.generateResponseForSignUp(false, user);
         Assert.assertEquals("{\"result\": \"fail\", \"message\": \"email address already exists\"}", answer);
@@ -49,7 +49,7 @@ public class UserServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestGenerateResponseForSignUpSuccess() throws Exception {
+    public void testGenerateResponseForSignUpSuccess() throws Exception {
         User user = repository.findOneByEmail("name@example.com");
         String answer = service.generateResponseForSignUp(true, user);
         Assert.assertEquals("{\"result\": \"success\", \"token\": \"ABCD1234\", \"id\": 2}", answer);
@@ -57,7 +57,7 @@ public class UserServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestSuccessfullyAddNewUser() throws Exception {
+    public void testSuccessfullyAddNewUser() throws Exception {
         Assert.assertEquals(2, repository.count());
         service.addNewUser("example@gmail.com", "sajhdjahd");
         Assert.assertEquals(3, repository.count());
@@ -65,13 +65,13 @@ public class UserServiceTest {
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestIsExistingEmailShouldReturnTrue() throws Exception {
+    public void testIsExistingEmailShouldReturnTrue() throws Exception {
         Assert.assertTrue(service.isExistingEmail("name@example.com"));
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-    public void TestIsExistingEmailShouldReturnFalse() throws Exception {
+    public void testIsExistingEmailShouldReturnFalse() throws Exception {
         Assert.assertFalse(service.isExistingEmail("name2@example.com"));
     }
 

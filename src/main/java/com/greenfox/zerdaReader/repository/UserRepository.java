@@ -22,3 +22,4 @@ public interface UserRepository extends CrudRepository<User, Long> {
     User findOneByToken(String token);
 
 }
+

@@ -1,4 +1,5 @@
 package com.greenfox.zerdaReader.secure;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,9 +17,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+    @Autowired
+    AuthenticationTokenProcessingFilter authenticationTokenProcessingFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(myCustomFilter(), FilterSecurityInterceptor.class);
+        http.addFilterBefore(authenticationTokenProcessingFilter, FilterSecurityInterceptor.class);
 
         http
                 .cors().and()
@@ -31,10 +35,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").permitAll()
         ;
     }
-
-    @Bean
-    public AuthenticationTokenProcessingFilter myCustomFilter() {
-        return new AuthenticationTokenProcessingFilter();
-    }
-
 }

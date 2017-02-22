@@ -11,19 +11,19 @@ import java.util.ArrayList;
 public class FeedItemTest {
 
     @Test
-    public void TestAddNewFeedsForUsersForIfBranch() throws Exception {
+    public void testAddNewFeedsForUsersForIfBranch() throws Exception {
         FeedItem item = new FeedItem();
-        FeedsForUsers userItem = new FeedsForUsers();
-        item.addNewFeedsForUsers(userItem);
-        Assert.assertEquals(1, item.getFeedsForUsers().size());
+        FeedItemsForUsers userItem = new FeedItemsForUsers();
+        item.addNewFeedItemsForUsers(userItem);
+        Assert.assertEquals(1, item.getFeedItemsForUsers().size());
     }
 
     @Test
-    public void TestAddNewFeedsForUsersWithoutIfBranch() throws Exception {
+    public void testAddNewFeedsForUsersWithoutIfBranch() throws Exception {
         FeedItem item = new FeedItem();
-        item.setFeedsForUsers(new ArrayList<>());
-        FeedsForUsers userItem = new FeedsForUsers();
-        item.addNewFeedsForUsers(userItem);
-        Assert.assertEquals(1, item.getFeedsForUsers().size());
+        item.setFeedItemsForUsers(new ArrayList<>());
+        FeedItemsForUsers userItem = new FeedItemsForUsers();
+        item.addNewFeedItemsForUsers(userItem);
+        Assert.assertEquals(1, item.getFeedItemsForUsers().size());
     }
 }

@@ -8,10 +8,13 @@ import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemService;
-import com.greenfox.zerdaReader.service.FeedsForUsersService;
+import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
+import com.greenfox.zerdaReader.service.SubscriptionService;
 import com.greenfox.zerdaReader.service.UserService;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@Log
 public class EndpointController {
     private final AtomicLong counter = new AtomicLong();
 
@@ -32,7 +36,8 @@ public class EndpointController {
     FeedRepository feedRepository;
     UserRepository userRepository;
     FeedItemRepository feedItemRepository;
-    FeedsForUsersService feedsForUsersService;
+    FeedItemsForUsersService feedsForUsersService;
+    SubscriptionService subscriptionService;
 
 
     @Autowired
@@ -41,7 +46,8 @@ public class EndpointController {
                               FeedItemService feedItemService,
                               UserService userService,
                               FeedRepository feedRepository,
-                              FeedsForUsersService feedsForUsersService) {
+                              FeedItemsForUsersService feedsForUsersService,
+                              SubscriptionService subscriptionService) {
 
         this.feedItemService = feedItemService;
         this.userService = userService;
@@ -49,6 +55,7 @@ public class EndpointController {
         this.userRepository = userRepository;
         this.feedItemRepository = feedItemRepository;
         this.feedsForUsersService = feedsForUsersService;
+        this.subscriptionService = subscriptionService;
     }
 //*******************************************************
 //*************** Ezek az TEST endpointok ***************
@@ -98,7 +105,7 @@ public class EndpointController {
     @RequestMapping(value = "/feed/user/{Id}")
     public UserFeed filterForFeedAndUser(@PathVariable String Id) {
 //        amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getUser(Long.parseLong(Id));
+        User user = userService.getUserById(Long.parseLong(Id));
         return new UserFeed().getUserFeed(user, 0, 100);
     }
 */
@@ -111,8 +118,13 @@ public class EndpointController {
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items,
                                      @RequestParam(value = "token") String token) {
+        log.info("break1 / inside controller/feed");
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return feedsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        log.info("break2 / got user from ApplContext");
+        UserFeed myUserFeed = feedsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        log.info("break5 / got user feed list, ready to return it");
+
+        return myUserFeed;
     }
 
     @RequestMapping(value = "/feed/{Id}")
@@ -133,14 +145,14 @@ public class EndpointController {
         boolean isRead = request.get("opened").asBoolean();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         feedsForUsersService.updateReadStatus(itemId, isRead, user);
+
         return HttpStatus.OK;
     }
 
     @RequestMapping(value = "/subscriptions", method = RequestMethod.GET)
-    public List<SubscribedFeed> getSubscriptions(@RequestParam(value = "token") String token) {
+    public Subscriptions getSubscriptions(@RequestParam(value = "token") String token) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Subscriptions subscriptions = new Subscriptions(user.getSubscribedFeeds());
-        return subscriptions.getSubscribedFeedList();
+        return new Subscriptions(user.getSubscribedFeeds());
     }
 
     @RequestMapping(value = "/favorites", method = RequestMethod.GET)
@@ -182,5 +194,15 @@ public class EndpointController {
             response.put("response", "error message");
         }
         return response;
+    }
+
+    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
+    public ResponseEntity<JsonNode> subscribeToFeed(@RequestParam(value = "token") String token, @RequestBody String subscriptionRequest) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode request = mapper.readTree(subscriptionRequest);
+        String url = (request.get("feed").asText());
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        JsonNode answer = mapper.readTree(subscriptionService.trySubscribingToFeedAndReturn(url, user));
+        return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
     }
 }

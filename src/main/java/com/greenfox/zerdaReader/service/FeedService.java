@@ -23,7 +23,6 @@ public class FeedService {
         this.feedRepo = feedRepo;
     }
 
-
     public void addNewFeed(String rssPath) throws IOException, FeedException {
         TempSyndFeedStorage storage = new TempSyndFeedStorage(rssPath);
         if (!isExist(storage)) {
@@ -44,4 +43,11 @@ public class FeedService {
         return feedRepo.findOne(id);
     }
 
+    public Feed getFeedByUrl(String url){
+        return feedRepo.findOneByRssPath(url);
+    }
+
+    public void saveFeed(Feed feed) {
+        feedRepo.save(feed);
+    }
 }
