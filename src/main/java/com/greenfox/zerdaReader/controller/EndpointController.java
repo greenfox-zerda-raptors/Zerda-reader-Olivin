@@ -150,10 +150,9 @@ public class EndpointController {
     }
 
     @RequestMapping(value = "/subscriptions", method = RequestMethod.GET)
-    public List<SubscribedFeed> getSubscriptions(@RequestParam(value = "token") String token) {
+    public Subscriptions getSubscriptions(@RequestParam(value = "token") String token) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Subscriptions subscriptions = new Subscriptions(user.getSubscribedFeeds());
-        return subscriptions.getSubscribedFeedList();
+        return new Subscriptions(user.getSubscribedFeeds());
     }
 
     @RequestMapping(value = "/favorites", method = RequestMethod.GET)
