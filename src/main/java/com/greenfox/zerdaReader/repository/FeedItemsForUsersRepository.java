@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 /**
  * Created by zoloe on 2017. 01. 23..
  */
@@ -19,12 +21,12 @@ public interface FeedItemsForUsersRepository extends CrudRepository<FeedItemsFor
     FeedItemsForUsers findByUserAndFeedItemID(User user, Long itemID);
 
    @Query("select fu from FeedItemsForUsers fu where fu.user = ?1 order by fu.feedItem.pubDate desc ")
-   Page<FeedItemsForUsers> findAllFeedsForUsersForAuserSortedByDate(User user, Pageable pageable);
+   List<FeedItemsForUsers> findAllFeedsForUsersForAuserSortedByDate(User user, Pageable pageable);
 
     @Query(value="select fu from FeedItemsForUsers fu where fu.user = ?1 and fu.feedItem.feed.id = ?2 order by fu.feedItem.pubDate desc ")
-    Page<FeedItemsForUsers> findAllFeedItemsByUseByFeedIdSortedByDate (User user, Long Id, Pageable pageable);
+    List<FeedItemsForUsers> findAllFeedItemsByUseByFeedIdSortedByDate (User user, Long Id, Pageable pageable);
 
     @Query("select fu from FeedItemsForUsers fu where fu.user = ?1 and fu.starred = TRUE order by fu.feedItem.pubDate desc")
-    Page<FeedItemsForUsers>findAllFeedsForUsersForAuserSortedByDateAndByFavorites(User user, Pageable pageable);
+    List<FeedItemsForUsers>findAllFeedsForUsersForAuserSortedByDateAndByFavorites(User user, Pageable pageable);
 }
 

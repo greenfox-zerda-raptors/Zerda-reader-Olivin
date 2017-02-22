@@ -1,18 +1,19 @@
 package com.greenfox.zerdaReader.service;
-
 import com.greenfox.zerdaReader.domain.*;
 import com.greenfox.zerdaReader.repository.FeedItemsForUsersRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 /**
  * Created by zoloe on 2017. 01. 25..
  */
+
+
 @Component
+@Log
 public class FeedItemsForUsersService {
     FeedItemsForUsersRepository feedItemsForUsersRepository;
 
@@ -43,18 +44,28 @@ public class FeedItemsForUsersService {
 
 
     public UserFeed getFeedsForUsersList(User user, int offset, int items) {
+        log.info("break3 / in feedsforusers service, getfeedsforuserslist");
         List<FeedItemsForUsers> allUserFeedItems;
-        allUserFeedItems = feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDate(user, new PageRequest(offset, items));
+        if (offset % items == 0) {
+            allUserFeedItems = feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDate(user, new PageRequest(offset / items, items));
+        } else {
+            List<FeedItemsForUsers> tempList = feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDate(user, new PageRequest(0, offset + items));
+            allUserFeedItems = tempList.subList(offset, tempList.size());
+        }
         UserFeed nextFeed = new UserFeed(allUserFeedItems);
+        log.info("break4 / got list, ready to return to controller");
         return nextFeed;
     }
 
-    public UserFeed getFilteredUserFeed(User user, Long feed_id, int offset, int items) {
-//        Page<FeedItemsForUsers> allUserFeedItems;
-//
-//        allUserFeedItems = feedsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
-        Page<FeedItemsForUsers> allUserFeedItems = feedItemsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feed_id, new PageRequest(offset, items));
-        UserFeed nextFeed = new UserFeed(allUserFeedItems);
+    public UserFeed getFilteredUserFeed(User user, Long feedId, int offset, int items) {
+        List<FeedItemsForUsers> filteredUserFeedItems;
+        if (offset % items == 0) {
+            filteredUserFeedItems = feedItemsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feedId, new PageRequest(offset / items, items));
+        } else {
+            List<FeedItemsForUsers> tempList = feedItemsForUsersRepository.findAllFeedItemsByUseByFeedIdSortedByDate(user, feedId, new PageRequest(0, offset + items));
+            filteredUserFeedItems = tempList.subList(offset, tempList.size());
+        }
+        UserFeed nextFeed = new UserFeed(filteredUserFeedItems);
         return nextFeed;
     }
 
@@ -66,9 +77,14 @@ public class FeedItemsForUsersService {
     }
 
     public UserFeed getUserFeedWithFavoritesOnly(User user, int offset, int items) {
-        Page<FeedItemsForUsers> allUserFeedItems;
-        allUserFeedItems = feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDateAndByFavorites(user, new PageRequest(offset, items));
-        UserFeed nextFeed = new UserFeed(allUserFeedItems);
+        List<FeedItemsForUsers> favoritedUserFeedItems;
+        if (offset % items == 0) {
+            favoritedUserFeedItems = feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDateAndByFavorites(user, new PageRequest(offset / items, items));
+        } else {
+            List<FeedItemsForUsers> tempList = feedItemsForUsersRepository.findAllFeedsForUsersForAuserSortedByDateAndByFavorites(user, new PageRequest(0, offset + items));
+            favoritedUserFeedItems = tempList.subList(offset, tempList.size());
+        }
+        UserFeed nextFeed = new UserFeed(favoritedUserFeedItems);
         return nextFeed;
     }
 

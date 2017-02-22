@@ -8,7 +8,6 @@ import com.greenfox.zerdaReader.repository.UserRepository;
 import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
 import com.greenfox.zerdaReader.service.UserService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +62,7 @@ public class EndpointControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private FeedItemsForUsersService feedsForUsersService;
+    private FeedItemsForUsersService feedItemsForUsersService;
 
     @Autowired
     private   FilterChainProxy filterChainProxy;
@@ -75,16 +74,6 @@ public class EndpointControllerTest {
                 .addFilters(filterChainProxy)
                 .build();
     }
-// Example test is commented out to reduce testing time
-//    @Test
-//    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
-//    public void testExample() throws Exception {
-//        mockMvc.perform(get("/userid"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(contentType))
-//                .andExpect(jsonPath("$", hasSize(2)))
-//                .andExpect(jsonPath("$.[0]", is(2)));
-//    }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
@@ -116,7 +105,7 @@ public class EndpointControllerTest {
         Feed feed = feedRepository.findOne(2L);
         newUser.getSubscribedFeeds().add(feed);
         newUser = userRepository.save(newUser);
-        feedsForUsersService.populateFeedsForUsers(newUser);
+        feedItemsForUsersService.populateFeedItemsForUser(newUser);
         userRepository.save(newUser);
         mockMvc.perform(post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -3,8 +3,8 @@ package com.greenfox.zerdaReader.service;
 import com.greenfox.zerdaReader.ZerdaReaderApplication;
 import com.greenfox.zerdaReader.domain.User;
 import com.greenfox.zerdaReader.domain.UserFeed;
+import com.greenfox.zerdaReader.repository.FeedItemsForUsersRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
-import com.greenfox.zerdaReader.repository.FeedsForUsersRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,8 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
-
 /**
  * Created by Rita on 2017-02-02.
  */
@@ -25,10 +23,10 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ZerdaReaderApplication.class)
 @DataJpaTest
-public class FeedsForUsersServiceTest {
+public class FeedItemsForUsersServiceTest {
 
     @Autowired
-    FeedsForUsersService service;
+    FeedItemsForUsersService service;
 
     @Autowired
     UserRepository userRepository;
@@ -37,7 +35,7 @@ public class FeedsForUsersServiceTest {
     FeedRepository feedRepository;
 
     @Autowired
-    FeedsForUsersRepository feedsForUsersRepository;
+    FeedItemsForUsersRepository feedItemsForUsersRepository;
 
 
     final int DEFAULTOFFSET = 0;
@@ -50,7 +48,7 @@ public class FeedsForUsersServiceTest {
         Assert.assertEquals(0, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
         user.getSubscribedFeeds().add(feedRepository.findOne(2L));
         userRepository.save(user);
-        service.populateFeedsForUsers(user);
+        service.populateFeedItemsForUser(user);
         userRepository.save(user);
         user = userRepository.findOne(3L);
         Assert.assertEquals(1, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
@@ -62,7 +60,7 @@ public class FeedsForUsersServiceTest {
         User user = userRepository.findOne(2L);
         user.getSubscribedFeeds().add(feedRepository.findOne(4L));
         userRepository.save(user);
-        service.populateFeedsForUsers(user);
+        service.populateFeedItemsForUser(user);
         userRepository.save(user);
         user = userRepository.findOne(2L);
         Assert.assertEquals(3, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
@@ -72,36 +70,36 @@ public class FeedsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void testUpdateReadStatus() throws Exception {
         User user = userRepository.findOne(2L);
-        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
+        Assert.assertFalse(feedItemsForUsersRepository.findOne(2L).isReadByUser());
         service.updateReadStatus(11L, true, user);
-        Assert.assertTrue(feedsForUsersRepository.findOne(2L).isReadByUser());
+        Assert.assertTrue(feedItemsForUsersRepository.findOne(2L).isReadByUser());
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void testUpdateReadStatusWhenNothingChanges() throws Exception {
         User user = userRepository.findOne(2L);
-        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
+        Assert.assertFalse(feedItemsForUsersRepository.findOne(2L).isReadByUser());
         service.updateReadStatus(11L, false, user);
-        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isReadByUser());
+        Assert.assertFalse(feedItemsForUsersRepository.findOne(2L).isReadByUser());
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void testUpdateMarkAsFavorite() throws Exception {
         User user = userRepository.findOne(2L);
-        Assert.assertFalse(feedsForUsersRepository.findOne(2L).isStarred());
+        Assert.assertFalse(feedItemsForUsersRepository.findOne(2L).isStarred());
         service.markAsFavorite(11L, user);
-        Assert.assertTrue(feedsForUsersRepository.findOne(2L).isStarred());
+        Assert.assertTrue(feedItemsForUsersRepository.findOne(2L).isStarred());
     }
 
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void testMarkAsFavoriteWhenItHasAlreadyBeenMarked() throws Exception {
         User user = userRepository.findOne(2L);
-        Assert.assertTrue(feedsForUsersRepository.findOne(3L).isStarred());
+        Assert.assertTrue(feedItemsForUsersRepository.findOne(3L).isStarred());
         service.markAsFavorite(12L, user);
-        Assert.assertTrue(feedsForUsersRepository.findOne(3L).isStarred());
+        Assert.assertTrue(feedItemsForUsersRepository.findOne(3L).isStarred());
     }
 
     @Test
