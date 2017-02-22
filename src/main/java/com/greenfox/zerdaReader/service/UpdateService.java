@@ -40,7 +40,7 @@ public class UpdateService {
         this.feedRepository = feedRepository;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 120000)
     public void update() throws IOException, FeedException {
         log.info("update started");
         ArrayList<FeedItem> feedItemsList = new ArrayList<FeedItem>();

@@ -226,7 +226,6 @@ public class EndpointControllerTest {
                 .content("{\"feed\": \"http://lorem-rss.herokuapp.com/feed\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.result", is("subscribed")))
-                .andExpect(jsonPath("$.id", is(25)));
+                .andExpect(jsonPath("$.result", is("subscribed")));
     }
 }
