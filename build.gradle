@@ -32,6 +32,8 @@ dependencies {
     compile group: 'com.rometools', name: 'rome', version: '1.7.1'
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('mysql:mysql-connector-java')
+    runtime('org.postgresql:postgresql')
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1206-jdbc42'
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compile group: 'com.h2database', name: 'h2', version: '1.4.193'
