@@ -17,7 +17,7 @@ import java.net.MalformedURLException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ZerdaReaderApplication.class)
-@Ignore
+//@Ignore
 public class TempSyndFeedStorageTest {
 
     TempSyndFeedStorage storage;
