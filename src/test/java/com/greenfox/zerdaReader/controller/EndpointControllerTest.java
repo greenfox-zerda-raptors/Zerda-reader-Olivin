@@ -156,7 +156,7 @@ public class EndpointControllerTest {
         mockMvc.perform(get("/subscriptions?token=QWERTY9876"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$.subscriptions", hasSize(0)));
     }
 
     @Test
