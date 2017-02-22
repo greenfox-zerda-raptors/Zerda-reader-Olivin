@@ -27,19 +27,13 @@ public class SubscriptionService {
     }
 
     public String trySubscribingToFeedAndReturn(String url, User user){
-//            probaljuk meg hozzaadni a feedet a DB-hez (ha mar nalunk van, nem adodik hozza, le van kezelve
         try {
             feedService.addNewFeed(url);
-//            iratkoztassuk fol ra a usert
             subscribeLoggedInUserToFeed(url, user);
-//            adjuk hozzá a (z esetleg már nálunk lévő) userfeeditemeket a userhez
             feedItemsForUsersService.populateFeedItemsForOneFeedAndUser(user,feedService.getFeedByUrl(url));
-//            frissitsuk be a frissen hozzaadott feedet, hogy a user ebbol biztosan ujat kapjon, amikor lekeri
             updateService.updateFeedForUserByUrl(url, user);
-//            terjunk vissza az id-val
             return  "{\"result\": \"subscribed\",\"id\": " + getFeedIdByUrl(url) + "}";
         } catch (Exception e) {
-//            ha nem sikerult hozzaadni (exceptiont dobott), akkor szar az url, terjunk vissza hibauzenettel
             return "{\"result\": \"fail\",\"message\": \"The URL provided is not valid.\"}";
         }
     }
