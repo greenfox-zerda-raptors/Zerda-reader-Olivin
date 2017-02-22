@@ -225,7 +225,6 @@ public class EndpointControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.result", is("subscribed")))
-                .andExpect(jsonPath("$.id", is(5)));
-
+                .andExpect(jsonPath("$.id", is(25)));
     }
 }
