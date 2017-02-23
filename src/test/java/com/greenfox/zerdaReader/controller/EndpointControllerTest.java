@@ -235,7 +235,7 @@ public class EndpointControllerTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestRemoveFavoriteGivesSuccessMessage() throws Exception {
-        mockMvc.perform(delete("/feed?token=ABCD1234")
+        mockMvc.perform(delete("/favorites?token=ABCD1234")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"item_id\": 12}"))
                 .andExpect(status().isOk())
@@ -245,7 +245,7 @@ public class EndpointControllerTest {
     @Test
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void TestRemoveFavoriteLeavesErrorMessage() throws Exception {
-        mockMvc.perform(delete("/feed?token=ABCD1234")
+        mockMvc.perform(delete("/favorites?token=ABCD1234")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"item_id\": 1112}"))
                 .andExpect(status().isOk())

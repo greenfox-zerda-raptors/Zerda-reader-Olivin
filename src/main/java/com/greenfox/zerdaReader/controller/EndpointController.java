@@ -180,7 +180,7 @@ public class EndpointController {
         return response;
     }
 
-    @RequestMapping(value = "/feed", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/favorites", method = RequestMethod.DELETE)
     public ObjectNode removeFavorite (@RequestBody String itemIdOfItemToChange) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(itemIdOfItemToChange);
