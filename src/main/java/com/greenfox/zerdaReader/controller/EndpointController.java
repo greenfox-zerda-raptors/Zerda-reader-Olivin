@@ -11,7 +11,6 @@ import com.greenfox.zerdaReader.service.FeedItemService;
 import com.greenfox.zerdaReader.service.FeedItemsForUsersService;
 import com.greenfox.zerdaReader.service.SubscriptionService;
 import com.greenfox.zerdaReader.service.UserService;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +19,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by zoloe on 2017. 01. 18..
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@Log
 public class EndpointController {
-    private final AtomicLong counter = new AtomicLong();
 
     FeedItemService feedItemService;
     UserService userService;
@@ -100,45 +96,28 @@ public class EndpointController {
         return feedItemService.getFeedItem(Long.parseLong(id));
     }
 
-    //      visszaadja egy beadott user feedjét
-/*
-    @RequestMapping(value = "/feed/user/{Id}")
-    public UserFeed filterForFeedAndUser(@PathVariable String Id) {
-//        amig nincs user auth, addig az elso usert hasznaljuk
-        User user = userService.getUserById(Long.parseLong(Id));
-        return new UserFeed().getUserFeed(user, 0, 100);
-    }
-*/
-
 //*******************************************************
 //*************** Ezek az éles endpointok ***************
 //*******************************************************
 
     @RequestMapping(value = "/feed")
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
-                                     @RequestParam(value = "items", required = false, defaultValue = "50") String items,
-                                     @RequestParam(value = "token") String token) {
-        log.info("break1 / inside controller/feed");
+                                     @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("break2 / got user from ApplContext");
         UserFeed myUserFeed = feedItemsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
-        log.info("break5 / got user feed list, ready to return it");
-
         return myUserFeed;
     }
 
     @RequestMapping(value = "/feed/{Id}")
     public UserFeed filterForFeed(@PathVariable Long Id,
                                   @RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
-                                  @RequestParam(value = "items", required = false, defaultValue = "50") String items,
-                                  @RequestParam(value = "token") String token) {
+                                  @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return feedItemsForUsersService.getFilteredUserFeed(user, Id, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/feed/{itemId}", method = RequestMethod.PUT)
     public HttpStatus markAsRead(@PathVariable Long itemId,
-                                 @RequestParam(value = "token") String token,
                                  @RequestBody String openedStatus) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(openedStatus);
@@ -150,22 +129,20 @@ public class EndpointController {
     }
 
     @RequestMapping(value = "/subscriptions", method = RequestMethod.GET)
-    public Subscriptions getSubscriptions(@RequestParam(value = "token") String token) {
+    public Subscriptions getSubscriptions() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return new Subscriptions(user.getSubscribedFeeds());
     }
 
     @RequestMapping(value = "/favorites", method = RequestMethod.GET)
     public UserFeed listFavoriteFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
-                                          @RequestParam(value = "items", required = false, defaultValue = "50") String items,
-                                          @RequestParam(value = "token") String token) {
+                                          @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return feedItemsForUsersService.getUserFeedWithFavoritesOnly(user, Integer.parseInt(offset), Integer.parseInt(items));
     }
 
     @RequestMapping(value = "/favorites", method = RequestMethod.POST)
-    public ObjectNode markAsFavorite(@RequestParam(value = "token") String token,
-                                     @RequestBody String itemIdOfItemToChange) throws IOException {
+    public ObjectNode markAsFavorite(@RequestBody String itemIdOfItemToChange) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(itemIdOfItemToChange);
         ObjectNode response = mapper.createObjectNode();
@@ -197,13 +174,13 @@ public class EndpointController {
     }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
-    public ResponseEntity<JsonNode> subscribeToFeed(@RequestParam(value = "token") String token, @RequestBody String subscriptionRequest) throws IOException {
+    public ResponseEntity<JsonNode> subscribeToFeed(@RequestBody String subscriptionRequest) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(subscriptionRequest);
         String url = (request.get("feed").asText());
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         JsonNode answer = mapper.readTree(subscriptionService.trySubscribingToFeedAndReturn(url, user));
-        return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
+        return new ResponseEntity<>(answer, HttpStatus.OK);
     }
 
 
