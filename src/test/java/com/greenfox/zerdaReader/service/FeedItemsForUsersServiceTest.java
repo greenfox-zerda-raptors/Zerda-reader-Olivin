@@ -26,7 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class FeedItemsForUsersServiceTest {
 
     @Autowired
-    FeedItemsForUsersService service;
+    FeedItemsForUsersService feedItemsForUsersService;
 
     @Autowired
     UserRepository userRepository;
@@ -45,13 +45,13 @@ public class FeedItemsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
     public void testPopulateFeedsForUsersForFirstNewSubscription() throws Exception {
         User user = userRepository.findOne(3L);
-        Assert.assertEquals(0, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(0, feedItemsForUsersService.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
         user.getSubscribedFeeds().add(feedRepository.findOne(2L));
         userRepository.save(user);
-        service.populateFeedItemsForUser(user);
+        feedItemsForUsersService.populateFeedItemsForUser(user);
         userRepository.save(user);
         user = userRepository.findOne(3L);
-        Assert.assertEquals(2, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(2, feedItemsForUsersService.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test
@@ -60,10 +60,10 @@ public class FeedItemsForUsersServiceTest {
         User user = userRepository.findOne(2L);
         user.getSubscribedFeeds().add(feedRepository.findOne(4L));
         userRepository.save(user);
-        service.populateFeedItemsForUser(user);
+        feedItemsForUsersService.populateFeedItemsForUser(user);
         userRepository.save(user);
         user = userRepository.findOne(2L);
-        Assert.assertEquals(3, service.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
+        Assert.assertEquals(3, feedItemsForUsersService.getFeedsForUsersList(user, DEFAULTOFFSET, DEFAULTITEMS).getFeed().size());
     }
 
     @Test
@@ -71,7 +71,7 @@ public class FeedItemsForUsersServiceTest {
     public void testUpdateReadStatus() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertFalse(feedItemsForUsersRepository.findOne(2L).isReadByUser());
-        service.updateReadStatus(11L, true, user);
+        feedItemsForUsersService.updateReadStatus(11L, true, user);
         Assert.assertTrue(feedItemsForUsersRepository.findOne(2L).isReadByUser());
     }
 
@@ -80,7 +80,7 @@ public class FeedItemsForUsersServiceTest {
     public void testUpdateReadStatusWhenNothingChanges() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertFalse(feedItemsForUsersRepository.findOne(2L).isReadByUser());
-        service.updateReadStatus(11L, false, user);
+        feedItemsForUsersService.updateReadStatus(11L, false, user);
         Assert.assertFalse(feedItemsForUsersRepository.findOne(2L).isReadByUser());
     }
 
@@ -89,7 +89,7 @@ public class FeedItemsForUsersServiceTest {
     public void testUpdateMarkAsFavorite() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertFalse(feedItemsForUsersRepository.findOne(2L).isStarred());
-        service.markAsFavorite(11L, user);
+        feedItemsForUsersService.markAsFavorite(11L, user);
         Assert.assertTrue(feedItemsForUsersRepository.findOne(2L).isStarred());
     }
 
@@ -98,7 +98,7 @@ public class FeedItemsForUsersServiceTest {
     public void testMarkAsFavoriteWhenItHasAlreadyBeenMarked() throws Exception {
         User user = userRepository.findOne(2L);
         Assert.assertTrue(feedItemsForUsersRepository.findOne(3L).isStarred());
-        service.markAsFavorite(12L, user);
+        feedItemsForUsersService.markAsFavorite(12L, user);
         Assert.assertTrue(feedItemsForUsersRepository.findOne(3L).isStarred());
     }
 
@@ -106,7 +106,7 @@ public class FeedItemsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testGetFeedsForUsersListWithPageableOffset() throws Exception {
         User user = userRepository.findOne(1L);
-        UserFeed trialList = service.getFeedsForUsersList(user, 5, 5);
+        UserFeed trialList = feedItemsForUsersService.getFeedsForUsersList(user, 5, 5);
         Assert.assertEquals(5, trialList.getFeed().size());
         Assert.assertEquals(115L, trialList.getFeed().get(0).getId());
     }
@@ -115,7 +115,7 @@ public class FeedItemsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testGetFeedsForUsersListWithNotPageableOffset() throws Exception {
         User user = userRepository.findOne(1L);
-        UserFeed trialList = service.getFeedsForUsersList(user, 2, 5);
+        UserFeed trialList = feedItemsForUsersService.getFeedsForUsersList(user, 2, 5);
         Assert.assertEquals(5, trialList.getFeed().size());
         Assert.assertEquals(118L, trialList.getFeed().get(0).getId());
     }
@@ -124,7 +124,7 @@ public class FeedItemsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testGetFilteredUserFeedWithPageableOffset() throws Exception {
         User user = userRepository.findOne(1L);
-        UserFeed trialList = service.getFilteredUserFeed(user, 1L, 5, 5);
+        UserFeed trialList = feedItemsForUsersService.getFilteredUserFeed(user, 1L, 5, 5);
         Assert.assertEquals(5, trialList.getFeed().size());
         Assert.assertEquals(113L, trialList.getFeed().get(1).getId());
     }
@@ -133,7 +133,7 @@ public class FeedItemsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testGetFilteredUserFeedWithNotPageableOffset() throws Exception {
         User user = userRepository.findOne(1L);
-        UserFeed trialList = service.getFilteredUserFeed(user, 1L, 6, 5);
+        UserFeed trialList = feedItemsForUsersService.getFilteredUserFeed(user, 1L, 6, 5);
         Assert.assertEquals(5, trialList.getFeed().size());
         Assert.assertEquals(113L, trialList.getFeed().get(0).getId());
     }
@@ -142,7 +142,7 @@ public class FeedItemsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testGetUserFeedWithFavoritesOnlyWithPageableOffset() throws Exception {
         User user = userRepository.findOne(1L);
-        UserFeed trialList = service.getUserFeedWithFavoritesOnly(user, 0, 5);
+        UserFeed trialList = feedItemsForUsersService.getUserFeedWithFavoritesOnly(user, 0, 5);
         Assert.assertEquals(1, trialList.getFeed().size());
         Assert.assertEquals(119L, trialList.getFeed().get(0).getId());
     }
@@ -151,6 +151,6 @@ public class FeedItemsForUsersServiceTest {
     @Sql({"/clear-tables.sql", "/PopulateTablesForUserFeedEndpointTests.sql"})
     public void testGetUserFeedWithFavoritesOnlyWithNotPageableOffset() throws Exception {
         User user = userRepository.findOne(1L);
-        UserFeed trialList = service.getUserFeedWithFavoritesOnly(user, 2, 5);
+        UserFeed trialList = feedItemsForUsersService.getUserFeedWithFavoritesOnly(user, 2, 5);
     }
 }
