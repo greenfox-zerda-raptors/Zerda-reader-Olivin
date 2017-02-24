@@ -29,7 +29,7 @@ public class User {
     private String email;
     private String password;
     private String token;
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(name = "subscribed_users")
     private List<Feed> subscribedFeeds;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")

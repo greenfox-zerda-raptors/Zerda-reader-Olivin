@@ -36,7 +36,7 @@ public class FeedItem {
     @JoinColumn(name = "feed_id")
     @JsonBackReference
     private Feed feed;
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "feedItem")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "feedItem")
     private List<FeedItemsForUsers> feedItemsForUsers;
 
     public void setFields(SyndEntry entry, Feed feed) {
