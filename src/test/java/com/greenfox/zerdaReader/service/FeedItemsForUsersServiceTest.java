@@ -153,4 +153,17 @@ public class FeedItemsForUsersServiceTest {
         User user = userRepository.findOne(1L);
         UserFeed trialList = feedItemsForUsersService.getUserFeedWithFavoritesOnly(user, 2, 5);
     }
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestFeedItemisDeletedFromFFU() throws Exception{
+        User user;
+        user = userRepository.findOne(2L);
+        Assert.assertEquals(2,feedItemsForUsersRepository.count());
+        feedItemsForUsersService.deleteFeedItemsForUser(user,3L);
+        //  user.getSubscribedFeeds().remove(3L);
+        // Assert.assertEquals(1,user.getSubscribedFeeds().size());
+       // Assert.assertEquals(1,feedItemsForUsersService.getFeedItemsForUsers().size());
+        Assert.assertEquals(1,feedItemsForUsersRepository.count());
+    }
 }

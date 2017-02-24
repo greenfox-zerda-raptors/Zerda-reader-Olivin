@@ -251,4 +251,14 @@ public class EndpointControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response", is("error message")));
     }
+
+
+    @Test
+    @Sql({"/clear-tables.sql", "/PopulateTables.sql"})
+    public void TestEndpointBasicFunctions() throws Exception {
+        mockMvc.perform(delete("/subscribe/3?token=ABCD1234")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"result\": \"success\"}"))
+                .andExpect(status().isOk());
+    }
 }

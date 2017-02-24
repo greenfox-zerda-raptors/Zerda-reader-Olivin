@@ -99,6 +99,24 @@ public class FeedItemsForUsersService {
           feedItemsForUsersToUpdate.setStarred(false);
           feedItemsForUsersRepository.save(feedItemsForUsersToUpdate);
     }
+
+    public String generateResponseForDeletion(boolean b) {
+        if (b){
+        return "{\"result\": \"success\"}";}
+        else return "{\"result\": \"no success\"}";
+    }
+
+    public List<FeedItemsForUsers> getFeedItemsForUsers(){
+        return  feedItemsForUsersRepository.findAll();
+    }
+
+    public void deleteFeedItemsForUser(User user, Long id){
+        List<FeedItemsForUsers> list;
+           list=feedItemsForUsersRepository.findAllById(user,id);
+              // for (FeedItemsForUsers fu: list) {
+                   feedItemsForUsersRepository.delete(list);
+        feedItemsForUsersRepository.save(user.getFeedItemsForUsers());
+       }
 }
 
 

@@ -3,7 +3,10 @@ package com.greenfox.zerdaReader.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.greenfox.zerdaReader.domain.*;
+import com.greenfox.zerdaReader.domain.FeedItem;
+import com.greenfox.zerdaReader.domain.Subscriptions;
+import com.greenfox.zerdaReader.domain.User;
+import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -183,5 +187,16 @@ public class EndpointController {
         return new ResponseEntity<>(answer, HttpStatus.OK);
     }
 
-
+    @Transactional
+    @RequestMapping(value = "/subscribe/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<JsonNode> unSubscribe( @PathVariable User user,
+                                                 @PathVariable Long id,
+                                                 @RequestParam(value = "token") String token) throws IOException {
+        user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode answer;
+        feedItemsForUsersService.deleteFeedItemsForUser(user,id);
+        answer = mapper.readTree(feedItemsForUsersService.generateResponseForDeletion(true));
+        return new ResponseEntity<JsonNode>(answer, HttpStatus.OK);
+    }
 }
