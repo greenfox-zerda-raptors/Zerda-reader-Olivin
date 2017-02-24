@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,11 +27,11 @@ public class User {
     private String email;
     private String password;
     private String token;
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "subscribed_users")
     private List<Feed> subscribedFeeds;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")
-    @LazyCollection(LazyCollectionOption.FALSE)
+//    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonBackReference
     private List<FeedItemsForUsers> feedItemsForUsers;
 

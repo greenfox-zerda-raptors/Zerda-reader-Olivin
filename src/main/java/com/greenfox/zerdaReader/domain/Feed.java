@@ -7,8 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -40,7 +38,7 @@ public class Feed {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "feed")
     @JsonManagedReference
     private List<FeedItem> entries = new ArrayList<FeedItem>();
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(mappedBy = "subscribedFeeds")
     private List<User> subscribedUsers;
 

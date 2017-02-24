@@ -3,7 +3,10 @@ package com.greenfox.zerdaReader.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.greenfox.zerdaReader.domain.*;
+import com.greenfox.zerdaReader.domain.FeedItem;
+import com.greenfox.zerdaReader.domain.Subscriptions;
+import com.greenfox.zerdaReader.domain.User;
+import com.greenfox.zerdaReader.domain.UserFeed;
 import com.greenfox.zerdaReader.repository.FeedItemRepository;
 import com.greenfox.zerdaReader.repository.FeedRepository;
 import com.greenfox.zerdaReader.repository.UserRepository;
@@ -104,7 +107,7 @@ public class EndpointController {
     public UserFeed allUserFeedItems(@RequestParam(value = "offset", required = false, defaultValue = "0") String offset,
                                      @RequestParam(value = "items", required = false, defaultValue = "50") String items) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserFeed myUserFeed = feedItemsForUsersService.getFeedsForUsersList(user,Integer.parseInt(offset),Integer.parseInt(items));
+        UserFeed myUserFeed = feedItemsForUsersService.getFeedsForUsersList(user, Integer.parseInt(offset), Integer.parseInt(items));
         return myUserFeed;
     }
 
@@ -158,7 +161,7 @@ public class EndpointController {
     }
 
     @RequestMapping(value = "/favorites", method = RequestMethod.DELETE)
-    public ObjectNode removeFavorite (@RequestBody String itemIdOfItemToChange) throws Exception {
+    public ObjectNode removeFavorite(@RequestBody String itemIdOfItemToChange) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode request = mapper.readTree(itemIdOfItemToChange);
         ObjectNode response = mapper.createObjectNode();
